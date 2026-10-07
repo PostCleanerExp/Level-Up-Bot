@@ -265,144 +265,68 @@ body::after{
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-
-/* =========================================================
-   LEVEL UP BOT — BLACK + WHITE / STORM ROYAL UI
-   Lightweight: CSS-only effects, no timers/canvas/JS loops.
-   ========================================================= */
+/* BLACK + WHITE ELECTRIC VINE SYSTEM */
 :root{
-  --bg:#000000;
-  --surface:#050505;
-  --surface-2:#080808;
-  --line:rgba(255,255,255,.105);
-  --line-strong:rgba(255,255,255,.55);
-  --cyan:#ffffff;
-  --blue:#ffffff;
-  --violet:#ffffff;
-  --green:#ffffff;
-  --gold:#ffffff;
-  --red:#ffffff;
-  --text:#ffffff;
-  --muted:#8d8d8d;
+  --bg:#000; --surface:#050505; --surface-2:#070707;
+  --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.55);
+  --cyan:#fff; --blue:#fff; --violet:#fff; --green:#fff; --red:#fff; --amber:#fff;
+  --text:#fff; --muted:#a4a4a4;
 }
-html,body{background:#000;color:#fff}
-body{
-  background-image:
-    radial-gradient(850px 420px at 50% -15%,rgba(255,255,255,.045),transparent 68%),
-    linear-gradient(180deg,#000 0%,#020202 52%,#000 100%);
-}
-body::after{
-  opacity:.13;
-  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
-  background-size:52px 52px;
-}
+html,body{background:#000!important;color:#fff}
+body{background-image:none!important;overflow-x:hidden}
+body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.055),transparent 32%),linear-gradient(#000,#000)!important}
 
-/* A single GPU-cheap atmospheric lightning layer. It sleeps most of the cycle
-   and briefly flashes, creating a natural 20–28s storm rhythm. */
-.storm-lightning{
-  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
-  background:
-    linear-gradient(104deg,transparent 0%,transparent 48.8%,rgba(255,255,255,0) 49.1%,rgba(255,255,255,.0) 49.35%,rgba(255,255,255,.86) 49.48%,rgba(255,255,255,.08) 49.63%,transparent 50.05%,transparent 100%);
-  opacity:0;
-  mix-blend-mode:screen;
-  filter:blur(.25px);
-  animation:stormStrike 24s linear infinite;
-}
-.storm-lightning::before{
-  content:"";position:absolute;inset:-8%;
-  background:radial-gradient(42% 28% at 53% 24%,rgba(255,255,255,.22),transparent 70%);
-  opacity:0;animation:stormGlow 24s linear infinite;
-}
-.storm-lightning::after{
-  content:"";position:absolute;top:7%;bottom:0;left:50%;width:3px;
-  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.62) 30%,rgba(255,255,255,.12) 65%,transparent);
-  clip-path:polygon(48% 0,100% 0,62% 18%,88% 18%,52% 42%,70% 42%,28% 70%,48% 70%,0 100%,28% 72%,8% 72%,44% 43%,26% 43%,58% 19%,35% 19%);
-  opacity:0;filter:drop-shadow(0 0 9px rgba(255,255,255,.8));
-  animation:boltFlash 24s linear infinite;
-}
-@keyframes stormStrike{
-  0%,68%,69.1%,69.7%,70.25%,100%{opacity:0}
-  69.25%{opacity:.24}
-  69.38%{opacity:.08}
-  69.62%{opacity:.34}
-  69.9%{opacity:.04}
-}
-@keyframes stormGlow{
-  0%,68%,69.15%,69.75%,70.25%,100%{opacity:0}
-  69.3%{opacity:.5}
-  69.7%{opacity:.18}
-}
-@keyframes boltFlash{
-  0%,68%,69.12%,69.36%,69.68%,70.2%,100%{opacity:0}
-  69.22%{opacity:.9}
-  69.3%{opacity:.18}
-  69.5%{opacity:.78}
-  69.78%{opacity:.05}
-}
-
-/* Keep the actual dashboard above the atmospheric layer. */
-.topbar,.container,.overlay{position:relative;z-index:2}
-.overlay{z-index:100}
-
-/* Pure black/white surfaces. */
-.topbar{background:rgba(0,0,0,.84);border-bottom-color:rgba(255,255,255,.12);box-shadow:0 14px 42px rgba(0,0,0,.72)}
-.logo{background:#050505;border-color:rgba(255,255,255,.45);box-shadow:0 0 18px rgba(255,255,255,.08),inset 0 0 16px rgba(255,255,255,.035)}
-.brand-text h1,.hero h2,.hero h2 span,.panel-head h2,.stat-body strong{color:#fff;text-shadow:0 0 22px rgba(255,255,255,.07)}
-.brand-text h1 span,.hero p,.hero-badge small,.panel-head small,.stat-body span,.uid,.acc-foot,.mt,.log-time,.muted{color:#858585}
-
+/* Real branch/vine ornament: lightweight inline SVG, no image requests and no JS loop. */
 .hero,.stat,.panel,.acc{
-  background:linear-gradient(145deg,rgba(9,9,9,.98),rgba(2,2,2,.99));
-  border-color:rgba(255,255,255,.105);
-  box-shadow:0 22px 65px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.035);
+  position:relative;overflow:hidden;
+  border-color:rgba(255,255,255,.16)!important;
+  background:#030303!important;
 }
-.hero{border-color:rgba(255,255,255,.15);box-shadow:0 26px 80px rgba(0,0,0,.8),0 0 55px rgba(255,255,255,.025),inset 0 1px 0 rgba(255,255,255,.04)}
+.hero::before,.hero::after,.stat::before,.stat::after,.panel::before,.panel::after,.acc::before,.acc::after{
+  content:"";position:absolute;left:7px;right:7px;height:58px;pointer-events:none;z-index:0;
+  background-repeat:no-repeat;background-size:100% 100%;
+  opacity:.72;filter:drop-shadow(0 0 3px rgba(255,255,255,.55)) drop-shadow(0 0 10px rgba(255,255,255,.14));
+}
+.hero::before,.stat::before,.panel::before,.acc::before{
+  top:-8px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 70'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2.4' d='M0 46 C55 46 55 15 105 22 S160 55 210 36 S270 8 315 23 S370 58 420 35 S480 8 530 23 S590 53 700 25'/%3E%3Cpath stroke-width='1.5' d='M70 29 C78 13 91 11 103 22 M151 49 C160 33 174 29 190 35 M255 28 C266 12 281 12 293 22 M375 48 C384 30 399 28 414 35 M485 28 C496 13 512 12 525 22 M595 43 C607 28 620 25 636 28'/%3E%3Cpath stroke-width='1.3' d='M92 15 l-7 -8 M98 16 l7 -9 M173 31 l-6 -8 M180 32 l8 -7 M278 13 l-7 -8 M284 14 l8 -8 M398 31 l-7 -8 M404 32 l8 -7 M508 13 l-7 -8 M515 14 l8 -8 M615 26 l-7 -8 M622 27 l8 -7'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='105' cy='22' r='2.4'/%3E%3Ccircle cx='210' cy='36' r='2.2'/%3E%3Ccircle cx='315' cy='23' r='2.4'/%3E%3Ccircle cx='420' cy='35' r='2.2'/%3E%3Ccircle cx='530' cy='23' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
+}
+.hero::after,.stat::after,.panel::after,.acc::after{
+  bottom:-8px;transform:scaleY(-1);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 70'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2.4' d='M0 46 C55 46 55 15 105 22 S160 55 210 36 S270 8 315 23 S370 58 420 35 S480 8 530 23 S590 53 700 25'/%3E%3Cpath stroke-width='1.5' d='M70 29 C78 13 91 11 103 22 M151 49 C160 33 174 29 190 35 M255 28 C266 12 281 12 293 22 M375 48 C384 30 399 28 414 35 M485 28 C496 13 512 12 525 22 M595 43 C607 28 620 25 636 28'/%3E%3Cpath stroke-width='1.3' d='M92 15 l-7 -8 M98 16 l7 -9 M173 31 l-6 -8 M180 32 l8 -7 M278 13 l-7 -8 M284 14 l8 -8 M398 31 l-7 -8 M404 32 l8 -7 M508 13 l-7 -8 M515 14 l8 -8 M615 26 l-7 -8 M622 27 l8 -7'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='105' cy='22' r='2.4'/%3E%3Ccircle cx='210' cy='36' r='2.2'/%3E%3Ccircle cx='315' cy='23' r='2.4'/%3E%3Ccircle cx='420' cy='35' r='2.2'/%3E%3Ccircle cx='530' cy='23' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
+}
+.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:1}
 
-/* White electric-vine edges: intentionally restrained so they stay premium. */
-.hero::before,.panel::before,.stat::before,.acc::before{
-  left:5%;right:5%;top:-1px;height:3px;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 9%,#fff 25%,rgba(255,255,255,.22) 38%,#fff 51%,rgba(255,255,255,.2) 65%,#fff 79%,rgba(255,255,255,.1) 91%,transparent);
-  box-shadow:0 0 11px rgba(255,255,255,.22);
-  animation:edgePulse 5.5s ease-in-out infinite;
-}
-.hero::after,.panel::after,.stat::after,.acc::after{
-  left:4%;right:4%;bottom:-3px;height:34px;opacity:.62;
-  background:
-    radial-gradient(32px 13px at 5% 100%,transparent 53%,rgba(255,255,255,.82) 56%,transparent 63%),
-    radial-gradient(42px 16px at 17% 0,transparent 53%,rgba(255,255,255,.6) 56%,transparent 63%),
-    radial-gradient(34px 13px at 30% 100%,transparent 53%,rgba(255,255,255,.75) 56%,transparent 63%),
-    radial-gradient(46px 17px at 45% 0,transparent 53%,rgba(255,255,255,.52) 56%,transparent 63%),
-    radial-gradient(34px 13px at 61% 100%,transparent 53%,rgba(255,255,255,.72) 56%,transparent 63%),
-    radial-gradient(44px 16px at 77% 0,transparent 53%,rgba(255,255,255,.55) 56%,transparent 63%),
-    radial-gradient(30px 12px at 94% 100%,transparent 53%,rgba(255,255,255,.68) 56%,transparent 63%);
-  filter:drop-shadow(0 0 5px rgba(255,255,255,.2));
-  animation:edgePulse 6.2s ease-in-out infinite reverse;
-}
-@keyframes edgePulse{0%,100%{opacity:.42}50%{opacity:.9}}
+/* White-only controls */
+.btn-primary{background:#fff!important;color:#000!important;box-shadow:0 0 22px rgba(255,255,255,.13)!important}
+.btn-ghost,.icon-btn,.chip{background:#030303!important;border-color:rgba(255,255,255,.16)!important;color:#fff!important}
+.btn-ghost:hover,.icon-btn:hover{border-color:#fff!important;box-shadow:0 0 18px rgba(255,255,255,.16)!important}
+.logo{background:#050505!important;border:1px solid rgba(255,255,255,.5);box-shadow:0 0 16px rgba(255,255,255,.12)}
+.c-cyan,.c-green,.c-violet,.c-amber,.avatar{background:#080808!important;color:#fff!important;border-color:rgba(255,255,255,.15)!important}
+.bar i{background:#fff!important;box-shadow:0 0 12px rgba(255,255,255,.28)!important}
+.hero-badge{background:#050505!important;border-color:rgba(255,255,255,.17)!important}
+.log-stream{background:#000!important;border-color:rgba(255,255,255,.14)!important}
+.modal{background:#030303!important;border-color:rgba(255,255,255,.25)!important;box-shadow:0 35px 100px rgba(0,0,0,.92),0 0 40px rgba(255,255,255,.07)!important}
+.input{background:#000!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important}
+.input:focus{border-color:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 0 18px rgba(255,255,255,.08)}
 
-.hero-badge,.chip,.btn-ghost,.icon-btn{background:#050505;border-color:rgba(255,255,255,.12);color:#fff}
-.hero-badge i,.eyebrow,.pulse,.hero h2 span,.stat-icon,.region,.lv{color:#fff}
-.pulse,.dot,.dot.off{background:#fff;box-shadow:0 0 12px rgba(255,255,255,.8)}
-.btn-primary{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 24px rgba(255,255,255,.13)}
-.btn-primary:hover{filter:brightness(.92);box-shadow:0 0 34px rgba(255,255,255,.22)}
-.btn-ghost:hover,.icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.55);background:#0b0b0b;box-shadow:0 0 20px rgba(255,255,255,.08)}
-.status,.st-online,.st-match{background:rgba(255,255,255,.045);color:#fff;border-color:rgba(255,255,255,.18)}
-.c-cyan,.c-green,.c-violet,.c-amber{background:rgba(255,255,255,.045);color:#fff}
-.exp{background:rgba(255,255,255,.09)}.exp div{background:#030303}.exp .gain{color:#fff}
-.bar{background:rgba(255,255,255,.055)}.bar i{background:#fff;box-shadow:0 0 13px rgba(255,255,255,.32)}
-.log-stream{background:#000;border-color:rgba(255,255,255,.11);box-shadow:inset 0 0 38px rgba(255,255,255,.012)}
-.log-info,.log-success,.log-warning,.log-error{color:#fff}
-.modal{background:linear-gradient(145deg,#090909,#020202);border-color:rgba(255,255,255,.17);box-shadow:0 30px 90px rgba(0,0,0,.9),0 0 45px rgba(255,255,255,.035)}
-.input{background:#030303;border-color:rgba(255,255,255,.13)}.input:focus{border-color:#fff;box-shadow:0 0 18px rgba(255,255,255,.07)}
-.stat:hover,.acc:hover,.panel:hover{border-color:rgba(255,255,255,.28);box-shadow:0 25px 70px rgba(0,0,0,.82),0 0 34px rgba(255,255,255,.035)}
-
-@media (prefers-reduced-motion:reduce){
-  .storm-lightning,.storm-lightning::before,.storm-lightning::after,.hero::before,.hero::after,.panel::before,.panel::after,.stat::before,.stat::after,.acc::before,.acc::after{animation:none}
+/* Proper centered modal on phones too — never a bottom sheet / page scroll. */
+.overlay{position:fixed!important;inset:0!important;padding:18px!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:rgba(0,0,0,.82)!important;backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important}
+.modal{max-height:min(92vh,760px)!important;overflow-y:auto!important;overscroll-behavior:contain!important}
+body.modal-open{overflow:hidden!important;height:100vh}
+@media(max-width:760px){
+  .overlay{align-items:center!important;padding:14px!important}
+  .modal{width:min(100%,460px)!important;max-height:90vh!important;border-radius:20px!important;padding:20px!important}
 }
+
+/* Random lightweight lightning flash, triggered by JS only every 15–30 seconds. */
+body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;background:rgba(255,255,255,.11);mix-blend-mode:screen;animation:skyFlash .22s ease-out forwards}
+@keyframes skyFlash{0%{opacity:0}18%{opacity:1}38%{opacity:.18}55%{opacity:.72}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){body.lightning-flash::after{animation:none;opacity:0}}
 
 </style>
 </head>
 <body>
-<div class="storm-lightning" aria-hidden="true"></div>
 <header class="topbar">
 </a>
   <div class="topbar-inner">
@@ -493,11 +417,25 @@ body::after{
 </div>
 
 <script>
-const startTime = Date.now();
 const $ = id => document.getElementById(id);
+let serverUptime = 0;
+let lastUptimeSync = Date.now();
 
-function openAddModal(){ $('add-modal').classList.add('active'); }
-function closeAddModal(){ $('add-modal').classList.remove('active'); }
+(function scheduleLightning(){
+  const delay = 15000 + Math.random() * 15000;
+  setTimeout(() => {
+    if (!document.hidden) {
+      document.body.classList.remove('lightning-flash');
+      void document.body.offsetWidth;
+      document.body.classList.add('lightning-flash');
+      setTimeout(() => document.body.classList.remove('lightning-flash'), 280);
+    }
+    scheduleLightning();
+  }, delay);
+})();
+
+function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
+function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
 
 function toggleFormType(){
@@ -564,7 +502,10 @@ async function fetchStats(manual){
     $('stat-total-accounts').innerText = data.total_accounts;
     $('stat-total-exp').innerText = '+' + data.total_gained_exp.toLocaleString() + ' EXP';
     $('stat-total-matches').innerText = data.total_matches;
-    $('stat-online').innerText = data.accounts.filter(a => a.status === 'IN_MATCH').length;
+    $('stat-online').innerText = data.accounts.reduce((total, a) => total + (Number(a.active_matches) || 0), 0);
+    serverUptime = Math.max(0, Number(data.uptime) || 0);
+    lastUptimeSync = Date.now();
+    $('stat-uptime').innerText = formatUptime(serverUptime);
     $('last-update').innerText = 'Updated ' + new Date().toLocaleTimeString('en-GB');
 
     const box = $('accounts-container');
@@ -623,10 +564,17 @@ async function fetchStats(manual){
   }
 }
 
-setInterval(() => {
-  const s = Math.floor((Date.now() - startTime) / 1000);
+function formatUptime(totalSeconds){
+  const s = Math.max(0, Math.floor(totalSeconds));
   const p = n => String(n).padStart(2, '0');
-  $('stat-uptime').innerText = `${p(Math.floor(s/3600))}:${p(Math.floor(s%3600/60))}:${p(s%60)}`;
+  return `${p(Math.floor(s/3600))}:${p(Math.floor(s%3600/60))}:${p(s%60)}`;
+}
+
+// Count from the running bot process, not from page load. Refreshing the page
+// therefore never resets the header timer; a fresh bot/deploy start does.
+setInterval(() => {
+  const elapsed = Math.floor((Date.now() - lastUptimeSync) / 1000);
+  $('stat-uptime').innerText = formatUptime(serverUptime + elapsed);
 }, 1000);
 
 fetchStats();
