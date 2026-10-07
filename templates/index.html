@@ -265,77 +265,27 @@ body::after{
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* BLACK + WHITE ROYAL VINE — TRUE WRAPPED PERIMETER
-   Lightweight: one static SVG per card + one short surge class.
-   The vine follows the whole rounded rectangle, including all 4 corners. */
-:root{
-  --bg:#000; --surface:#050505; --surface-2:#070707;
-  --line:rgba(255,255,255,.13); --line-strong:rgba(255,255,255,.55);
-  --cyan:#fff; --blue:#fff; --violet:#fff; --green:#fff; --red:#fff; --amber:#fff;
-  --text:#fff; --muted:#a4a4a4;
-}
+/* BLACK + WHITE ROYAL VINE — TRUE OUTER WRAP
+   The vine is a real SVG overlay outside each card, following all 4 sides + rounded corners.
+   No continuous heavy filters/animations: only a short surge when lightning fires. */
+:root{--bg:#000;--surface:#050505;--surface-2:#070707;--line:rgba(255,255,255,.13);--line-strong:rgba(255,255,255,.55);--cyan:#fff;--blue:#fff;--violet:#fff;--green:#fff;--red:#fff;--amber:#fff;--text:#fff;--muted:#a4a4a4}
 html,body{background:#000!important;color:#fff}
 body{background-image:none!important;overflow-x:hidden}
 body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.035),transparent 28%),#000!important}
-
-/* The vine is OUTSIDE the card and wraps the complete perimeter. */
-.hero,.stat,.panel,.acc{
-  position:relative;
-  overflow:visible!important;
-  border-color:rgba(255,255,255,.15)!important;
-  background:#030303!important;
-  isolation:isolate;
-}
-.hero::before,.stat::before,.panel::before,.acc::before{
-  content:"";
-  position:absolute;
-  inset:-34px;
-  pointer-events:none;
-  z-index:1;
-  background-repeat:no-repeat;
-  background-position:center;
-  background-size:100% 100%;
-  opacity:.88;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 440'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='13' d='M82 32H718Q768 32 768 82V358Q768 408 718 408H82Q32 408 32 358V82Q32 32 82 32Z'/%3E%3Cpath stroke-width='7' d='M170 32q-8 26-30 42M260 32q10 25 31 40M390 32q-8 26-29 42M520 32q10 24 31 39M635 32q-7 24-27 39M170 408q-8-26-30-42M260 408q10-25 31-40M390 408q-8-26-29-42M520 408q10-24 31-39M635 408q-7-24-27-39M32 130q28-9 45-32M32 220q28 8 45 29M32 310q28-9 45-30M768 130q-28-9-45-32M768 220q-28 8-45 29M768 310q-28-9-45-30'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Cpath d='M123 48c-26-20-42-12-49 8 22 11 39 8 49-8Z'/%3E%3Cpath d='M199 31c17-23 36-23 48-7-16 17-32 19-48 7Z'/%3E%3Cpath d='M286 49c-25-20-42-12-49 8 22 11 39 8 49-8Z'/%3E%3Cpath d='M365 31c17-23 36-23 48-7-16 17-32 19-48 7Z'/%3E%3Cpath d='M445 49c-25-20-42-12-49 8 22 11 39 8 49-8Z'/%3E%3Cpath d='M524 31c17-23 36-23 48-7-16 17-32 19-48 7Z'/%3E%3Cpath d='M608 49c-25-20-42-12-49 8 22 11 39 8 49-8Z'/%3E%3Cpath d='M677 31c17-23 36-23 48-7-16 17-32 19-48 7Z'/%3E%3Cpath d='M123 392c-26 20-42 12-49-8 22-11 39-8 49 8Z'/%3E%3Cpath d='M199 409c17 23 36 23 48 7-16-17-32-19-48-7Z'/%3E%3Cpath d='M286 391c-25 20-42 12-49-8 22-11 39-8 49 8Z'/%3E%3Cpath d='M365 409c17 23 36 23 48 7-16-17-32-19-48-7Z'/%3E%3Cpath d='M445 391c-25 20-42 12-49-8 22-11 39-8 49 8Z'/%3E%3Cpath d='M524 409c17 23 36 23 48 7-16-17-32-19-48-7Z'/%3E%3Cpath d='M608 391c-25 20-42 12-49-8 22-11 39-8 49 8Z'/%3E%3Cpath d='M677 409c17 23 36 23 48 7-16-17-32-19-48-7Z'/%3E%3Cpath d='M48 123c-23-17-23-36-7-48 17 16 19 32 7 48Z'/%3E%3Cpath d='M31 199c-23 17-23 36-7 48 17-16 19-32 7-48Z'/%3E%3Cpath d='M48 286c-23-17-23-36-7-48 17 16 19 32 7 48Z'/%3E%3Cpath d='M752 123c23-17 23-36 7-48-17 16-19 32-7 48Z'/%3E%3Cpath d='M769 199c23 17 23 36 7 48-17-16-19-32-7-48Z'/%3E%3Cpath d='M752 286c23-17 23-36 7-48-17 16-19 32-7 48Z'/%3E%3C/g%3E%3Cg fill='none' stroke='%23fff' stroke-width='5' stroke-linecap='round'%3E%3Cpath d='M83 32q-12 18-30 29M210 32q10 18 27 30M340 32q-12 18-30 29M470 32q10 18 27 30M600 32q-12 18-30 29M717 32q10 18 27 30M83 408q-12-18-30-29M210 408q10-18 27-30M340 408q-12-18-30-29M470 408q10-18 27-30M600 408q-12-18-30-29M717 408q10-18 27-30'/%3E%3C/g%3E%3C/svg%3E");
-  transition:opacity .22s ease, transform .22s ease;
-}
-.hero::after,.stat::after,.panel::after,.acc::after{
-  content:"";
-  position:absolute;
-  inset:-35px;
-  pointer-events:none;
-  z-index:0;
-  border-radius:inherit;
-  box-shadow:0 0 0 1px rgba(255,255,255,.035);
-  opacity:.45;
-  transition:opacity .22s ease;
-}
+.hero,.stat,.panel,.acc{position:relative;overflow:visible!important;border-color:rgba(255,255,255,.15)!important;background:#030303!important;isolation:isolate}
 .hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:4}
-
-/* Short, GPU-friendly pulse only when the lightning event happens. */
-body.vine-surge .hero::before,
-body.vine-surge .stat::before,
-body.vine-surge .panel::before,
-body.vine-surge .acc::before{
-  animation:vineSurge .62s ease-out both;
-}
-body.vine-surge .hero::after,
-body.vine-surge .stat::after,
-body.vine-surge .panel::after,
-body.vine-surge .acc::after{
-  animation:edgeSurge .62s ease-out both;
-}
-@keyframes vineSurge{
-  0%{opacity:.7}
-  22%{opacity:1;filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 15px rgba(255,255,255,.7))}
-  48%{opacity:.86}
-  100%{opacity:.7;filter:none}
-}
-@keyframes edgeSurge{
-  0%{opacity:.25}
-  25%{opacity:.95;box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 30px rgba(255,255,255,.28)}
-  100%{opacity:.4;box-shadow:0 0 0 1px rgba(255,255,255,.035)}
-}
+.card-vine{position:absolute;inset:-28px;z-index:3;pointer-events:none;overflow:visible;opacity:.78;transition:opacity .18s ease}
+.card-vine svg{display:block;width:100%;height:100%;overflow:visible}
+.card-vine .vine-main{fill:none;stroke:#fff;stroke-width:6.5;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.card-vine .vine-twig{fill:none;stroke:#fff;stroke-width:3.4;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
+.card-vine .vine-leaf{fill:#fff;opacity:.96}
+.card-vine .vine-bud{fill:#fff;opacity:.72}
+.card-vine .vine-glint{fill:#fff;opacity:.85}
+body.vine-surge .card-vine{opacity:1}
+body.vine-surge .card-vine svg{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 14px rgba(255,255,255,.55))}
+/* Keep interaction and scrolling cheap: no permanent blur/filter animation. */
+.hero,.stat,.panel,.acc{will-change:auto}
+@media(prefers-reduced-motion:reduce){.card-vine{transition:none}.card-vine svg{filter:none}body.vine-surge .card-vine{opacity:.78}}
 
 /* White-only controls */
 .btn-primary{background:#fff!important;color:#000!important;box-shadow:0 0 22px rgba(255,255,255,.13)!important}
@@ -537,12 +487,45 @@ let lastUptimeSync = Date.now();
     if (!document.hidden) {
       document.body.classList.remove('lightning-flash');
       document.body.classList.add('lightning-flash');
+      document.body.classList.add('vine-surge');
       setTimeout(() => document.body.classList.remove('lightning-flash'), 280);
+      setTimeout(() => document.body.classList.remove('vine-surge'), 680);
     }
     scheduleLightning();
   }, delay);
 })();
 
+
+const VINE_SVG = `<svg viewBox="0 0 200 200" preserveAspectRatio="none" aria-hidden="true">
+  <rect class="vine-main" x="14" y="14" width="172" height="172" rx="28" ry="28"/>
+  <path class="vine-twig" d="M42 14 Q36 27 27 35 M72 14 Q77 27 88 36 M102 14 Q96 28 86 38 M132 14 Q138 28 149 37 M162 14 Q156 27 148 35"/>
+  <path class="vine-twig" d="M42 186 Q36 173 27 165 M72 186 Q77 173 88 164 M102 186 Q96 172 86 162 M132 186 Q138 172 149 163 M162 186 Q156 173 148 165"/>
+  <path class="vine-twig" d="M14 43 Q27 36 36 27 M14 75 Q28 80 38 90 M14 105 Q28 99 38 88 M14 137 Q28 144 37 154 M14 166 Q27 160 36 151"/>
+  <path class="vine-twig" d="M186 43 Q173 36 164 27 M186 75 Q172 80 162 90 M186 105 Q172 99 162 88 M186 137 Q172 144 163 154 M186 166 Q173 160 164 151"/>
+  <g class="vine-leaf">
+    <path d="M22 25 C10 14 9 6 21 5 C31 9 33 17 22 25Z"/><path d="M43 18 C48 4 57 1 64 10 C61 20 54 24 43 18Z"/>
+    <path d="M76 23 C64 12 65 5 75 3 C86 7 88 15 76 23Z"/><path d="M108 18 C113 5 122 2 129 11 C126 20 119 24 108 18Z"/>
+    <path d="M142 23 C130 12 131 5 141 3 C152 7 154 15 142 23Z"/><path d="M171 18 C176 5 185 2 192 11 C189 20 182 24 171 18Z"/>
+    <path d="M22 175 C10 186 9 194 21 195 C31 191 33 183 22 175Z"/><path d="M43 182 C48 196 57 199 64 190 C61 180 54 176 43 182Z"/>
+    <path d="M76 177 C64 188 65 195 75 197 C86 193 88 185 76 177Z"/><path d="M108 182 C113 195 122 198 129 189 C126 180 119 176 108 182Z"/>
+    <path d="M142 177 C130 188 131 195 141 197 C152 193 154 185 142 177Z"/><path d="M171 182 C176 195 185 198 192 189 C189 180 182 176 171 182Z"/>
+    <path d="M25 22 C11 27 5 34 12 41 C23 42 29 35 25 22Z"/><path d="M25 68 C11 64 4 69 7 79 C17 85 26 80 25 68Z"/>
+    <path d="M25 113 C11 108 4 113 7 123 C17 130 26 125 25 113Z"/><path d="M25 157 C11 153 5 158 8 168 C18 174 26 169 25 157Z"/>
+    <path d="M175 22 C189 27 195 34 188 41 C177 42 171 35 175 22Z"/><path d="M175 68 C189 64 196 69 193 79 C183 85 174 80 175 68Z"/>
+    <path d="M175 113 C189 108 196 113 193 123 C183 130 174 125 175 113Z"/><path d="M175 157 C189 153 195 158 192 168 C182 174 174 169 175 157Z"/>
+  </g>
+  <g class="vine-bud"><circle cx="14" cy="14" r="4"/><circle cx="186" cy="14" r="4"/><circle cx="14" cy="186" r="4"/><circle cx="186" cy="186" r="4"/></g>
+</svg>`;
+function addVineFrame(el){
+  if (!el || el.querySelector(':scope > .card-vine')) return;
+  const wrap=document.createElement('span');
+  wrap.className='card-vine';
+  wrap.innerHTML=VINE_SVG;
+  el.prepend(wrap);
+}
+function decorateVines(root=document){
+  root.querySelectorAll('.hero,.stat,.panel,.acc').forEach(addVineFrame);
+}
 
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
@@ -658,6 +641,7 @@ async function fetchStats(manual){
           </div>
         </article>`;
       }).join('');
+      decorateVines(box);
     }
 
     const logBox = $('log-stream');
