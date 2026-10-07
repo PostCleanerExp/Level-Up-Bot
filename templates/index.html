@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>CGU REAM | Level Up Bot</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{
+  --bg:#070a14; --surface:#0d1324; --surface-2:#121a30; --line:rgba(255,255,255,.08); --line-strong:rgba(0,242,254,.35);
+  --cyan:#22d3ee; --blue:#4facfe; --violet:#8b5cf6; --green:#34d399; --red:#fb7185; --amber:#fbbf24;
+  --text:#eef2fb; --muted:#8b97b3; --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;
+  background-image:radial-gradient(900px 500px at 10% -10%,rgba(139,92,246,.16),transparent 60%),radial-gradient(800px 500px at 100% 0,rgba(34,211,238,.12),transparent 60%);
+  background-attachment:fixed;
+}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
+/* Header */
+.topbar{position:sticky;top:0;z-index:50;background:rgba(7,10,20,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0)}
+.topbar-inner{max-width:1360px;margin:0 auto;padding:8px 24px;display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0;flex:1}
+.logo{flex:none;width:30px;height:30px;border-radius:9px;display:grid;place-items:center;color:#fff;font-size:14px;background:linear-gradient(135deg,var(--cyan),var(--violet))}
+.brand-text{min-width:0}
+.brand-text h1{font-size:15px;font-weight:800;letter-spacing:-.2px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-text h1 span{color:var(--muted);font-weight:500}
+.brand-text p{display:none}
+.header-meta{display:flex;align-items:center;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:7px;height:28px;padding:0 10px;border-radius:8px;background:var(--surface);border:1px solid var(--line);font-size:12px;font-weight:600;white-space:nowrap}
+.chip .mono{font-family:'JetBrains Mono',monospace;font-size:12px}
+.chip.live{color:var(--green)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(52,211,153,.6);animation:ping 1.8s infinite}
+.dot.off{background:var(--red);animation:none}
+@keyframes ping{70%{box-shadow:0 0 0 7px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+.header-actions{display:flex;gap:8px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:32px;padding:0 12px;border-radius:9px;border:1px solid transparent;cursor:pointer;font-size:14px;font-weight:600;transition:background .2s,border-color .2s,transform .15s;white-space:nowrap}
+.btn:active{transform:scale(.97)}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--cyan));color:#04101c}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-sm{height:30px;font-size:13px;padding:0 11px}
+.btn-square{width:28px;height:28px;padding:0;border-radius:8px}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:var(--line-strong)}
+.btn.spin i{animation:rot .8s linear infinite}
+@keyframes rot{to{transform:rotate(360deg)}}
+
+/* Layout */
+.container{max-width:1360px;margin:0 auto;padding:24px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;display:flex;align-items:center;gap:14px;min-width:0}
+.stat-icon{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:18px}
+.c-cyan{background:rgba(34,211,238,.14);color:var(--cyan)}
+.c-green{background:rgba(52,211,153,.14);color:var(--green)}
+.c-violet{background:rgba(139,92,246,.16);color:#c4b5fd}
+.c-amber{background:rgba(251,191,36,.14);color:var(--amber)}
+.stat-body{min-width:0}
+.stat-body strong{display:block;font-size:24px;font-weight:800;letter-spacing:-.4px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.stat-body span{font-size:13px;color:var(--muted)}
+
+.main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(320px,1fr);gap:24px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.panel-head h2{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px}
+.panel-head small{color:var(--muted);font-size:12px}
+.panel-tools{display:flex;align-items:center;gap:12px}
+
+/* Accounts */
+.accounts{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px}
+.acc{background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:14px;transition:border-color .2s}
+.acc:hover{border-color:var(--line-strong)}
+.acc-top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.acc-profile{display:flex;align-items:center;gap:12px;min-width:0}
+.avatar{flex:none;width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(34,211,238,.1);color:var(--cyan);border:1px solid rgba(34,211,238,.2)}
+.acc-info{min-width:0}
+.acc-info h4{font-size:15px;font-weight:700;display:flex;align-items:center;gap:8px;min-width:0}
+.acc-info h4 .name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.region{flex:none;background:rgba(255,255,255,.08);color:#c7d2fe;padding:1px 7px;border-radius:6px;font-size:10px;font-weight:700}
+.uid{display:block;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis}
+.status{flex:none;display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.status .dot{width:6px;height:6px}
+.st-online{background:rgba(52,211,153,.12);color:var(--green);border:1px solid rgba(52,211,153,.25)}
+.st-match{background:rgba(34,211,238,.12);color:var(--cyan);border:1px solid rgba(34,211,238,.35)}
+.st-match .dot{background:var(--cyan)}
+.exp{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:12px;overflow:hidden}
+.exp div{background:#0a1022;padding:10px 12px;min-width:0}
+.exp label{display:block;font-size:11px;color:var(--muted);font-weight:600;margin-bottom:3px}
+.exp b{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;display:block;overflow:hidden;text-overflow:ellipsis}
+.exp .gain{color:var(--green)}
+.level-row{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:6px}
+.level-row .lv{color:var(--cyan)}.level-row .mt{color:var(--muted)}
+.bar{height:6px;background:rgba(255,255,255,.08);border-radius:99px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green));border-radius:99px;transition:width .5s}
+.acc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.acc-foot span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acts{display:flex;gap:8px;flex:none}
+.icon-btn{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.04);border:1px solid var(--line);color:var(--muted);cursor:pointer;transition:.2s}
+.icon-btn:hover{color:var(--cyan);border-color:var(--cyan);background:rgba(34,211,238,.1)}
+.icon-btn.danger:hover{color:var(--red);border-color:var(--red);background:rgba(251,113,133,.1)}
+
+/* Logs */
+.log-stream{height:520px;background:#04070f;border:1px solid var(--line);border-radius:12px;padding:12px;font-family:'JetBrains Mono',monospace;font-size:12px;overflow-y:auto;display:flex;flex-direction:column;gap:6px}
+.log-stream::-webkit-scrollbar{width:6px}
+.log-stream::-webkit-scrollbar-thumb{background:rgba(255,255,255,.12);border-radius:3px}
+.log-item{line-height:1.5;word-break:break-word}
+.log-time{color:#5b6785;margin-right:6px}
+.log-info{color:#38bdf8}.log-success{color:#4ade80}.log-warning{color:#fbbf24}.log-error{color:#f87171}
+
+.empty{grid-column:1/-1;text-align:center;padding:48px 16px;color:var(--muted)}
+.empty i{font-size:36px;margin-bottom:12px;color:rgba(255,255,255,.14);display:block}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(3,6,15,.8);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:16px;z-index:100}
+.overlay.active{display:flex}
+.modal{background:#0c1224;border:1px solid var(--line);border-radius:18px;width:100%;max-width:460px;max-height:100%;overflow:auto;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
+.modal-head h3{font-size:18px;font-weight:700}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.input{width:100%;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:16px;outline:none;transition:border-color .2s}
+.input:focus{border-color:var(--cyan)}
+select.input option{background:#0c1224}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+
+/* Responsive */
+@media (max-width:1100px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .main{grid-template-columns:1fr}
+  .log-stream{height:380px}
+}
+@media (max-width:760px){
+  .topbar-inner{padding:8px 16px;gap:8px}
+  .brand-text h1 span{display:none}
+  #conn-text{display:none}
+  .panel-head{flex-wrap:wrap}
+  .panel-tools{width:100%;justify-content:space-between}
+  .container{padding:16px}
+  .stats{gap:12px;margin-bottom:16px}
+  .stat{padding:14px;gap:10px;flex-direction:column;align-items:flex-start}
+  .stat-body strong{font-size:20px}
+  .panel{padding:16px}
+  .accounts{grid-template-columns:1fr}
+  .overlay{align-items:flex-end;padding:0}
+  .modal{max-width:none;border-radius:20px 20px 0 0;padding-bottom:calc(22px + env(safe-area-inset-bottom,0))}
+}
+@media (max-width:400px){
+  .exp b{font-size:13px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+</a>
+  <div class="topbar-inner">
+    <div class="brand">
+      <div class="logo"><i class="fa-solid fa-bolt"></i></div>
+      <div class="brand-text">
+        <h1>CGU TEAM <span>Level Up Bot</span></h1>
+  
+      </div>
+    </div>
+    <div class="header-meta">
+      <span class="chip live" id="conn-chip"><span class="dot" id="conn-dot"></span><span id="conn-text">Online</span></span>
+      <span class="chip" title="Uptime bot"><i class="fa-regular fa-clock" style="color:var(--amber)"></i><span class="mono" id="stat-uptime">00:00:00</span></span>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-ghost btn-square" id="refresh-btn" onclick="fetchStats(true)" title="Refresh" aria-label="Refresh"><i class="fa-solid fa-rotate"></i></button>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+  <section class="stats" aria-label="Ringkasan">
+    <div class="stat"><div class="stat-icon c-cyan"><i class="fa-solid fa-users"></i></div><div class="stat-body"><strong id="stat-total-accounts">0</strong><span>Akun aktif</span></div></div>
+    <div class="stat"><div class="stat-icon c-green"><i class="fa-solid fa-angles-up"></i></div><div class="stat-body"><strong id="stat-total-exp" style="color:var(--green)">+0 EXP</strong><span>Total EXP didapat</span></div></div>
+    <div class="stat"><div class="stat-icon c-violet"><i class="fa-solid fa-gamepad"></i></div><div class="stat-body"><strong id="stat-total-matches">0</strong><span>Match selesai</span></div></div>
+    <div class="stat"><div class="stat-icon c-amber"><i class="fa-solid fa-shield-halved"></i></div><div class="stat-body"><strong id="stat-online">0</strong><span>Sedang di match</span></div></div>
+  </section>
+
+  <div class="main">
+    <section class="panel">
+      <div class="panel-head">
+        <h2><i class="fa-solid fa-user-astronaut" style="color:var(--cyan)"></i>Monitor akun &amp; EXP</h2>
+        <div class="panel-tools">
+          <small id="last-update">—</small>
+          <button class="btn btn-primary btn-sm" onclick="openAddModal()"><i class="fa-solid fa-plus"></i>Tambah akun</button>
+        </div>
+      </div>
+      <div class="accounts" id="accounts-container">
+        <div class="empty"><i class="fa-solid fa-circle-notch fa-spin"></i><p>Memuat akun...</p></div>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2><i class="fa-solid fa-terminal" style="color:var(--green)"></i>Log bot</h2>
+        <small>Real-time</small>
+      </div>
+      <div class="log-stream" id="log-stream"></div>
+    </section>
+  </div>
+</main>
+
+<div class="overlay" id="add-modal" onclick="if(event.target===this)closeAddModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <h3 id="modal-title">Tambah akun</h3>
+      <button class="icon-btn" onclick="closeAddModal()" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <form id="add-acc-form" onsubmit="submitAddAccount(event)">
+      <div class="field">
+        <label for="acc-type">Tipe akun</label>
+        <select class="input" id="acc-type" onchange="toggleFormType()">
+          <option value="guest">Guest (UID + Password)</option>
+          <option value="token">Access Token</option>
+        </select>
+      </div>
+      <div id="guest-fields">
+        <div class="field"><label for="acc-uid">Guest UID</label><input type="text" class="input" id="acc-uid" placeholder="contoh: 7644913583" inputmode="numeric" autocomplete="off"></div>
+        <div class="field"><label for="acc-password">Guest password / secret</label><input type="text" class="input" id="acc-password" placeholder="contoh: ZERO_GRAVITY_4NM38" autocomplete="off"></div>
+      </div>
+      <div id="token-fields" style="display:none">
+        <div class="field"><label for="acc-token">Access token</label><textarea class="input" id="acc-token" rows="3" placeholder="Tempel access token di sini..."></textarea></div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-ghost" onclick="closeAddModal()">Batal</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i>Simpan &amp; mulai</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const startTime = Date.now();
+const $ = id => document.getElementById(id);
+
+function openAddModal(){ $('add-modal').classList.add('active'); }
+function closeAddModal(){ $('add-modal').classList.remove('active'); }
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
+
+function toggleFormType(){
+  const t = $('acc-type').value;
+  $('guest-fields').style.display = t === 'guest' ? 'block' : 'none';
+  $('token-fields').style.display = t === 'token' ? 'block' : 'none';
+}
+
+async function submitAddAccount(e){
+  e.preventDefault();
+  const type = $('acc-type').value;
+  let payload = {};
+  if (type === 'guest'){
+    const uid = $('acc-uid').value.trim(), password = $('acc-password').value.trim();
+    if (!uid || !password) return alert('Isi UID dan password terlebih dahulu');
+    payload = { uid, password };
+  } else {
+    const token = $('acc-token').value.trim();
+    if (!token) return alert('Isi token terlebih dahulu');
+    payload = { token };
+  }
+  try {
+    const res = await fetch('/api/account/add', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+    const data = await res.json();
+    if (data.status === 'ok'){ closeAddModal(); $('add-acc-form').reset(); toggleFormType(); fetchStats(); }
+    else alert('Gagal menambah akun: ' + (data.error || 'Unknown'));
+  } catch (err){ alert('Request gagal: ' + err); }
+}
+
+async function deleteAccount(uid){
+  if (!confirm('Hapus akun ' + uid + '?')) return;
+  try {
+    await fetch('/api/account/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ uid }) });
+    fetchStats();
+  } catch (err){ console.error(err); }
+}
+
+async function refreshAccountInfo(uid){
+  try {
+    await fetch('/api/account/refresh', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ uid }) });
+    fetchStats();
+  } catch (err){ console.error(err); }
+}
+
+function escapeHtml(t){
+  if (!t) return '';
+  return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+
+function setConn(ok){
+  $('conn-dot').classList.toggle('off', !ok);
+  $('conn-text').textContent = ok ? 'Online' : 'Terputus';
+  $('conn-chip').style.color = ok ? 'var(--green)' : 'var(--red)';
+}
+
+async function fetchStats(manual){
+  const btn = $('refresh-btn');
+  if (manual) btn.classList.add('spin');
+  try {
+    const res = await fetch('/api/stats');
+    const data = await res.json();
+    setConn(true);
+
+    $('stat-total-accounts').innerText = data.total_accounts;
+    $('stat-total-exp').innerText = '+' + data.total_gained_exp.toLocaleString() + ' EXP';
+    $('stat-total-matches').innerText = data.total_matches;
+    $('stat-online').innerText = data.accounts.filter(a => a.status === 'IN_MATCH').length;
+    $('last-update').innerText = 'Update ' + new Date().toLocaleTimeString('id-ID');
+
+    const box = $('accounts-container');
+    if (!data.accounts.length){
+      box.innerHTML = '<div class="empty"><i class="fa-solid fa-ghost"></i><p>Belum ada akun aktif. Klik “Tambah akun” untuk mulai.</p></div>';
+    } else {
+      box.innerHTML = data.accounts.map(acc => {
+        const gained = acc.gained_exp || 0;
+        const inMatch = acc.status === 'IN_MATCH';
+        const stText = inMatch ? `Di match (${acc.active_matches})` : escapeHtml(acc.status);
+        const pct = Math.min(100, Math.max(15, (acc.current_exp % 1000) / 10));
+        const uid = escapeHtml(acc.uid);
+        return `
+        <article class="acc">
+          <div class="acc-top">
+            <div class="acc-profile">
+              <div class="avatar"><i class="fa-solid fa-user"></i></div>
+              <div class="acc-info">
+                <h4><span class="name">${escapeHtml(acc.nickname)}</span><span class="region">${escapeHtml(acc.region || 'BD')}</span></h4>
+                <span class="uid">UID ${uid}</span>
+              </div>
+            </div>
+            <div class="status ${inMatch ? 'st-match' : 'st-online'}"><span class="dot"></span>${stText}</div>
+          </div>
+          <div class="exp">
+            <div><label>Awal</label><b>${acc.initial_exp.toLocaleString()}</b></div>
+            <div><label>Sekarang</label><b>${acc.current_exp.toLocaleString()}</b></div>
+            <div><label>Didapat</label><b class="gain">+${gained.toLocaleString()}</b></div>
+          </div>
+          <div>
+            <div class="level-row"><span class="lv">Level ${acc.level}</span><span class="mt">${acc.matches_played} match</span></div>
+            <div class="bar"><i style="width:${pct}%"></i></div>
+          </div>
+          <div class="acc-foot">
+            <span>Match terakhir: ${escapeHtml(acc.last_match_time || 'Berjalan...')}</span>
+            <div class="acts">
+              <button class="icon-btn" title="Refresh profil/EXP" aria-label="Refresh akun" onclick="refreshAccountInfo('${uid}')"><i class="fa-solid fa-rotate"></i></button>
+              <button class="icon-btn danger" title="Hapus akun" aria-label="Hapus akun" onclick="deleteAccount('${uid}')"><i class="fa-solid fa-trash"></i></button>
+            </div>
+          </div>
+        </article>`;
+      }).join('');
+    }
+
+    const logBox = $('log-stream');
+    const stick = logBox.scrollTop + logBox.clientHeight >= logBox.scrollHeight - 40;
+    logBox.innerHTML = data.logs.map(l =>
+      `<div class="log-item"><span class="log-time">[${escapeHtml(l.time)}]</span><span class="log-${escapeHtml(l.level)}">${escapeHtml(l.message)}</span></div>`
+    ).join('');
+    if (stick) logBox.scrollTop = logBox.scrollHeight;
+  } catch (err){
+    console.error('Failed to fetch stats:', err);
+    setConn(false);
+  } finally {
+    btn.classList.remove('spin');
+  }
+}
+
+setInterval(() => {
+  const s = Math.floor((Date.now() - startTime) / 1000);
+  const p = n => String(n).padStart(2, '0');
+  $('stat-uptime').innerText = `${p(Math.floor(s/3600))}:${p(Math.floor(s%3600/60))}:${p(s%60)}`;
+}, 1000);
+
+fetchStats();
+setInterval(fetchStats, 2500);
+</script>
+</body>
+</html>
