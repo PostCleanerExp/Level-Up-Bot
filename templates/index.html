@@ -387,88 +387,20 @@ body.modal-open{overflow:hidden!important;height:100vh}
 
 
 <style id="royal-vine-corrected">
-/* FINAL PERFORMANCE PATCH: true outer wrapped vine.
-   One lightweight SVG per visible card. It never participates in layout. */
-.hero::before,.stat::before,.panel::before,.acc::before,
-.hero::after,.stat::after,.panel::after,.acc::after{
-  content:none!important;
-  display:none!important;
-  background:none!important;
-  filter:none!important;
-  box-shadow:none!important;
-  animation:none!important;
-}
-.hero,.stat,.panel,.acc{
-  position:relative!important;
-  overflow:visible!important;
-  isolation:isolate;
-}
-.card-vine{
-  position:absolute!important;
-  inset:-17px!important;
-  width:auto!important;
-  height:auto!important;
-  margin:0!important;
-  padding:0!important;
-  z-index:1!important;
-  pointer-events:none!important;
-  display:block!important;
-  opacity:.82!important;
-  overflow:visible!important;
-  transform:none!important;
-  filter:none!important;
-}
-.card-vine svg{
-  display:block!important;
-  width:100%!important;
-  height:100%!important;
-  overflow:visible!important;
-  transform:none!important;
-}
-.card-vine .rv-main{
-  fill:none!important;
-  stroke:#fff!important;
-  stroke-width:5.8!important;
-  vector-effect:non-scaling-stroke!important;
-  stroke-linecap:round!important;
-  stroke-linejoin:round!important;
-}
-.card-vine .rv-twigs{
-  fill:none!important;
-  stroke:#fff!important;
-  stroke-width:3.1!important;
-  vector-effect:non-scaling-stroke!important;
-  stroke-linecap:round!important;
-  stroke-linejoin:round!important;
-}
-.card-vine .rv-leaves{
-  fill:#fff!important;
-  opacity:.94!important;
-}
-.card-vine .rv-leaves path{
-  stroke:none!important;
-}
-.hero > *, .stat > *, .panel > *, .acc > *{
-  position:relative;
-  z-index:2;
-}
-body.lightning-flash .card-vine{
-  opacity:1!important;
-}
-body.lightning-flash .card-vine svg{
-  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 14px rgba(255,255,255,.48))!important;
-}
-body.vine-surge .card-vine{
-  opacity:1!important;
-}
-@media(max-width:760px){
-  .card-vine{inset:-14px!important}
-}
-@media(prefers-reduced-motion:reduce){
-  .card-vine{opacity:.82!important}
-  body.lightning-flash .card-vine{opacity:.82!important}
-  body.lightning-flash .card-vine svg{filter:none!important}
-}
+/* Lightweight royal vine: sits outside the card, follows its rounded perimeter, never affects layout. */
+.hero,.stat,.panel,.acc{position:relative!important;overflow:visible!important;isolation:isolate}
+.hero::before,.hero::after,.stat::before,.stat::after,.panel::before,.panel::after,.acc::before,.acc::after{content:none!important;display:none!important}
+.card-vine{position:absolute!important;inset:-12px!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;z-index:0!important;pointer-events:none!important;display:block!important;opacity:.55!important;overflow:visible!important;transform:none!important;filter:none!important}
+.card-vine svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important;transform:none!important}
+.card-vine .rv-main{fill:none!important;stroke:#fff!important;stroke-width:3.2!important;vector-effect:non-scaling-stroke!important;stroke-linecap:round!important;stroke-linejoin:round!important}
+.card-vine .rv-twigs{fill:none!important;stroke:#fff!important;stroke-width:1.7!important;vector-effect:non-scaling-stroke!important;stroke-linecap:round!important;stroke-linejoin:round!important;opacity:.9!important}
+.card-vine .rv-leaves{fill:#fff!important;opacity:.72!important}
+.card-vine .rv-leaves path{stroke:none!important}
+.hero>*,.stat>*,.panel>*,.acc>*{position:relative;z-index:2}
+body.lightning-flash .card-vine{opacity:.96!important}
+body.lightning-flash .card-vine svg{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px rgba(255,255,255,.42))!important}
+@media(max-width:760px){.card-vine{inset:-9px!important}.card-vine .rv-main{stroke-width:2.8!important}.card-vine .rv-twigs{stroke-width:1.5!important}}
+@media(prefers-reduced-motion:reduce){.card-vine{opacity:.5!important}body.lightning-flash .card-vine{opacity:.5!important}body.lightning-flash .card-vine svg{filter:none!important}}
 </style>
 
 </head>
@@ -583,24 +515,31 @@ let lastUptimeSync = Date.now();
 
 
 const VINE_SVG = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-<path class="rv-main" d="M16 7 C12 7 7 12 7 16 V84 C7 88 12 93 16 93 H84 C88 93 93 88 93 84 V16 C93 12 88 7 84 7 H16 Z"/>
+<path class="rv-main" d="M15 5 C9 5 5 9 5 15 V85 C5 91 9 95 15 95 H85 C91 95 95 91 95 85 V15 C95 9 91 5 85 5 H15 Z"/>
 <g class="rv-twigs">
-<path d="M22 7 Q20 2 16 0 M34 7 Q35 2 39 0 M50 7 Q50 2 46 0 M66 7 Q65 2 61 0 M78 7 Q80 2 84 0"/>
-<path d="M22 93 Q20 98 16 100 M34 93 Q35 98 39 100 M50 93 Q50 98 46 100 M66 93 Q65 98 61 100 M78 93 Q80 98 84 100"/>
-<path d="M7 22 Q2 20 0 16 M7 38 Q2 39 0 43 M7 62 Q2 61 0 57 M7 78 Q2 80 0 84"/>
-<path d="M93 22 Q98 20 100 16 M93 38 Q98 39 100 43 M93 62 Q98 61 100 57 M93 78 Q98 80 100 84"/>
+<path d="M20 5 Q18 1 15 0 M35 5 Q35 1 38 0 M50 5 Q50 1 47 0 M65 5 Q65 1 62 0 M80 5 Q82 1 85 0"/>
+<path d="M20 95 Q18 99 15 100 M35 95 Q35 99 38 100 M50 95 Q50 99 47 100 M65 95 Q65 99 62 100 M80 95 Q82 99 85 100"/>
+<path d="M5 20 Q1 18 0 15 M5 37 Q1 37 0 40 M5 63 Q1 63 0 60 M5 80 Q1 82 0 85"/>
+<path d="M95 20 Q99 18 100 15 M95 37 Q99 37 100 40 M95 63 Q99 63 100 60 M95 80 Q99 82 100 85"/>
 </g>
 <g class="rv-leaves">
-<path d="M14 4 C7 1 5 5 9 10 C14 11 17 8 14 4Z"/><path d="M39 5 C34 0 30 2 31 7 C35 10 39 9 39 5Z"/>
-<path d="M61 5 C61 0 65 -1 68 3 C68 8 65 9 61 5Z"/><path d="M86 5 C88 0 93 2 92 7 C89 10 86 9 86 5Z"/>
-<path d="M14 96 C7 99 5 95 9 90 C14 89 17 92 14 96Z"/><path d="M39 95 C34 100 30 98 31 93 C35 90 39 91 39 95Z"/>
-<path d="M61 95 C61 100 65 101 68 97 C68 92 65 91 61 95Z"/><path d="M86 95 C88 100 93 98 92 93 C89 90 86 91 86 95Z"/>
-<path d="M4 14 C-1 7 2 4 7 8 C9 13 7 16 4 14Z"/><path d="M5 42 C0 37 1 33 6 34 C10 38 9 41 5 42Z"/>
-<path d="M5 66 C0 63 0 59 5 58 C9 61 9 64 5 66Z"/><path d="M4 86 C-1 91 2 96 7 92 C9 87 7 84 4 86Z"/>
-<path d="M96 14 C101 7 98 4 93 8 C91 13 93 16 96 14Z"/><path d="M95 42 C100 37 99 33 94 34 C90 38 91 41 95 42Z"/>
-<path d="M95 66 C100 63 100 59 95 58 C91 61 91 64 95 66Z"/><path d="M96 86 C101 91 98 96 93 92 C91 87 93 84 96 86Z"/>
-</g>
-</svg>`;
+<path d="M15 2 C11 0 9 2 10 5 C12 7 15 6 17 4 C17 3 16 2 15 2Z"/>
+<path d="M38 2 C35 0 33 2 34 5 C36 6 39 5 40 3 C40 2 39 2 38 2Z"/>
+<path d="M62 2 C61 0 63 0 65 2 C66 4 64 6 62 6 C61 5 61 3 62 2Z"/>
+<path d="M85 2 C89 0 91 2 90 5 C88 7 85 6 83 4 C83 3 84 2 85 2Z"/>
+<path d="M15 98 C11 100 9 98 10 95 C12 93 15 94 17 96 C17 97 16 98 15 98Z"/>
+<path d="M38 98 C35 100 33 98 34 95 C36 94 39 95 40 97 C40 98 39 98 38 98Z"/>
+<path d="M62 98 C61 100 63 100 65 98 C66 96 64 94 62 94 C61 95 61 97 62 98Z"/>
+<path d="M85 98 C89 100 91 98 90 95 C88 93 85 94 83 96 C83 97 84 98 85 98Z"/>
+<path d="M2 15 C0 11 2 9 5 10 C7 12 6 15 4 17 C3 17 2 16 2 15Z"/>
+<path d="M2 40 C0 37 2 35 5 36 C6 38 5 41 3 42 C2 42 2 41 2 40Z"/>
+<path d="M2 60 C0 63 2 65 5 64 C6 62 5 59 3 58 C2 58 2 59 2 60Z"/>
+<path d="M2 85 C0 89 2 91 5 90 C7 88 6 85 4 83 C3 83 2 84 2 85Z"/>
+<path d="M98 15 C100 11 98 9 95 10 C93 12 94 15 96 17 C97 17 98 16 98 15Z"/>
+<path d="M98 40 C100 37 98 35 95 36 C94 38 95 41 97 42 C98 42 98 41 98 40Z"/>
+<path d="M98 60 C100 63 98 65 95 64 C94 62 95 59 97 58 C98 58 98 59 98 60Z"/>
+<path d="M98 85 C100 89 98 91 95 90 C93 88 94 85 96 83 C97 83 98 84 98 85Z"/>
+</g></svg>`;
 function addVineFrame(el){
   if (!el || el.querySelector(':scope > .card-vine')) return;
   const wrap=document.createElement('span');
