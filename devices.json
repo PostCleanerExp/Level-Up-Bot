@@ -1,0 +1,38 @@
+{
+    "7989895698": {
+        "unique_device_id": "Google|336c89cf-6ee9-4e54-9141-67a247daf4c6",
+        "brand": "Samsung",
+        "model": "SM-G998B",
+        "gpu_renderer": "Adreno (TM) 660",
+        "system_software": "Android OS 12 / API-31",
+        "screen_width": 1280,
+        "screen_height": 1600,
+        "screen_dpi": "316",
+        "memory": 4510,
+        "processor_details": "ARM64 FP ASIMD AES VMH | 3128 | 11",
+        "client_ip": "184.168.49.109",
+        "android_id": "a8f834d845dce73a",
+        "gsf_id": "25d16c459cf66dfa",
+        "build_fingerprint": "samsung/sm-g998b/sm-g998b:Android_OS_12/user/release-keys",
+        "serial_number": "e56e1963c576468a",
+        "hardware_id": "43e413c731b9bc48"
+    },
+    "4f5f220ac10fdca3d2955463fb63948b": {
+        "unique_device_id": "Google|2b35e2b0-7aa8-48d7-8b44-52c2322ae717",
+        "brand": "Poco",
+        "model": "M2102J20SG",
+        "gpu_renderer": "Adreno (TM) 660",
+        "system_software": "Android OS 13 / API-33",
+        "screen_width": 1080,
+        "screen_height": 3200,
+        "screen_dpi": "324",
+        "memory": 3814,
+        "processor_details": "ARM64 FP ASIMD AES VMH | 2672 | 10",
+        "client_ip": "186.121.193.189",
+        "android_id": "6dca0277bb204c66",
+        "gsf_id": "9c2a6efcb734230e",
+        "build_fingerprint": "poco/m2102j20sg/m2102j20sg:Android_OS_13/user/release-keys",
+        "serial_number": "e35b9606d340919d",
+        "hardware_id": "fab1839b5cb773fc"
+    }
+}
