@@ -329,6 +329,67 @@ body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:999;pointe
 @media(prefers-reduced-motion:reduce){body.lightning-flash::after{animation:none;opacity:0}.hero::before,.stat::before,.panel::before,.acc::before,.hero::after,.stat::after,.panel::after,.acc::after{animation:none}}
 
 </style>
+
+<style id="royal-vine-final">
+/* FINAL ROYAL BLACK + WHITE VINE SYSTEM */
+:root{--black:#000;--white:#fff;--silver:#d9d9d9;--muted:#8d8d8d}
+html,body{background:#000!important;color:#fff!important}
+body{
+  background-image:radial-gradient(900px 420px at 50% -20%,rgba(255,255,255,.035),transparent 65%)!important;
+  overflow-x:hidden;
+}
+body::after{background-image:none!important;opacity:0!important}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:0;
+  background:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.18),transparent 48%),linear-gradient(180deg,rgba(255,255,255,.10),transparent 28%,transparent 72%,rgba(255,255,255,.07));
+  mix-blend-mode:screen;transition:opacity .08s ease;
+}
+body.lightning-flash::before{opacity:1}
+.topbar{background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(255,255,255,.16)!important;box-shadow:0 12px 35px rgba(0,0,0,.7)!important}
+.logo{background:#050505!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 0 18px rgba(255,255,255,.10),inset 0 0 14px rgba(255,255,255,.035)!important}
+.brand-text h1,.brand-text h1 span{color:#fff!important;text-shadow:0 0 18px rgba(255,255,255,.16)!important}
+.container{padding-top:28px!important}
+.hero,.stat,.panel,.acc{
+  position:relative!important;overflow:visible!important;background:#030303!important;
+  border:1px solid rgba(255,255,255,.16)!important;
+  box-shadow:0 18px 50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.025)!important;
+}
+.hero::before,.stat::before,.panel::before,.acc::before,
+.hero::after,.stat::after,.panel::after,.acc::after{z-index:4!important;pointer-events:none!important}
+/* One thick leafy branch frame that wraps ALL FOUR SIDES and stays outside the box. */
+.hero::before,.stat::before,.panel::before,.acc::before{
+  content:""!important;position:absolute!important;inset:-22px!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500' preserveAspectRatio='none'%3E%3Cpath d='M36 68 Q90 28 150 66 T270 60 T390 70 T510 55 T650 66 T764 58 Q785 52 768 96 Q748 140 766 190 T758 300 T772 410 Q760 446 720 430 Q650 416 595 440 T470 432 T350 444 T220 430 T90 442 Q50 450 40 414 Q58 360 42 304 T48 190 T36 68' fill='none' stroke='%23fff' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='112' cy='51' rx='23' ry='10' transform='rotate(-28 112 51)'/%3E%3Cellipse cx='170' cy='73' rx='22' ry='9' transform='rotate(25 170 73)'/%3E%3Cellipse cx='250' cy='52' rx='24' ry='10' transform='rotate(-30 250 52)'/%3E%3Cellipse cx='330' cy='74' rx='23' ry='10' transform='rotate(27 330 74)'/%3E%3Cellipse cx='430' cy='57' rx='24' ry='10' transform='rotate(-28 430 57)'/%3E%3Cellipse cx='520' cy='66' rx='22' ry='9' transform='rotate(25 520 66)'/%3E%3Cellipse cx='640' cy='58' rx='24' ry='10' transform='rotate(-28 640 58)'/%3E%3Cellipse cx='744' cy='112' rx='22' ry='9' transform='rotate(70 744 112)'/%3E%3Cellipse cx='752' cy='210' rx='24' ry='10' transform='rotate(-65 752 210)'/%3E%3Cellipse cx='760' cy='315' rx='22' ry='9' transform='rotate(68 760 315)'/%3E%3Cellipse cx='728' cy='426' rx='24' ry='10' transform='rotate(-20 728 426)'/%3E%3Cellipse cx='650' cy='437' rx='22' ry='9' transform='rotate(22 650 437)'/%3E%3Cellipse cx='555' cy='429' rx='24' ry='10' transform='rotate(-25 555 429)'/%3E%3Cellipse cx='450' cy='438' rx='22' ry='9' transform='rotate(24 450 438)'/%3E%3Cellipse cx='345' cy='437' rx='24' ry='10' transform='rotate(-24 345 437)'/%3E%3Cellipse cx='235' cy='430' rx='22' ry='9' transform='rotate(22 235 430)'/%3E%3Cellipse cx='125' cy='438' rx='24' ry='10' transform='rotate(-25 125 438)'/%3E%3Cellipse cx='49' cy='385' rx='22' ry='9' transform='rotate(72 49 385)'/%3E%3Cellipse cx='46' cy='285' rx='24' ry='10' transform='rotate(-68 46 285)'/%3E%3Cellipse cx='45' cy='185' rx='22' ry='9' transform='rotate(70 45 185)'/%3E%3Cellipse cx='62' cy='95' rx='24' ry='10' transform='rotate(-25 62 95)'/%3E%3C/g%3E%3Cpath d='M78 82 Q100 54 122 42 M202 70 Q220 40 244 32 M298 74 Q315 42 338 35 M405 70 Q422 38 448 32 M548 72 Q566 42 590 35 M690 78 Q714 54 735 48 M70 418 Q94 390 115 380 M185 432 Q205 400 230 392 M285 432 Q304 402 328 394 M400 436 Q420 402 445 396 M520 432 Q540 400 564 392 M650 434 Q670 404 695 394' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size:100% 100%;background-repeat:no-repeat;
+  filter:drop-shadow(0 0 4px rgba(255,255,255,.8)) drop-shadow(0 0 12px rgba(255,255,255,.25));
+  opacity:.82;animation:vinesGlow 5s ease-in-out infinite;
+}
+.hero::after,.stat::after,.panel::after,.acc::after{
+  content:""!important;position:absolute!important;inset:-25px!important;background:transparent!important;border:0!important;
+  box-shadow:0 0 0 transparent!important;opacity:0;animation:none!important;
+}
+.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:5}
+@keyframes vinesGlow{0%,100%{opacity:.65;filter:drop-shadow(0 0 3px rgba(255,255,255,.65)) drop-shadow(0 0 8px rgba(255,255,255,.18))}50%{opacity:1;filter:drop-shadow(0 0 7px rgba(255,255,255,1)) drop-shadow(0 0 22px rgba(255,255,255,.42))}}
+body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{animation:vineFlash .55s ease-out!important}
+@keyframes vineFlash{0%{filter:brightness(1) drop-shadow(0 0 4px #fff)}12%{filter:brightness(2.8) drop-shadow(0 0 24px #fff)}25%{filter:brightness(.8) drop-shadow(0 0 7px #fff)}40%{filter:brightness(2.2) drop-shadow(0 0 20px #fff)}100%{filter:brightness(1) drop-shadow(0 0 4px #fff)}}
+/* Keep the popup truly centered and inside the viewport. */
+.modal,.modal-overlay,.dialog,.add-account-modal{z-index:10000!important}
+@media(max-width:760px){
+  .hero,.stat,.panel,.acc{overflow:visible!important}
+  .hero::before,.stat::before,.panel::before,.acc::before{inset:-16px!important}
+}
+</style>
+<script>
+/* Lightweight random lightning: one timer only, 15–30 seconds. */
+(function(){
+  function flash(){
+    document.body.classList.add('lightning-flash');
+    setTimeout(function(){document.body.classList.remove('lightning-flash')},560);
+    setTimeout(flash,15000 + Math.random()*15000);
+  }
+  setTimeout(flash,15000 + Math.random()*15000);
+})();
+</script>
 </head>
 <body>
 <header class="topbar">
