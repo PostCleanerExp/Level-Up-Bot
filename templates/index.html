@@ -142,6 +142,103 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:ra
 .status{white-space:nowrap}
 @media (max-width:760px){.hero{padding:18px;align-items:flex-start;flex-direction:column}.hero h2{font-size:22px}.hero-badge{width:100%;box-sizing:border-box}.brand-text h1{font-size:16px}}
 
+
+/* Royal Dark • Electric Vine UI */
+:root{
+  --bg:#020308;
+  --surface:#080b13;
+  --surface-2:#0b0f1b;
+  --line:rgba(157,171,255,.10);
+  --line-strong:rgba(87,231,255,.42);
+  --cyan:#55e7ff;
+  --blue:#6b8cff;
+  --violet:#9d6cff;
+  --green:#42e6a4;
+  --gold:#ffd166;
+  --text:#f5f7ff;
+  --muted:#7f8aa5;
+}
+body{
+  background-color:#020308;
+  background-image:
+    radial-gradient(900px 500px at 50% -18%,rgba(90,103,255,.14),transparent 62%),
+    radial-gradient(650px 420px at -10% 35%,rgba(0,220,255,.075),transparent 64%),
+    radial-gradient(700px 460px at 110% 65%,rgba(157,108,255,.08),transparent 64%),
+    linear-gradient(180deg,#020308 0%,#050812 48%,#020308 100%);
+  overflow-x:hidden;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:.22;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.014) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:linear-gradient(to bottom,black,transparent 88%);
+}
+.topbar{
+  background:rgba(2,3,8,.72);
+  border-bottom:1px solid rgba(119,139,255,.12);
+  box-shadow:0 12px 40px rgba(0,0,0,.35),0 1px 0 rgba(85,231,255,.035);
+}
+.logo{
+  background:linear-gradient(145deg,#11182a,#070a12);
+  border:1px solid rgba(85,231,255,.32);
+  box-shadow:0 0 22px rgba(85,231,255,.13),inset 0 0 18px rgba(85,231,255,.08);
+}
+.brand-text h1{letter-spacing:.8px;text-shadow:0 0 22px rgba(85,231,255,.10)}
+.brand-text h1 span{color:#71809d}
+.container{padding-top:28px}
+.hero,.stat,.panel,.acc{
+  position:relative;overflow:hidden;
+  background:linear-gradient(145deg,rgba(10,14,24,.96),rgba(5,7,13,.97));
+  border-color:rgba(128,148,255,.12);
+  box-shadow:0 20px 60px rgba(0,0,0,.32),inset 0 1px 0 rgba(255,255,255,.025);
+}
+.hero{border-radius:24px;border-color:rgba(85,231,255,.15);box-shadow:0 24px 70px rgba(0,0,0,.4),0 0 70px rgba(76,89,255,.055),inset 0 1px 0 rgba(255,255,255,.035)}
+.hero::before,.hero::after,.stat::before,.stat::after,.panel::before,.panel::after,.acc::before,.acc::after{
+  content:"";position:absolute;pointer-events:none;z-index:0;
+}
+/* Thin branching electric-vine ornaments at the upper/lower edges */
+.hero::before,.panel::before,.stat::before,.acc::before{
+  left:10%;right:10%;top:-1px;height:2px;
+  background:linear-gradient(90deg,transparent 0%,rgba(85,231,255,.1) 12%,rgba(85,231,255,.75) 28%,rgba(157,108,255,.65) 50%,rgba(85,231,255,.5) 72%,rgba(85,231,255,.08) 88%,transparent);
+  filter:blur(.15px);box-shadow:0 0 14px rgba(85,231,255,.25);
+}
+.hero::after,.panel::after,.stat::after,.acc::after{
+  left:7%;right:7%;bottom:-2px;height:30px;opacity:.42;
+  background:
+    radial-gradient(30px 12px at 7% 100%,transparent 55%,rgba(85,231,255,.8) 58%,transparent 63%),
+    radial-gradient(40px 16px at 17% 0%,transparent 55%,rgba(157,108,255,.7) 58%,transparent 63%),
+    radial-gradient(34px 14px at 31% 100%,transparent 55%,rgba(85,231,255,.65) 58%,transparent 63%),
+    radial-gradient(42px 16px at 47% 0%,transparent 55%,rgba(157,108,255,.62) 58%,transparent 63%),
+    radial-gradient(35px 14px at 64% 100%,transparent 55%,rgba(85,231,255,.7) 58%,transparent 63%),
+    radial-gradient(42px 16px at 80% 0%,transparent 55%,rgba(157,108,255,.65) 58%,transparent 63%),
+    radial-gradient(32px 12px at 94% 100%,transparent 55%,rgba(85,231,255,.65) 58%,transparent 63%);
+  filter:drop-shadow(0 0 5px rgba(85,231,255,.22));
+}
+.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:1}
+.hero-badge{background:linear-gradient(145deg,rgba(85,231,255,.07),rgba(157,108,255,.055));border-color:rgba(85,231,255,.17);box-shadow:inset 0 0 28px rgba(85,231,255,.025)}
+.eyebrow{color:var(--cyan);text-shadow:0 0 14px rgba(85,231,255,.3)}
+.hero h2 span{color:var(--cyan);text-shadow:0 0 25px rgba(85,231,255,.18)}
+.stat{border-radius:18px}
+.stat:hover,.acc:hover,.panel:hover{border-color:rgba(85,231,255,.26);box-shadow:0 24px 65px rgba(0,0,0,.42),0 0 34px rgba(85,231,255,.035),inset 0 1px 0 rgba(255,255,255,.04)}
+.stat-icon{background:rgba(85,231,255,.055);border:1px solid rgba(85,231,255,.10);box-shadow:inset 0 0 18px rgba(85,231,255,.04)}
+.c-green{background:rgba(66,230,164,.06)}.c-violet{background:rgba(157,108,255,.07)}.c-amber{background:rgba(255,209,102,.06)}
+.panel{border-radius:20px}
+.acc{border-radius:17px;background:linear-gradient(145deg,#0b101c,#070a12)}
+.exp{background:rgba(104,119,170,.09)}
+.exp div{background:rgba(4,7,14,.88)}
+.bar{background:rgba(255,255,255,.055);box-shadow:inset 0 1px 4px rgba(0,0,0,.45)}
+.bar i{background:linear-gradient(90deg,#39dfff,#6dffbf,#a66cff);box-shadow:0 0 14px rgba(85,231,255,.28)}
+.btn-primary{background:linear-gradient(135deg,#56dfff,#657dff);box-shadow:0 0 25px rgba(85,231,255,.13)}
+.btn-primary:hover{filter:brightness(1.12);box-shadow:0 0 32px rgba(85,231,255,.22)}
+.btn-ghost,.icon-btn,.chip{background:rgba(8,11,19,.8);border-color:rgba(130,147,210,.12)}
+.btn-ghost:hover,.icon-btn:hover{border-color:rgba(85,231,255,.4);box-shadow:0 0 18px rgba(85,231,255,.08)}
+.log-stream{background:#02040a;border-color:rgba(118,139,211,.12);box-shadow:inset 0 0 35px rgba(0,0,0,.35)}
+.modal{background:linear-gradient(145deg,#0a0e19,#05070d);border-color:rgba(85,231,255,.16);box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 45px rgba(85,231,255,.06)}
+.input{background:rgba(255,255,255,.025);border-color:rgba(130,147,210,.13)}
+@keyframes royalGlow{0%,100%{opacity:.45}50%{opacity:.8}}
+.hero::after,.panel::after{animation:royalGlow 4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.hero::after,.panel::after{animation:none}}
+
 /* Responsive */
 @media (max-width:1100px){
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -167,9 +264,145 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:ra
   .exp b{font-size:13px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+
+/* =========================================================
+   LEVEL UP BOT — BLACK + WHITE / STORM ROYAL UI
+   Lightweight: CSS-only effects, no timers/canvas/JS loops.
+   ========================================================= */
+:root{
+  --bg:#000000;
+  --surface:#050505;
+  --surface-2:#080808;
+  --line:rgba(255,255,255,.105);
+  --line-strong:rgba(255,255,255,.55);
+  --cyan:#ffffff;
+  --blue:#ffffff;
+  --violet:#ffffff;
+  --green:#ffffff;
+  --gold:#ffffff;
+  --red:#ffffff;
+  --text:#ffffff;
+  --muted:#8d8d8d;
+}
+html,body{background:#000;color:#fff}
+body{
+  background-image:
+    radial-gradient(850px 420px at 50% -15%,rgba(255,255,255,.045),transparent 68%),
+    linear-gradient(180deg,#000 0%,#020202 52%,#000 100%);
+}
+body::after{
+  opacity:.13;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:52px 52px;
+}
+
+/* A single GPU-cheap atmospheric lightning layer. It sleeps most of the cycle
+   and briefly flashes, creating a natural 20–28s storm rhythm. */
+.storm-lightning{
+  position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;
+  background:
+    linear-gradient(104deg,transparent 0%,transparent 48.8%,rgba(255,255,255,0) 49.1%,rgba(255,255,255,.0) 49.35%,rgba(255,255,255,.86) 49.48%,rgba(255,255,255,.08) 49.63%,transparent 50.05%,transparent 100%);
+  opacity:0;
+  mix-blend-mode:screen;
+  filter:blur(.25px);
+  animation:stormStrike 24s linear infinite;
+}
+.storm-lightning::before{
+  content:"";position:absolute;inset:-8%;
+  background:radial-gradient(42% 28% at 53% 24%,rgba(255,255,255,.22),transparent 70%);
+  opacity:0;animation:stormGlow 24s linear infinite;
+}
+.storm-lightning::after{
+  content:"";position:absolute;top:7%;bottom:0;left:50%;width:3px;
+  background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(255,255,255,.62) 30%,rgba(255,255,255,.12) 65%,transparent);
+  clip-path:polygon(48% 0,100% 0,62% 18%,88% 18%,52% 42%,70% 42%,28% 70%,48% 70%,0 100%,28% 72%,8% 72%,44% 43%,26% 43%,58% 19%,35% 19%);
+  opacity:0;filter:drop-shadow(0 0 9px rgba(255,255,255,.8));
+  animation:boltFlash 24s linear infinite;
+}
+@keyframes stormStrike{
+  0%,68%,69.1%,69.7%,70.25%,100%{opacity:0}
+  69.25%{opacity:.24}
+  69.38%{opacity:.08}
+  69.62%{opacity:.34}
+  69.9%{opacity:.04}
+}
+@keyframes stormGlow{
+  0%,68%,69.15%,69.75%,70.25%,100%{opacity:0}
+  69.3%{opacity:.5}
+  69.7%{opacity:.18}
+}
+@keyframes boltFlash{
+  0%,68%,69.12%,69.36%,69.68%,70.2%,100%{opacity:0}
+  69.22%{opacity:.9}
+  69.3%{opacity:.18}
+  69.5%{opacity:.78}
+  69.78%{opacity:.05}
+}
+
+/* Keep the actual dashboard above the atmospheric layer. */
+.topbar,.container,.overlay{position:relative;z-index:2}
+.overlay{z-index:100}
+
+/* Pure black/white surfaces. */
+.topbar{background:rgba(0,0,0,.84);border-bottom-color:rgba(255,255,255,.12);box-shadow:0 14px 42px rgba(0,0,0,.72)}
+.logo{background:#050505;border-color:rgba(255,255,255,.45);box-shadow:0 0 18px rgba(255,255,255,.08),inset 0 0 16px rgba(255,255,255,.035)}
+.brand-text h1,.hero h2,.hero h2 span,.panel-head h2,.stat-body strong{color:#fff;text-shadow:0 0 22px rgba(255,255,255,.07)}
+.brand-text h1 span,.hero p,.hero-badge small,.panel-head small,.stat-body span,.uid,.acc-foot,.mt,.log-time,.muted{color:#858585}
+
+.hero,.stat,.panel,.acc{
+  background:linear-gradient(145deg,rgba(9,9,9,.98),rgba(2,2,2,.99));
+  border-color:rgba(255,255,255,.105);
+  box-shadow:0 22px 65px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.035);
+}
+.hero{border-color:rgba(255,255,255,.15);box-shadow:0 26px 80px rgba(0,0,0,.8),0 0 55px rgba(255,255,255,.025),inset 0 1px 0 rgba(255,255,255,.04)}
+
+/* White electric-vine edges: intentionally restrained so they stay premium. */
+.hero::before,.panel::before,.stat::before,.acc::before{
+  left:5%;right:5%;top:-1px;height:3px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.12) 9%,#fff 25%,rgba(255,255,255,.22) 38%,#fff 51%,rgba(255,255,255,.2) 65%,#fff 79%,rgba(255,255,255,.1) 91%,transparent);
+  box-shadow:0 0 11px rgba(255,255,255,.22);
+  animation:edgePulse 5.5s ease-in-out infinite;
+}
+.hero::after,.panel::after,.stat::after,.acc::after{
+  left:4%;right:4%;bottom:-3px;height:34px;opacity:.62;
+  background:
+    radial-gradient(32px 13px at 5% 100%,transparent 53%,rgba(255,255,255,.82) 56%,transparent 63%),
+    radial-gradient(42px 16px at 17% 0,transparent 53%,rgba(255,255,255,.6) 56%,transparent 63%),
+    radial-gradient(34px 13px at 30% 100%,transparent 53%,rgba(255,255,255,.75) 56%,transparent 63%),
+    radial-gradient(46px 17px at 45% 0,transparent 53%,rgba(255,255,255,.52) 56%,transparent 63%),
+    radial-gradient(34px 13px at 61% 100%,transparent 53%,rgba(255,255,255,.72) 56%,transparent 63%),
+    radial-gradient(44px 16px at 77% 0,transparent 53%,rgba(255,255,255,.55) 56%,transparent 63%),
+    radial-gradient(30px 12px at 94% 100%,transparent 53%,rgba(255,255,255,.68) 56%,transparent 63%);
+  filter:drop-shadow(0 0 5px rgba(255,255,255,.2));
+  animation:edgePulse 6.2s ease-in-out infinite reverse;
+}
+@keyframes edgePulse{0%,100%{opacity:.42}50%{opacity:.9}}
+
+.hero-badge,.chip,.btn-ghost,.icon-btn{background:#050505;border-color:rgba(255,255,255,.12);color:#fff}
+.hero-badge i,.eyebrow,.pulse,.hero h2 span,.stat-icon,.region,.lv{color:#fff}
+.pulse,.dot,.dot.off{background:#fff;box-shadow:0 0 12px rgba(255,255,255,.8)}
+.btn-primary{background:#fff;color:#000;border-color:#fff;box-shadow:0 0 24px rgba(255,255,255,.13)}
+.btn-primary:hover{filter:brightness(.92);box-shadow:0 0 34px rgba(255,255,255,.22)}
+.btn-ghost:hover,.icon-btn:hover{color:#fff;border-color:rgba(255,255,255,.55);background:#0b0b0b;box-shadow:0 0 20px rgba(255,255,255,.08)}
+.status,.st-online,.st-match{background:rgba(255,255,255,.045);color:#fff;border-color:rgba(255,255,255,.18)}
+.c-cyan,.c-green,.c-violet,.c-amber{background:rgba(255,255,255,.045);color:#fff}
+.exp{background:rgba(255,255,255,.09)}.exp div{background:#030303}.exp .gain{color:#fff}
+.bar{background:rgba(255,255,255,.055)}.bar i{background:#fff;box-shadow:0 0 13px rgba(255,255,255,.32)}
+.log-stream{background:#000;border-color:rgba(255,255,255,.11);box-shadow:inset 0 0 38px rgba(255,255,255,.012)}
+.log-info,.log-success,.log-warning,.log-error{color:#fff}
+.modal{background:linear-gradient(145deg,#090909,#020202);border-color:rgba(255,255,255,.17);box-shadow:0 30px 90px rgba(0,0,0,.9),0 0 45px rgba(255,255,255,.035)}
+.input{background:#030303;border-color:rgba(255,255,255,.13)}.input:focus{border-color:#fff;box-shadow:0 0 18px rgba(255,255,255,.07)}
+.stat:hover,.acc:hover,.panel:hover{border-color:rgba(255,255,255,.28);box-shadow:0 25px 70px rgba(0,0,0,.82),0 0 34px rgba(255,255,255,.035)}
+
+@media (prefers-reduced-motion:reduce){
+  .storm-lightning,.storm-lightning::before,.storm-lightning::after,.hero::before,.hero::after,.panel::before,.panel::after,.stat::before,.stat::after,.acc::before,.acc::after{animation:none}
+}
+
 </style>
 </head>
 <body>
+<div class="storm-lightning" aria-hidden="true"></div>
 <header class="topbar">
 </a>
   <div class="topbar-inner">
@@ -201,7 +434,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:ra
   </section>
   <section class="stats" aria-label="Dashboard summary">
     <div class="stat"><div class="stat-icon c-cyan"><i class="fa-solid fa-users"></i></div><div class="stat-body"><strong id="stat-total-accounts">0</strong><span>Active accounts</span></div></div>
-    <div class="stat"><div class="stat-icon c-green"><i class="fa-solid fa-angles-up"></i></div><div class="stat-body"><strong id="stat-total-exp" style="color:var(--green)">+0 EXP</strong><span>Total EXP didapat</span></div></div>
+    <div class="stat"><div class="stat-icon c-green"><i class="fa-solid fa-angles-up"></i></div><div class="stat-body"><strong id="stat-total-exp" style="color:var(--green)">+0 EXP</strong><span>Total EXP earned</span></div></div>
     <div class="stat"><div class="stat-icon c-violet"><i class="fa-solid fa-gamepad"></i></div><div class="stat-body"><strong id="stat-total-matches">0</strong><span>Matches completed</span></div></div>
     <div class="stat"><div class="stat-icon c-amber"><i class="fa-solid fa-shield-halved"></i></div><div class="stat-body"><strong id="stat-online">0</strong><span>Currently in match</span></div></div>
   </section>
