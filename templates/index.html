@@ -265,7 +265,7 @@ body::after{
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* BLACK + WHITE ELECTRIC VINE SYSTEM */
+/* BLACK + WHITE ROYAL LEAF-VINE SYSTEM — thick perimeter edition */
 :root{
   --bg:#000; --surface:#050505; --surface-2:#070707;
   --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.55);
@@ -274,28 +274,35 @@ body::after{
 }
 html,body{background:#000!important;color:#fff}
 body{background-image:none!important;overflow-x:hidden}
-body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.055),transparent 32%),linear-gradient(#000,#000)!important}
+body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.045),transparent 30%),linear-gradient(#000,#000)!important}
 
-/* Real branch/vine ornament: lightweight inline SVG, no image requests and no JS loop. */
+/* Thick leafy vines sit OUTSIDE and wrap the whole card perimeter. */
 .hero,.stat,.panel,.acc{
-  position:relative;overflow:hidden;
+  position:relative;overflow:visible!important;
   border-color:rgba(255,255,255,.16)!important;
   background:#030303!important;
-}
-.hero::before,.hero::after,.stat::before,.stat::after,.panel::before,.panel::after,.acc::before,.acc::after{
-  content:"";position:absolute;left:7px;right:7px;height:58px;pointer-events:none;z-index:0;
-  background-repeat:no-repeat;background-size:100% 100%;
-  opacity:.72;filter:drop-shadow(0 0 3px rgba(255,255,255,.55)) drop-shadow(0 0 10px rgba(255,255,255,.14));
+  isolation:isolate;
 }
 .hero::before,.stat::before,.panel::before,.acc::before{
-  top:-8px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 70'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2.4' d='M0 46 C55 46 55 15 105 22 S160 55 210 36 S270 8 315 23 S370 58 420 35 S480 8 530 23 S590 53 700 25'/%3E%3Cpath stroke-width='1.5' d='M70 29 C78 13 91 11 103 22 M151 49 C160 33 174 29 190 35 M255 28 C266 12 281 12 293 22 M375 48 C384 30 399 28 414 35 M485 28 C496 13 512 12 525 22 M595 43 C607 28 620 25 636 28'/%3E%3Cpath stroke-width='1.3' d='M92 15 l-7 -8 M98 16 l7 -9 M173 31 l-6 -8 M180 32 l8 -7 M278 13 l-7 -8 M284 14 l8 -8 M398 31 l-7 -8 M404 32 l8 -7 M508 13 l-7 -8 M515 14 l8 -8 M615 26 l-7 -8 M622 27 l8 -7'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='105' cy='22' r='2.4'/%3E%3Ccircle cx='210' cy='36' r='2.2'/%3E%3Ccircle cx='315' cy='23' r='2.4'/%3E%3Ccircle cx='420' cy='35' r='2.2'/%3E%3Ccircle cx='530' cy='23' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
+  content:"";position:absolute;inset:-22px;pointer-events:none;z-index:2;
+  background-repeat:no-repeat;background-position:center;background-size:100% 100%;
+  opacity:.66;filter:drop-shadow(0 0 3px rgba(255,255,255,.65)) drop-shadow(0 0 12px rgba(255,255,255,.16));
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 400'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='7' d='M24 65 C105 25 160 82 245 49 S390 35 468 63 S620 92 776 48'/%3E%3Cpath stroke-width='7' d='M24 335 C110 375 170 318 252 350 S400 367 478 338 S635 306 776 352'/%3E%3Cpath stroke-width='6' d='M28 70 C18 135 19 260 28 330'/%3E%3Cpath stroke-width='6' d='M772 53 C782 128 781 266 772 347'/%3E%3Cpath stroke-width='3.5' d='M90 48 C77 24 69 19 55 13 M101 45 C108 22 119 17 130 11 M202 55 C189 30 181 26 166 19 M216 52 C225 28 237 22 250 18 M325 43 C312 19 302 15 289 9 M339 43 C349 20 360 15 375 12 M474 55 C462 31 451 25 438 19 M490 57 C500 34 511 28 525 24 M624 76 C610 51 599 45 584 40 M642 77 C653 54 666 49 681 44 M707 61 C695 37 685 31 672 25'/%3E%3Cpath stroke-width='3.5' d='M90 352 C77 376 69 381 55 387 M101 355 C108 378 119 383 130 389 M202 345 C189 370 181 374 166 381 M216 348 C225 372 237 378 250 382 M325 357 C312 381 302 385 289 391 M339 357 C349 380 360 385 375 388 M474 345 C462 369 451 375 438 381 M490 343 C500 366 511 372 525 377 M624 324 C610 349 599 355 584 360 M642 323 C653 346 666 351 681 356 M707 339 C695 363 685 369 672 375'/%3E%3Cpath stroke-width='3' d='M30 145 C55 130 66 117 82 102 M29 250 C53 265 67 279 83 296 M770 145 C746 130 735 117 719 101 M771 251 C747 266 733 280 717 297'/%3E%3C/g%3E%3Cg fill='%23fff' opacity='.72'%3E%3Cpath d='M58 14 C76 9 86 16 91 31 C74 34 64 28 58 14Z'/%3E%3Cpath d='M116 14 C130 4 143 9 150 22 C136 28 125 25 116 14Z'/%3E%3Cpath d='M169 20 C184 10 197 15 203 29 C188 34 178 30 169 20Z'/%3E%3Cpath d='M294 9 C309 1 321 7 326 21 C312 25 302 20 294 9Z'/%3E%3Cpath d='M358 15 C373 5 386 11 392 25 C377 30 367 26 358 15Z'/%3E%3Cpath d='M443 20 C458 10 470 16 476 30 C461 35 451 31 443 20Z'/%3E%3Cpath d='M589 41 C604 31 617 37 623 51 C608 56 598 52 589 41Z'/%3E%3Cpath d='M669 27 C684 17 697 23 703 37 C688 42 678 38 669 27Z'/%3E%3Cpath d='M58 386 C76 391 86 384 91 369 C74 366 64 372 58 386Z'/%3E%3Cpath d='M116 386 C130 396 143 391 150 378 C136 372 125 375 116 386Z'/%3E%3Cpath d='M169 380 C184 390 197 385 203 371 C188 366 178 370 169 380Z'/%3E%3Cpath d='M294 391 C309 399 321 393 326 379 C312 375 302 380 294 391Z'/%3E%3Cpath d='M358 385 C373 395 386 389 392 375 C377 370 367 374 358 385Z'/%3E%3Cpath d='M443 380 C458 390 470 384 476 370 C461 365 451 369 443 380Z'/%3E%3Cpath d='M589 359 C604 369 617 363 623 349 C608 344 598 348 589 359Z'/%3E%3Cpath d='M669 373 C684 383 697 377 703 363 C688 358 678 362 669 373Z'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='25' cy='66' r='5'/%3E%3Ccircle cx='775' cy='49' r='5'/%3E%3Ccircle cx='25' cy='334' r='5'/%3E%3Ccircle cx='775' cy='351' r='5'/%3E%3C/g%3E%3C/svg%3E");
+  animation:royalVinePulse 21s ease-in-out infinite;
+  transform-origin:center;
 }
 .hero::after,.stat::after,.panel::after,.acc::after{
-  bottom:-8px;transform:scaleY(-1);
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 700 70'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='2.4' d='M0 46 C55 46 55 15 105 22 S160 55 210 36 S270 8 315 23 S370 58 420 35 S480 8 530 23 S590 53 700 25'/%3E%3Cpath stroke-width='1.5' d='M70 29 C78 13 91 11 103 22 M151 49 C160 33 174 29 190 35 M255 28 C266 12 281 12 293 22 M375 48 C384 30 399 28 414 35 M485 28 C496 13 512 12 525 22 M595 43 C607 28 620 25 636 28'/%3E%3Cpath stroke-width='1.3' d='M92 15 l-7 -8 M98 16 l7 -9 M173 31 l-6 -8 M180 32 l8 -7 M278 13 l-7 -8 M284 14 l8 -8 M398 31 l-7 -8 M404 32 l8 -7 M508 13 l-7 -8 M515 14 l8 -8 M615 26 l-7 -8 M622 27 l8 -7'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Ccircle cx='105' cy='22' r='2.4'/%3E%3Ccircle cx='210' cy='36' r='2.2'/%3E%3Ccircle cx='315' cy='23' r='2.4'/%3E%3Ccircle cx='420' cy='35' r='2.2'/%3E%3Ccircle cx='530' cy='23' r='2.4'/%3E%3C/g%3E%3C/svg%3E");
+  content:"";position:absolute;inset:-22px;pointer-events:none;z-index:3;border-radius:inherit;
+  box-shadow:0 0 0 1px rgba(255,255,255,.05),0 0 24px rgba(255,255,255,.035);
+  opacity:.35;animation:royalEdgePulse 21s ease-in-out infinite;
 }
-.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:1}
+.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:4}
+@keyframes royalVinePulse{0%,72%,100%{opacity:.43;filter:drop-shadow(0 0 2px rgba(255,255,255,.38)) drop-shadow(0 0 6px rgba(255,255,255,.06))}76%{opacity:.95;filter:drop-shadow(0 0 5px rgba(255,255,255,1)) drop-shadow(0 0 18px rgba(255,255,255,.38))}80%{opacity:.58;filter:drop-shadow(0 0 3px rgba(255,255,255,.65)) drop-shadow(0 0 10px rgba(255,255,255,.16))}}
+@keyframes royalEdgePulse{0%,72%,100%{opacity:.22}76%{opacity:.8}80%{opacity:.32}}
+body.vine-surge .hero::before,body.vine-surge .stat::before,body.vine-surge .panel::before,body.vine-surge .acc::before{animation:vineSurge .72s ease-out both!important}
+body.vine-surge .hero::after,body.vine-surge .stat::after,body.vine-surge .panel::after,body.vine-surge .acc::after{animation:edgeSurge .72s ease-out both!important}
+@keyframes vineSurge{0%{opacity:.45;filter:drop-shadow(0 0 2px #fff)}25%{opacity:1;filter:drop-shadow(0 0 7px #fff) drop-shadow(0 0 24px rgba(255,255,255,.5))}100%{opacity:.48;filter:drop-shadow(0 0 2px rgba(255,255,255,.4))}}
+@keyframes edgeSurge{0%{opacity:.2}25%{opacity:.9}100%{opacity:.25}}
 
 /* White-only controls */
 .btn-primary{background:#fff!important;color:#000!important;box-shadow:0 0 22px rgba(255,255,255,.13)!important}
@@ -310,19 +317,16 @@ body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.055
 .input{background:#000!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important}
 .input:focus{border-color:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 0 18px rgba(255,255,255,.08)}
 
-/* Proper centered modal on phones too — never a bottom sheet / page scroll. */
+/* Centered modal */
 .overlay{position:fixed!important;inset:0!important;padding:18px!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:rgba(0,0,0,.82)!important;backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important}
 .modal{max-height:min(92vh,760px)!important;overflow-y:auto!important;overscroll-behavior:contain!important}
 body.modal-open{overflow:hidden!important;height:100vh}
-@media(max-width:760px){
-  .overlay{align-items:center!important;padding:14px!important}
-  .modal{width:min(100%,460px)!important;max-height:90vh!important;border-radius:20px!important;padding:20px!important}
-}
+@media(max-width:760px){.overlay{align-items:center!important;padding:14px!important}.modal{width:min(100%,460px)!important;max-height:90vh!important;border-radius:20px!important;padding:20px!important}}
 
-/* Random lightweight lightning flash, triggered by JS only every 15–30 seconds. */
+/* Random lightweight lightning flash, triggered by JS every 15–30 seconds. */
 body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;background:rgba(255,255,255,.11);mix-blend-mode:screen;animation:skyFlash .22s ease-out forwards}
 @keyframes skyFlash{0%{opacity:0}18%{opacity:1}38%{opacity:.18}55%{opacity:.72}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){body.lightning-flash::after{animation:none;opacity:0}}
+@media(prefers-reduced-motion:reduce){body.lightning-flash::after{animation:none;opacity:0}.hero::before,.stat::before,.panel::before,.acc::before,.hero::after,.stat::after,.panel::after,.acc::after{animation:none}}
 
 </style>
 </head>
@@ -431,6 +435,19 @@ let lastUptimeSync = Date.now();
       setTimeout(() => document.body.classList.remove('lightning-flash'), 280);
     }
     scheduleLightning();
+  }, delay);
+})();
+
+(function scheduleVineSurge(){
+  const delay = 15000 + Math.random() * 15000;
+  setTimeout(() => {
+    if (!document.hidden) {
+      document.body.classList.remove('vine-surge');
+      void document.body.offsetWidth;
+      document.body.classList.add('vine-surge');
+      setTimeout(() => document.body.classList.remove('vine-surge'), 760);
+    }
+    scheduleVineSurge();
   }, delay);
 })();
 
