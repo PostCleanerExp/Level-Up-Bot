@@ -386,23 +386,29 @@ body.modal-open{overflow:hidden!important;height:100vh}
 </style>
 
 
-<style id="royal-vine-corrected">
-/* Lightweight royal vine: sits outside the card, follows its rounded perimeter, never affects layout. */
+<style id="royal-natural-vine-final">
+/* Natural wrapped vine: subtle black/white in idle state, electric only during lightning. */
 .hero,.stat,.panel,.acc{position:relative!important;overflow:visible!important;isolation:isolate}
-.hero::before,.hero::after,.stat::before,.stat::after,.panel::before,.panel::after,.acc::before,.acc::after{content:none!important;display:none!important}
-.card-vine{position:absolute!important;inset:-12px!important;width:auto!important;height:auto!important;margin:0!important;padding:0!important;z-index:0!important;pointer-events:none!important;display:block!important;opacity:.55!important;overflow:visible!important;transform:none!important;filter:none!important}
-.card-vine svg{display:block!important;width:100%!important;height:100%!important;overflow:visible!important;transform:none!important}
-.card-vine .rv-main{fill:none!important;stroke:#fff!important;stroke-width:3.2!important;vector-effect:non-scaling-stroke!important;stroke-linecap:round!important;stroke-linejoin:round!important}
-.card-vine .rv-twigs{fill:none!important;stroke:#fff!important;stroke-width:1.7!important;vector-effect:non-scaling-stroke!important;stroke-linecap:round!important;stroke-linejoin:round!important;opacity:.9!important}
-.card-vine .rv-leaves{fill:#fff!important;opacity:.72!important}
-.card-vine .rv-leaves path{stroke:none!important}
-.hero>*,.stat>*,.panel>*,.acc>*{position:relative;z-index:2}
-body.lightning-flash .card-vine{opacity:.96!important}
-body.lightning-flash .card-vine svg{filter:drop-shadow(0 0 3px #fff) drop-shadow(0 0 9px rgba(255,255,255,.42))!important}
-@media(max-width:760px){.card-vine{inset:-9px!important}.card-vine .rv-main{stroke-width:2.8!important}.card-vine .rv-twigs{stroke-width:1.5!important}}
-@media(prefers-reduced-motion:reduce){.card-vine{opacity:.5!important}body.lightning-flash .card-vine{opacity:.5!important}body.lightning-flash .card-vine svg{filter:none!important}}
+.card-vine{display:none!important}
+.hero::before,.stat::before,.panel::before,.acc::before{
+  content:""!important;position:absolute!important;inset:-24px!important;z-index:1!important;pointer-events:none!important;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%20620%22%3E%0A%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%0A%3Cpath%20d%3D%22M92%2076%20C165%2042%20238%2061%20312%2072%20C390%2084%20454%2052%20520%2066%20C596%2082%20666%2054%20736%2069%20C813%2085%20879%2054%20928%2091%20C958%20114%20951%20151%20939%20184%20C922%20230%20935%20275%20944%20316%20C954%20365%20947%20408%20918%20442%20C880%20487%20816%20468%20750%20489%20C681%20511%20615%20480%20548%20497%20C476%20515%20410%20482%20340%20498%20C269%20515%20205%20486%20135%20463%20C92%20449%2067%20418%2075%20378%20C84%20331%2070%20285%2060%20241%20C50%20194%2048%20143%2092%2076%20Z%22%20stroke-width%3D%224.5%22%20opacity%3D%22.58%22%2F%3E%0A%3Cpath%20d%3D%22M119%2070%20Q138%2039%20166%2030%20M194%2063%20Q215%2031%20244%2025%20M290%2073%20Q313%2040%20342%2035%20M392%2070%20Q416%2036%20446%2031%20M500%2067%20Q523%2034%20553%2031%20M612%2073%20Q636%2040%20665%2034%20M724%2073%20Q749%2040%20779%2037%20M833%2070%20Q858%2043%20885%2048%20M932%20160%20Q964%20181%20976%20207%20M940%20256%20Q970%20275%20980%20302%20M943%20352%20Q973%20370%20978%20399%20M898%20449%20Q920%20480%20947%20492%20M794%20481%20Q816%20512%20844%20529%20M679%20493%20Q700%20523%20727%20540%20M556%20497%20Q577%20528%20604%20543%20M430%20490%20Q451%20521%20479%20536%20M307%20491%20Q329%20521%20356%20533%20M188%20472%20Q168%20503%20168%20530%20M88%20389%20Q56%20407%2043%20436%20M72%20294%20Q39%20283%2024%20258%20M69%20196%20Q38%20181%2028%20153%22%20stroke-width%3D%222.4%22%20opacity%3D%22.7%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20fill%3D%22%23050505%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.72%22%3E%0A%3Cpath%20d%3D%22M143%2049%20C157%2024%20180%2023%20196%2040%20C180%2055%20160%2059%20143%2049Z%22%2F%3E%3Cpath%20d%3D%22M223%2047%20C236%2020%20259%2018%20274%2035%20C259%2051%20239%2054%20223%2047Z%22%2F%3E%3Cpath%20d%3D%22M319%2058%20C333%2031%20356%2029%20372%2046%20C356%2062%20336%2065%20319%2058Z%22%2F%3E%3Cpath%20d%3D%22M417%2053%20C431%2026%20454%2025%20470%2042%20C454%2057%20434%2060%20417%2053Z%22%2F%3E%3Cpath%20d%3D%22M525%2050%20C539%2023%20562%2023%20578%2040%20C562%2055%20542%2057%20525%2050Z%22%2F%3E%3Cpath%20d%3D%22M635%2057%20C649%2030%20672%2028%20688%2045%20C672%2061%20652%2064%20635%2057Z%22%2F%3E%3Cpath%20d%3D%22M746%2058%20C760%2032%20783%2030%20799%2047%20C783%2062%20763%2065%20746%2058Z%22%2F%3E%3Cpath%20d%3D%22M852%2063%20C866%2040%20889%2040%20904%2055%20C889%2070%20870%2072%20852%2063Z%22%2F%3E%0A%3Cpath%20d%3D%22M951%20190%20C979%20203%20988%20225%20975%20242%20C954%20232%20946%20213%20951%20190Z%22%2F%3E%3Cpath%20d%3D%22M952%20286%20C980%20299%20987%20321%20974%20338%20C954%20328%20947%20309%20952%20286Z%22%2F%3E%3Cpath%20d%3D%22M950%20383%20C978%20395%20985%20417%20972%20434%20C951%20425%20944%20405%20950%20383Z%22%2F%3E%3Cpath%20d%3D%22M883%20466%20C907%20481%20912%20504%20896%20517%20C878%20503%20874%20483%20883%20466Z%22%2F%3E%3Cpath%20d%3D%22M784%20493%20C808%20508%20813%20531%20797%20544%20C779%20530%20775%20510%20784%20493Z%22%2F%3E%3Cpath%20d%3D%22M669%20504%20C693%20519%20698%20542%20682%20555%20C664%20541%20660%20521%20669%20504Z%22%2F%3E%3Cpath%20d%3D%22M551%20507%20C575%20522%20580%20545%20564%20558%20C546%20544%20542%20524%20551%20507Z%22%2F%3E%3Cpath%20d%3D%22M429%20501%20C453%20516%20458%20539%20442%20552%20C424%20538%20420%20518%20429%20501Z%22%2F%3E%3Cpath%20d%3D%22M308%20501%20C332%20516%20337%20539%20321%20552%20C303%20538%20299%20518%20308%20501Z%22%2F%3E%3Cpath%20d%3D%22M191%20485%20C215%20500%20220%20523%20204%20536%20C186%20522%20182%20502%20191%20485Z%22%2F%3E%3Cpath%20d%3D%22M92%20397%20C67%20411%2060%20433%2075%20448%20C93%20439%20101%20417%2092%20397Z%22%2F%3E%3Cpath%20d%3D%22M72%20302%20C46%20313%2038%20335%2053%20350%20C72%20341%2080%20321%2072%20302Z%22%2F%3E%3Cpath%20d%3D%22M68%20205%20C43%20215%2036%20236%2051%20251%20C69%20242%2077%20223%2068%20205Z%22%2F%3E%0A%3C%2Fg%3E%3C%2Fsvg%3E") center/100% 100% no-repeat!important;
+  opacity:.22!important;filter:none!important;
+  transform:none!important;
+}
+.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:2}
+body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{
+  opacity:.92!important;
+  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 13px rgba(255,255,255,.72)) brightness(1.25)!important;
+  animation:royalVineFlash .55s ease-out both!important;
+}
+@keyframes royalVineFlash{0%{opacity:.22}12%{opacity:1}30%{opacity:.55}48%{opacity:1}100%{opacity:.22}}
+/* Lightweight background strike: no canvas, no permanent animation. */
+body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:9997;pointer-events:none;opacity:0;background:linear-gradient(117deg,transparent 0 48%,rgba(255,255,255,.88) 48.15%,rgba(255,255,255,.16) 48.4%,transparent 48.8% 100%);clip-path:polygon(43% 0,48% 0,45% 32%,53% 32%,42% 68%,47% 68%,35% 100%,39% 64%,32% 64%,43% 31%,37% 31%);animation:royalStrike .26s ease-out forwards}
+@keyframes royalStrike{0%{opacity:0}18%{opacity:.9}38%{opacity:.08}58%{opacity:.55}100%{opacity:0}}
+@media(max-width:760px){.hero::before,.stat::before,.panel::before,.acc::before{inset:-18px!important}}
+@media(prefers-reduced-motion:reduce){body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{animation:none!important;filter:none!important;opacity:.22!important}body.lightning-flash::after{animation:none!important;opacity:0!important}}
 </style>
-
 </head>
 <body>
 <header class="topbar">
@@ -514,42 +520,8 @@ let lastUptimeSync = Date.now();
 })();
 
 
-const VINE_SVG = `<svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-<path class="rv-main" d="M15 5 C9 5 5 9 5 15 V85 C5 91 9 95 15 95 H85 C91 95 95 91 95 85 V15 C95 9 91 5 85 5 H15 Z"/>
-<g class="rv-twigs">
-<path d="M20 5 Q18 1 15 0 M35 5 Q35 1 38 0 M50 5 Q50 1 47 0 M65 5 Q65 1 62 0 M80 5 Q82 1 85 0"/>
-<path d="M20 95 Q18 99 15 100 M35 95 Q35 99 38 100 M50 95 Q50 99 47 100 M65 95 Q65 99 62 100 M80 95 Q82 99 85 100"/>
-<path d="M5 20 Q1 18 0 15 M5 37 Q1 37 0 40 M5 63 Q1 63 0 60 M5 80 Q1 82 0 85"/>
-<path d="M95 20 Q99 18 100 15 M95 37 Q99 37 100 40 M95 63 Q99 63 100 60 M95 80 Q99 82 100 85"/>
-</g>
-<g class="rv-leaves">
-<path d="M15 2 C11 0 9 2 10 5 C12 7 15 6 17 4 C17 3 16 2 15 2Z"/>
-<path d="M38 2 C35 0 33 2 34 5 C36 6 39 5 40 3 C40 2 39 2 38 2Z"/>
-<path d="M62 2 C61 0 63 0 65 2 C66 4 64 6 62 6 C61 5 61 3 62 2Z"/>
-<path d="M85 2 C89 0 91 2 90 5 C88 7 85 6 83 4 C83 3 84 2 85 2Z"/>
-<path d="M15 98 C11 100 9 98 10 95 C12 93 15 94 17 96 C17 97 16 98 15 98Z"/>
-<path d="M38 98 C35 100 33 98 34 95 C36 94 39 95 40 97 C40 98 39 98 38 98Z"/>
-<path d="M62 98 C61 100 63 100 65 98 C66 96 64 94 62 94 C61 95 61 97 62 98Z"/>
-<path d="M85 98 C89 100 91 98 90 95 C88 93 85 94 83 96 C83 97 84 98 85 98Z"/>
-<path d="M2 15 C0 11 2 9 5 10 C7 12 6 15 4 17 C3 17 2 16 2 15Z"/>
-<path d="M2 40 C0 37 2 35 5 36 C6 38 5 41 3 42 C2 42 2 41 2 40Z"/>
-<path d="M2 60 C0 63 2 65 5 64 C6 62 5 59 3 58 C2 58 2 59 2 60Z"/>
-<path d="M2 85 C0 89 2 91 5 90 C7 88 6 85 4 83 C3 83 2 84 2 85Z"/>
-<path d="M98 15 C100 11 98 9 95 10 C93 12 94 15 96 17 C97 17 98 16 98 15Z"/>
-<path d="M98 40 C100 37 98 35 95 36 C94 38 95 41 97 42 C98 42 98 41 98 40Z"/>
-<path d="M98 60 C100 63 98 65 95 64 C94 62 95 59 97 58 C98 58 98 59 98 60Z"/>
-<path d="M98 85 C100 89 98 91 95 90 C93 88 94 85 96 83 C97 83 98 84 98 85Z"/>
-</g></svg>`;
-function addVineFrame(el){
-  if (!el || el.querySelector(':scope > .card-vine')) return;
-  const wrap=document.createElement('span');
-  wrap.className='card-vine';
-  wrap.innerHTML=VINE_SVG;
-  el.prepend(wrap);
-}
-function decorateVines(root=document){
-  root.querySelectorAll('.hero,.stat,.panel,.acc').forEach(addVineFrame);
-}
+function decorateVines(){ /* perimeter vines are CSS-only for smooth scrolling */ }
+
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
@@ -694,7 +666,6 @@ setInterval(() => {
   $('stat-uptime').innerText = formatUptime(serverUptime + elapsed);
 }, 1000);
 
-decorateVines(document);
 fetchStats();
 setInterval(fetchStats, 2500);
 </script>
