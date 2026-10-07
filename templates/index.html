@@ -331,65 +331,74 @@ body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:999;pointe
 </style>
 
 <style id="royal-vine-final">
-/* FINAL ROYAL BLACK + WHITE VINE SYSTEM */
+/* FINAL: Royal black/white leafy perimeter — lightweight for mobile + 512MB Render */
 :root{--black:#000;--white:#fff;--silver:#d9d9d9;--muted:#8d8d8d}
 html,body{background:#000!important;color:#fff!important}
-body{
-  background-image:radial-gradient(900px 420px at 50% -20%,rgba(255,255,255,.035),transparent 65%)!important;
-  overflow-x:hidden;
-}
+html{scroll-behavior:auto!important}
+body{background-image:radial-gradient(900px 420px at 50% -20%,rgba(255,255,255,.028),transparent 65%)!important;background-attachment:scroll!important;overflow-x:hidden}
 body::after{background-image:none!important;opacity:0!important}
-body::before{
-  content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:0;
-  background:radial-gradient(ellipse at 50% 45%,rgba(255,255,255,.18),transparent 48%),linear-gradient(180deg,rgba(255,255,255,.10),transparent 28%,transparent 72%,rgba(255,255,255,.07));
-  mix-blend-mode:screen;transition:opacity .08s ease;
-}
-body.lightning-flash::before{opacity:1}
-.topbar{background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(255,255,255,.16)!important;box-shadow:0 12px 35px rgba(0,0,0,.7)!important}
-.logo{background:#050505!important;border-color:rgba(255,255,255,.35)!important;box-shadow:0 0 18px rgba(255,255,255,.10),inset 0 0 14px rgba(255,255,255,.035)!important}
-.brand-text h1,.brand-text h1 span{color:#fff!important;text-shadow:0 0 18px rgba(255,255,255,.16)!important}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:0;background:rgba(255,255,255,.13);mix-blend-mode:screen}
+body.lightning-flash::before{opacity:1;animation:screenFlash .30s ease-out forwards}
+@keyframes screenFlash{0%{opacity:0}12%{opacity:.9}28%{opacity:.12}48%{opacity:.55}100%{opacity:0}}
+.topbar{background:#000!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid rgba(255,255,255,.16)!important;box-shadow:0 8px 24px rgba(0,0,0,.72)!important}
+.logo{background:#050505!important;border-color:rgba(255,255,255,.38)!important;box-shadow:0 0 14px rgba(255,255,255,.08)!important}
+.brand-text h1,.brand-text h1 span{color:#fff!important;text-shadow:0 0 14px rgba(255,255,255,.12)!important}
 .container{padding-top:28px!important}
+
+/* Cards stay clean. The vine is OUTSIDE the border and wraps all four sides. */
 .hero,.stat,.panel,.acc{
   position:relative!important;overflow:visible!important;background:#030303!important;
   border:1px solid rgba(255,255,255,.16)!important;
-  box-shadow:0 18px 50px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.025)!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.86),inset 0 1px 0 rgba(255,255,255,.022)!important;
+  isolation:isolate;
 }
-.hero::before,.stat::before,.panel::before,.acc::before,
-.hero::after,.stat::after,.panel::after,.acc::after{z-index:4!important;pointer-events:none!important}
-/* One thick leafy branch frame that wraps ALL FOUR SIDES and stays outside the box. */
 .hero::before,.stat::before,.panel::before,.acc::before{
-  content:""!important;position:absolute!important;inset:-22px!important;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500' preserveAspectRatio='none'%3E%3Cpath d='M36 68 Q90 28 150 66 T270 60 T390 70 T510 55 T650 66 T764 58 Q785 52 768 96 Q748 140 766 190 T758 300 T772 410 Q760 446 720 430 Q650 416 595 440 T470 432 T350 444 T220 430 T90 442 Q50 450 40 414 Q58 360 42 304 T48 190 T36 68' fill='none' stroke='%23fff' stroke-width='10' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cg fill='%23fff'%3E%3Cellipse cx='112' cy='51' rx='23' ry='10' transform='rotate(-28 112 51)'/%3E%3Cellipse cx='170' cy='73' rx='22' ry='9' transform='rotate(25 170 73)'/%3E%3Cellipse cx='250' cy='52' rx='24' ry='10' transform='rotate(-30 250 52)'/%3E%3Cellipse cx='330' cy='74' rx='23' ry='10' transform='rotate(27 330 74)'/%3E%3Cellipse cx='430' cy='57' rx='24' ry='10' transform='rotate(-28 430 57)'/%3E%3Cellipse cx='520' cy='66' rx='22' ry='9' transform='rotate(25 520 66)'/%3E%3Cellipse cx='640' cy='58' rx='24' ry='10' transform='rotate(-28 640 58)'/%3E%3Cellipse cx='744' cy='112' rx='22' ry='9' transform='rotate(70 744 112)'/%3E%3Cellipse cx='752' cy='210' rx='24' ry='10' transform='rotate(-65 752 210)'/%3E%3Cellipse cx='760' cy='315' rx='22' ry='9' transform='rotate(68 760 315)'/%3E%3Cellipse cx='728' cy='426' rx='24' ry='10' transform='rotate(-20 728 426)'/%3E%3Cellipse cx='650' cy='437' rx='22' ry='9' transform='rotate(22 650 437)'/%3E%3Cellipse cx='555' cy='429' rx='24' ry='10' transform='rotate(-25 555 429)'/%3E%3Cellipse cx='450' cy='438' rx='22' ry='9' transform='rotate(24 450 438)'/%3E%3Cellipse cx='345' cy='437' rx='24' ry='10' transform='rotate(-24 345 437)'/%3E%3Cellipse cx='235' cy='430' rx='22' ry='9' transform='rotate(22 235 430)'/%3E%3Cellipse cx='125' cy='438' rx='24' ry='10' transform='rotate(-25 125 438)'/%3E%3Cellipse cx='49' cy='385' rx='22' ry='9' transform='rotate(72 49 385)'/%3E%3Cellipse cx='46' cy='285' rx='24' ry='10' transform='rotate(-68 46 285)'/%3E%3Cellipse cx='45' cy='185' rx='22' ry='9' transform='rotate(70 45 185)'/%3E%3Cellipse cx='62' cy='95' rx='24' ry='10' transform='rotate(-25 62 95)'/%3E%3C/g%3E%3Cpath d='M78 82 Q100 54 122 42 M202 70 Q220 40 244 32 M298 74 Q315 42 338 35 M405 70 Q422 38 448 32 M548 72 Q566 42 590 35 M690 78 Q714 54 735 48 M70 418 Q94 390 115 380 M185 432 Q205 400 230 392 M285 432 Q304 402 328 394 M400 436 Q420 402 445 396 M520 432 Q540 400 564 392 M650 434 Q670 404 695 394' fill='none' stroke='%23fff' stroke-width='6' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-size:100% 100%;background-repeat:no-repeat;
-  filter:drop-shadow(0 0 4px rgba(255,255,255,.8)) drop-shadow(0 0 12px rgba(255,255,255,.25));
-  opacity:.82;animation:vinesGlow 5s ease-in-out infinite;
+  content:""!important;position:absolute!important;inset:-30px!important;pointer-events:none!important;z-index:0!important;
+  background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important;
+  opacity:.82!important;filter:drop-shadow(0 0 3px rgba(255,255,255,.72)) drop-shadow(0 0 9px rgba(255,255,255,.20))!important;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 620' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='18' d='M78 108 C145 45 215 76 282 103 C355 133 420 54 493 88 C565 122 630 62 701 94 C770 125 838 64 922 108 C957 126 963 161 944 196 C917 247 926 302 945 351 C963 399 955 435 916 456 C840 497 775 468 708 496 C635 526 567 466 494 500 C418 535 351 474 278 501 C205 529 141 486 87 462 C49 445 40 408 58 367 C80 317 78 262 56 213 C38 172 45 136 78 108 Z'/%3E%3Cpath stroke-width='8' d='M116 91 Q139 54 166 38 M225 101 Q249 64 279 51 M346 111 Q372 68 402 53 M478 95 Q503 55 534 45 M612 103 Q638 65 669 52 M745 105 Q772 67 803 55 M867 104 Q891 75 920 68 M918 204 Q953 225 970 254 M922 316 Q956 335 973 363 M902 425 Q932 447 950 471 M790 481 Q814 516 842 535 M658 491 Q683 526 711 542 M520 493 Q546 530 574 545 M382 489 Q408 527 436 542 M245 488 Q270 523 299 538 M125 461 Q103 493 105 520 M66 370 Q35 393 26 424 M62 247 Q30 229 20 201 M67 160 Q39 140 28 112'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Cpath d='M137 58 C158 31 187 35 202 55 C179 70 157 72 137 58Z'/%3E%3Cpath d='M250 72 C271 45 299 50 312 72 C289 85 268 87 250 72Z'/%3E%3Cpath d='M372 78 C394 49 423 54 437 77 C413 91 391 92 372 78Z'/%3E%3Cpath d='M503 64 C525 36 554 42 568 65 C544 79 522 79 503 64Z'/%3E%3Cpath d='M637 73 C659 45 687 50 702 73 C678 88 656 88 637 73Z'/%3E%3Cpath d='M770 74 C793 46 821 52 835 75 C812 89 790 89 770 74Z'/%3E%3Cpath d='M885 91 C906 65 932 70 943 91 C922 104 903 105 885 91Z'/%3E%3Cpath d='M900 227 C931 210 954 226 955 253 C929 258 910 248 900 227Z'/%3E%3Cpath d='M907 339 C937 322 960 338 961 365 C935 370 917 360 907 339Z'/%3E%3Cpath d='M878 437 C906 419 932 435 934 461 C908 468 890 457 878 437Z'/%3E%3Cpath d='M786 474 C815 458 840 474 842 501 C817 506 798 496 786 474Z'/%3E%3Cpath d='M654 480 C683 464 708 480 710 507 C685 512 666 502 654 480Z'/%3E%3Cpath d='M516 483 C545 466 570 483 572 510 C547 515 528 505 516 483Z'/%3E%3Cpath d='M378 478 C407 462 432 478 434 505 C409 510 390 500 378 478Z'/%3E%3Cpath d='M242 477 C271 460 296 476 298 503 C273 508 254 498 242 477Z'/%3E%3Cpath d='M121 452 C149 435 173 451 175 477 C151 483 133 472 121 452Z'/%3E%3Cpath d='M76 349 C49 330 27 344 29 370 C53 376 70 366 76 349Z'/%3E%3Cpath d='M70 225 C42 208 20 223 21 249 C45 255 62 245 70 225Z'/%3E%3Cpath d='M75 142 C48 124 26 138 27 164 C51 170 68 160 75 142Z'/%3E%3C/g%3E%3C/svg%3E")!important;
 }
 .hero::after,.stat::after,.panel::after,.acc::after{
-  content:""!important;position:absolute!important;inset:-25px!important;background:transparent!important;border:0!important;
-  box-shadow:0 0 0 transparent!important;opacity:0;animation:none!important;
+  content:""!important;position:absolute!important;inset:-28px!important;pointer-events:none!important;z-index:-1!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;opacity:0!important;
 }
-.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:5}
-@keyframes vinesGlow{0%,100%{opacity:.65;filter:drop-shadow(0 0 3px rgba(255,255,255,.65)) drop-shadow(0 0 8px rgba(255,255,255,.18))}50%{opacity:1;filter:drop-shadow(0 0 7px rgba(255,255,255,1)) drop-shadow(0 0 22px rgba(255,255,255,.42))}}
-body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{animation:vineFlash .55s ease-out!important}
-@keyframes vineFlash{0%{filter:brightness(1) drop-shadow(0 0 4px #fff)}12%{filter:brightness(2.8) drop-shadow(0 0 24px #fff)}25%{filter:brightness(.8) drop-shadow(0 0 7px #fff)}40%{filter:brightness(2.2) drop-shadow(0 0 20px #fff)}100%{filter:brightness(1) drop-shadow(0 0 4px #fff)}}
-/* Keep the popup truly centered and inside the viewport. */
-.modal,.modal-overlay,.dialog,.add-account-modal{z-index:10000!important}
+.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:2}
+
+/* No continuous filter/transform animation: keeps scrolling smooth. Flash only when lightning occurs. */
+body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{
+  animation:vineFlash .42s ease-out both!important;
+}
+@keyframes vineFlash{
+  0%{opacity:.82;filter:drop-shadow(0 0 3px rgba(255,255,255,.72)) drop-shadow(0 0 9px rgba(255,255,255,.20))}
+  16%{opacity:1;filter:brightness(2.1) drop-shadow(0 0 6px #fff) drop-shadow(0 0 20px rgba(255,255,255,.58))}
+  34%{opacity:.62;filter:brightness(.9) drop-shadow(0 0 4px #fff)}
+  52%{opacity:1;filter:brightness(1.8) drop-shadow(0 0 6px #fff) drop-shadow(0 0 16px rgba(255,255,255,.45))}
+  100%{opacity:.82;filter:drop-shadow(0 0 3px rgba(255,255,255,.72)) drop-shadow(0 0 9px rgba(255,255,255,.20))}
+}
+
+/* White-only controls */
+.btn-primary{background:#fff!important;color:#000!important;box-shadow:0 0 18px rgba(255,255,255,.10)!important}
+.btn-ghost,.icon-btn,.chip{background:#030303!important;border-color:rgba(255,255,255,.16)!important;color:#fff!important}
+.btn-ghost:hover,.icon-btn:hover{border-color:#fff!important;box-shadow:0 0 14px rgba(255,255,255,.13)!important}
+.logo{background:#050505!important;border:1px solid rgba(255,255,255,.38)!important;box-shadow:0 0 14px rgba(255,255,255,.08)!important}
+.c-cyan,.c-green,.c-violet,.c-amber,.avatar{background:#080808!important;color:#fff!important;border-color:rgba(255,255,255,.15)!important}
+.bar i{background:#fff!important;box-shadow:0 0 10px rgba(255,255,255,.24)!important}
+.hero-badge{background:#050505!important;border-color:rgba(255,255,255,.17)!important}
+.log-stream{background:#000!important;border-color:rgba(255,255,255,.14)!important}
+
+/* Centered modal */
+.overlay{position:fixed!important;inset:0!important;padding:18px!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:rgba(0,0,0,.86)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.modal{background:#030303!important;border-color:rgba(255,255,255,.25)!important;box-shadow:0 28px 70px rgba(0,0,0,.92),0 0 28px rgba(255,255,255,.05)!important;max-height:min(92vh,760px)!important;overflow-y:auto!important;overscroll-behavior:contain!important}
+.input{background:#000!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important}
+.input:focus{border-color:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.16)!important}
+body.modal-open{overflow:hidden!important;height:100vh}
 @media(max-width:760px){
   .hero,.stat,.panel,.acc{overflow:visible!important}
-  .hero::before,.stat::before,.panel::before,.acc::before{inset:-16px!important}
+  .hero::before,.stat::before,.panel::before,.acc::before{inset:-22px!important}
 }
+@media(prefers-reduced-motion:reduce){body.lightning-flash::before{animation:none;opacity:0}.hero::before,.stat::before,.panel::before,.acc::before{animation:none!important}}
 </style>
-<script>
-/* Lightweight random lightning: one timer only, 15–30 seconds. */
-(function(){
-  function flash(){
-    document.body.classList.add('lightning-flash');
-    setTimeout(function(){document.body.classList.remove('lightning-flash')},560);
-    setTimeout(flash,15000 + Math.random()*15000);
-  }
-  setTimeout(flash,15000 + Math.random()*15000);
-})();
-</script>
+
 </head>
 <body>
 <header class="topbar">
@@ -491,7 +500,6 @@ let lastUptimeSync = Date.now();
   setTimeout(() => {
     if (!document.hidden) {
       document.body.classList.remove('lightning-flash');
-      void document.body.offsetWidth;
       document.body.classList.add('lightning-flash');
       setTimeout(() => document.body.classList.remove('lightning-flash'), 280);
     }
@@ -499,18 +507,6 @@ let lastUptimeSync = Date.now();
   }, delay);
 })();
 
-(function scheduleVineSurge(){
-  const delay = 15000 + Math.random() * 15000;
-  setTimeout(() => {
-    if (!document.hidden) {
-      document.body.classList.remove('vine-surge');
-      void document.body.offsetWidth;
-      document.body.classList.add('vine-surge');
-      setTimeout(() => document.body.classList.remove('vine-surge'), 760);
-    }
-    scheduleVineSurge();
-  }, delay);
-})();
 
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
