@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>CGU REAM | Level Up Bot</title>
+<title>Level Up Bot | Safe • Fast • Reliable</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -129,6 +129,19 @@ button,input,select,textarea{font:inherit;color:inherit}
 select.input option{background:#0c1224}
 .modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
 
+/* Premium dashboard polish */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(circle at 15% 0%,rgba(34,211,238,.10),transparent 32%),radial-gradient(circle at 90% 15%,rgba(139,92,246,.10),transparent 30%);z-index:-1}
+.topbar{background:rgba(7,10,20,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.07);position:sticky;top:0;z-index:50}
+.brand-text h1{letter-spacing:.5px}.brand-text h1 span{color:var(--muted);font-weight:600;margin-left:8px}
+.hero{display:flex;align-items:center;justify-content:space-between;gap:22px;padding:24px 26px;margin-bottom:18px;border:1px solid rgba(34,211,238,.12);border-radius:22px;background:linear-gradient(135deg,rgba(18,26,48,.88),rgba(10,15,29,.92));box-shadow:0 16px 45px rgba(0,0,0,.22)}
+.eyebrow{font:700 11px/1 JetBrains Mono,monospace;letter-spacing:1.5px;color:var(--cyan);margin-bottom:10px}.pulse{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green);margin-right:7px}
+.hero h2{font-size:27px;margin:0 0 6px;letter-spacing:-.6px}.hero h2 span{color:var(--cyan)}.hero p{margin:0;color:var(--muted);font-size:13px}.hero-badge{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:16px;background:rgba(34,211,238,.07);border:1px solid rgba(34,211,238,.15);min-width:205px}.hero-badge i{font-size:24px;color:var(--cyan)}.hero-badge strong{display:block;font-size:14px}.hero-badge small{display:block;color:var(--muted);margin-top:3px}
+.stat,.panel,.acc{transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}.stat:hover,.acc:hover{transform:translateY(-2px);border-color:rgba(34,211,238,.18);box-shadow:0 12px 30px rgba(0,0,0,.22)}
+.panel{background:rgba(13,19,36,.82);box-shadow:0 15px 45px rgba(0,0,0,.16)}
+.btn-primary{box-shadow:0 8px 24px rgba(79,172,254,.18)}
+.status{white-space:nowrap}
+@media (max-width:760px){.hero{padding:18px;align-items:flex-start;flex-direction:column}.hero h2{font-size:22px}.hero-badge{width:100%;box-sizing:border-box}.brand-text h1{font-size:16px}}
+
 /* Responsive */
 @media (max-width:1100px){
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -163,7 +176,7 @@ select.input option{background:#0c1224}
     <div class="brand">
       <div class="logo"><i class="fa-solid fa-bolt"></i></div>
       <div class="brand-text">
-        <h1>CGU TEAM <span>Level Up Bot</span></h1>
+        <h1>LEVEL UP BOT <span>Safe • Fast • Reliable</span></h1>
   
       </div>
     </div>
@@ -178,30 +191,38 @@ select.input option{background:#0c1224}
 </header>
 
 <main class="container">
-  <section class="stats" aria-label="Ringkasan">
-    <div class="stat"><div class="stat-icon c-cyan"><i class="fa-solid fa-users"></i></div><div class="stat-body"><strong id="stat-total-accounts">0</strong><span>Akun aktif</span></div></div>
+  <section class="hero">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="pulse"></span> SECURE LEVEL UP CONTROL CENTER</div>
+      <h2>Level up smarter. <span>Track everything.</span></h2>
+      <p>Monitor accounts, EXP progress, matches and bot activity from one clean dashboard.</p>
+    </div>
+    <div class="hero-badge"><i class="fa-solid fa-shield-halved"></i><div><strong>Safe Level Up</strong><small>Fast • Stable • Real-time</small></div></div>
+  </section>
+  <section class="stats" aria-label="Dashboard summary">
+    <div class="stat"><div class="stat-icon c-cyan"><i class="fa-solid fa-users"></i></div><div class="stat-body"><strong id="stat-total-accounts">0</strong><span>Active accounts</span></div></div>
     <div class="stat"><div class="stat-icon c-green"><i class="fa-solid fa-angles-up"></i></div><div class="stat-body"><strong id="stat-total-exp" style="color:var(--green)">+0 EXP</strong><span>Total EXP didapat</span></div></div>
-    <div class="stat"><div class="stat-icon c-violet"><i class="fa-solid fa-gamepad"></i></div><div class="stat-body"><strong id="stat-total-matches">0</strong><span>Match selesai</span></div></div>
-    <div class="stat"><div class="stat-icon c-amber"><i class="fa-solid fa-shield-halved"></i></div><div class="stat-body"><strong id="stat-online">0</strong><span>Sedang di match</span></div></div>
+    <div class="stat"><div class="stat-icon c-violet"><i class="fa-solid fa-gamepad"></i></div><div class="stat-body"><strong id="stat-total-matches">0</strong><span>Matches completed</span></div></div>
+    <div class="stat"><div class="stat-icon c-amber"><i class="fa-solid fa-shield-halved"></i></div><div class="stat-body"><strong id="stat-online">0</strong><span>Currently in match</span></div></div>
   </section>
 
   <div class="main">
     <section class="panel">
       <div class="panel-head">
-        <h2><i class="fa-solid fa-user-astronaut" style="color:var(--cyan)"></i>Monitor akun &amp; EXP</h2>
+        <h2><i class="fa-solid fa-user-astronaut" style="color:var(--cyan)"></i>Account &amp; EXP Monitor</h2>
         <div class="panel-tools">
           <small id="last-update">—</small>
-          <button class="btn btn-primary btn-sm" onclick="openAddModal()"><i class="fa-solid fa-plus"></i>Tambah akun</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddModal()"><i class="fa-solid fa-plus"></i>Add Account</button>
         </div>
       </div>
       <div class="accounts" id="accounts-container">
-        <div class="empty"><i class="fa-solid fa-circle-notch fa-spin"></i><p>Memuat akun...</p></div>
+        <div class="empty"><i class="fa-solid fa-circle-notch fa-spin"></i><p>Loading accounts...</p></div>
       </div>
     </section>
 
     <section class="panel">
       <div class="panel-head">
-        <h2><i class="fa-solid fa-terminal" style="color:var(--green)"></i>Log bot</h2>
+        <h2><i class="fa-solid fa-terminal" style="color:var(--green)"></i>Bot Activity</h2>
         <small>Real-time</small>
       </div>
       <div class="log-stream" id="log-stream"></div>
@@ -212,27 +233,27 @@ select.input option{background:#0c1224}
 <div class="overlay" id="add-modal" onclick="if(event.target===this)closeAddModal()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
     <div class="modal-head">
-      <h3 id="modal-title">Tambah akun</h3>
+      <h3 id="modal-title">Add Account</h3>
       <button class="icon-btn" onclick="closeAddModal()" aria-label="Tutup"><i class="fa-solid fa-xmark"></i></button>
     </div>
     <form id="add-acc-form" onsubmit="submitAddAccount(event)">
       <div class="field">
-        <label for="acc-type">Tipe akun</label>
+        <label for="acc-type">Account type</label>
         <select class="input" id="acc-type" onchange="toggleFormType()">
           <option value="guest">Guest (UID + Password)</option>
           <option value="token">Access Token</option>
         </select>
       </div>
       <div id="guest-fields">
-        <div class="field"><label for="acc-uid">Guest UID</label><input type="text" class="input" id="acc-uid" placeholder="contoh: 7644913583" inputmode="numeric" autocomplete="off"></div>
-        <div class="field"><label for="acc-password">Guest password / secret</label><input type="text" class="input" id="acc-password" placeholder="contoh: ZERO_GRAVITY_4NM38" autocomplete="off"></div>
+        <div class="field"><label for="acc-uid">Guest UID</label><input type="text" class="input" id="acc-uid" placeholder="e.g. 7644913583" inputmode="numeric" autocomplete="off"></div>
+        <div class="field"><label for="acc-password">Guest password / secret</label><input type="text" class="input" id="acc-password" placeholder="Enter guest password / secret" autocomplete="off"></div>
       </div>
       <div id="token-fields" style="display:none">
         <div class="field"><label for="acc-token">Access token</label><textarea class="input" id="acc-token" rows="3" placeholder="Tempel access token di sini..."></textarea></div>
       </div>
       <div class="modal-actions">
-        <button type="button" class="btn btn-ghost" onclick="closeAddModal()">Batal</button>
-        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i>Simpan &amp; mulai</button>
+        <button type="button" class="btn btn-ghost" onclick="closeAddModal()">Cancel</button>
+        <button type="submit" class="btn btn-primary"><i class="fa-solid fa-plus"></i>Save &amp; Start</button>
       </div>
     </form>
   </div>
@@ -258,23 +279,23 @@ async function submitAddAccount(e){
   let payload = {};
   if (type === 'guest'){
     const uid = $('acc-uid').value.trim(), password = $('acc-password').value.trim();
-    if (!uid || !password) return alert('Isi UID dan password terlebih dahulu');
+    if (!uid || !password) return alert('Please enter the UID and password first.');
     payload = { uid, password };
   } else {
     const token = $('acc-token').value.trim();
-    if (!token) return alert('Isi token terlebih dahulu');
+    if (!token) return alert('Please enter the access token first.');
     payload = { token };
   }
   try {
     const res = await fetch('/api/account/add', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
     const data = await res.json();
     if (data.status === 'ok'){ closeAddModal(); $('add-acc-form').reset(); toggleFormType(); fetchStats(); }
-    else alert('Gagal menambah akun: ' + (data.error || 'Unknown'));
-  } catch (err){ alert('Request gagal: ' + err); }
+    else alert('Failed to add account: ' + (data.error || 'Unknown error'));
+  } catch (err){ alert('Request failed: ' + err); }
 }
 
 async function deleteAccount(uid){
-  if (!confirm('Hapus akun ' + uid + '?')) return;
+  if (!confirm('Delete account ' + uid + '?')) return;
   try {
     await fetch('/api/account/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ uid }) });
     fetchStats();
@@ -295,7 +316,7 @@ function escapeHtml(t){
 
 function setConn(ok){
   $('conn-dot').classList.toggle('off', !ok);
-  $('conn-text').textContent = ok ? 'Online' : 'Terputus';
+  $('conn-text').textContent = ok ? 'Online' : 'Offline';
   $('conn-chip').style.color = ok ? 'var(--green)' : 'var(--red)';
 }
 
@@ -311,16 +332,16 @@ async function fetchStats(manual){
     $('stat-total-exp').innerText = '+' + data.total_gained_exp.toLocaleString() + ' EXP';
     $('stat-total-matches').innerText = data.total_matches;
     $('stat-online').innerText = data.accounts.filter(a => a.status === 'IN_MATCH').length;
-    $('last-update').innerText = 'Update ' + new Date().toLocaleTimeString('id-ID');
+    $('last-update').innerText = 'Updated ' + new Date().toLocaleTimeString('en-GB');
 
     const box = $('accounts-container');
     if (!data.accounts.length){
-      box.innerHTML = '<div class="empty"><i class="fa-solid fa-ghost"></i><p>Belum ada akun aktif. Klik “Tambah akun” untuk mulai.</p></div>';
+      box.innerHTML = '<div class="empty"><i class="fa-solid fa-ghost"></i><p>No active accounts yet. Click “Add Account” to get started.</p></div>';
     } else {
       box.innerHTML = data.accounts.map(acc => {
         const gained = acc.gained_exp || 0;
         const inMatch = acc.status === 'IN_MATCH';
-        const stText = inMatch ? `Di match (${acc.active_matches})` : escapeHtml(acc.status);
+        const stText = inMatch ? `In match (${acc.active_matches})` : escapeHtml(acc.status);
         const pct = Math.min(100, Math.max(15, (acc.current_exp % 1000) / 10));
         const uid = escapeHtml(acc.uid);
         return `
@@ -336,19 +357,19 @@ async function fetchStats(manual){
             <div class="status ${inMatch ? 'st-match' : 'st-online'}"><span class="dot"></span>${stText}</div>
           </div>
           <div class="exp">
-            <div><label>Awal</label><b>${acc.initial_exp.toLocaleString()}</b></div>
-            <div><label>Sekarang</label><b>${acc.current_exp.toLocaleString()}</b></div>
-            <div><label>Didapat</label><b class="gain">+${gained.toLocaleString()}</b></div>
+            <div><label>Initial</label><b>${acc.initial_exp.toLocaleString()}</b></div>
+            <div><label>Current</label><b>${acc.current_exp.toLocaleString()}</b></div>
+            <div><label>Gained</label><b class="gain">+${gained.toLocaleString()}</b></div>
           </div>
           <div>
-            <div class="level-row"><span class="lv">Level ${acc.level}</span><span class="mt">${acc.matches_played} match</span></div>
+            <div class="level-row"><span class="lv">Level ${acc.level}</span><span class="mt">${acc.matches_played} matches</span></div>
             <div class="bar"><i style="width:${pct}%"></i></div>
           </div>
           <div class="acc-foot">
-            <span>Match terakhir: ${escapeHtml(acc.last_match_time || 'Berjalan...')}</span>
+            <span>Last match: ${escapeHtml(acc.last_match_time || 'Running...')}</span>
             <div class="acts">
-              <button class="icon-btn" title="Refresh profil/EXP" aria-label="Refresh akun" onclick="refreshAccountInfo('${uid}')"><i class="fa-solid fa-rotate"></i></button>
-              <button class="icon-btn danger" title="Hapus akun" aria-label="Hapus akun" onclick="deleteAccount('${uid}')"><i class="fa-solid fa-trash"></i></button>
+              <button class="icon-btn" title="Refresh profile / EXP" aria-label="Refresh account" onclick="refreshAccountInfo('${uid}')"><i class="fa-solid fa-rotate"></i></button>
+              <button class="icon-btn danger" title="Delete account" aria-label="Delete account" onclick="deleteAccount('${uid}')"><i class="fa-solid fa-trash"></i></button>
             </div>
           </div>
         </article>`;
