@@ -209,6 +209,17 @@ async def handle_index(request: web.Request) -> web.Response:
     return web.Response(text=content, content_type="text/html", charset="utf-8")
 
 
+async def handle_verify_page(request: web.Request) -> web.Response:
+    """Serve the VPLink pre-verification warning page from the same Render app."""
+    page_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", "steps.html")
+    try:
+        with open(page_path, "r", encoding="utf-8") as f:
+            content = f.read()
+        return web.Response(text=content, content_type="text/html", charset="utf-8")
+    except OSError:
+        return web.Response(text="Verification page is unavailable.", status=500, content_type="text/plain")
+
+
 async def handle_get_stats(request: web.Request) -> web.Response:
     user = _user_from_request(request)
     if not user:
@@ -524,6 +535,8 @@ async def start_web_dashboard(host: str = "0.0.0.0", port: Optional[int] = None)
             port = 5000
     app = web.Application()
     app.router.add_get("/", handle_index)
+    app.router.add_get("/verify", handle_verify_page)
+    app.router.add_static("/assets/", os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets"), show_index=False)
     app.router.add_post("/api/auth/register", handle_register)
     app.router.add_post("/api/auth/login", handle_login)
     app.router.add_get("/api/auth/me", handle_me)
