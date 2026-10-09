@@ -457,7 +457,7 @@ let lastUptimeSync = Date.now();
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
 function beginAddAccount(){ if(currentUser && currentUser.role==='admin'){ openAddModal(); return; } $('verify-gate').classList.add('active'); document.body.classList.add('modal-open'); }
 function closeVerifyGate(){ $('verify-gate').classList.remove('active'); document.body.classList.remove('modal-open'); }
-function startVerification(){ window.location.href='/verify'; }
+function startVerification(){ window.location.href='https://postcleanerexp.github.io/LevelUpKey/steps.html'; }
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
 
