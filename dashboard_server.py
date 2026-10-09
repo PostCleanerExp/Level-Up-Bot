@@ -32,6 +32,9 @@ def _db():
       CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE COLLATE NOCASE NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'user', slots INTEGER NOT NULL DEFAULT 1, plan TEXT NOT NULL DEFAULT 'Standard', expires_at INTEGER, created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires_at INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);
       CREATE TABLE IF NOT EXISTS account_owners (account_key TEXT PRIMARY KEY, user_id INTEGER NOT NULL, uid TEXT, created_at INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
+      CREATE TABLE IF NOT EXISTS verification_sessions (session_id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
+      CREATE TABLE IF NOT EXISTS verification_tokens (token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL, session_id TEXT NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, redeemed_at INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));
+      CREATE INDEX IF NOT EXISTS idx_verification_tokens_user ON verification_tokens(user_id, expires_at);
     """)
     conn.commit()
     return conn
@@ -210,14 +213,8 @@ async def handle_index(request: web.Request) -> web.Response:
 
 
 async def handle_verify_page(request: web.Request) -> web.Response:
-    """Serve the VPLink pre-verification warning page from the same Render app."""
-    page_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", "steps.html")
-    try:
-        with open(page_path, "r", encoding="utf-8") as f:
-            content = f.read()
-        return web.Response(text=content, content_type="text/html", charset="utf-8")
-    except OSError:
-        return web.Response(text="Verification page is unavailable.", status=500, content_type="text/plain")
+    """Send users to the public GitHub Pages first verification step."""
+    return web.HTTPFound("https://postcleanerexp.github.io/LevelUpKey/steps.html")
 
 
 async def handle_get_stats(request: web.Request) -> web.Response:
@@ -527,6 +524,88 @@ async def handle_refresh_account(request: web.Request) -> web.Response:
         return web.json_response({"status": "error", "error": str(e)})
 
 
+
+TOKEN_TTL = 15 * 60
+ACCESS_TTL = 24 * 60 * 60
+TOKEN_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
+
+def _new_verify_code():
+    # LvlUp + 6 unambiguous uppercase characters = 11 characters total.
+    return "LvlUp" + "".join(secrets.choice(TOKEN_ALPHABET) for _ in range(6))
+
+async def handle_verification_session(request: web.Request):
+    user = _user_from_request(request)
+    if not user:
+        return _auth_error()
+    if user["role"] == "admin":
+        return web.json_response({"status":"ok", "admin":True})
+    sid = secrets.token_urlsafe(24)
+    now = int(time.time())
+    conn = _db()
+    try:
+        conn.execute("INSERT INTO verification_sessions(session_id,user_id,created_at,expires_at) VALUES(?,?,?,?)",
+                     (sid, user["id"], now, now + TOKEN_TTL))
+        conn.commit()
+    finally:
+        conn.close()
+    return web.json_response({"status":"ok", "session_id":sid, "expires_in":TOKEN_TTL})
+
+async def handle_issue_verification_token(request: web.Request):
+    # Destination page calls this endpoint with the session ID created by Get Verified.
+    try:
+        data = await request.json()
+        sid = str(data.get("session_id", "")).strip()
+        if not sid or len(sid) > 128:
+            return web.json_response({"status":"error","error":"Invalid or expired verification session."}, status=400)
+        now = int(time.time())
+        conn = _db()
+        try:
+            session = conn.execute("SELECT * FROM verification_sessions WHERE session_id=? AND expires_at>?",
+                                   (sid, now)).fetchone()
+            if not session:
+                return web.json_response({"status":"error","error":"Verification session expired. Start again from Get Verified."}, status=403)
+            code = _new_verify_code()
+            conn.execute("INSERT INTO verification_tokens(token_hash,user_id,session_id,created_at,expires_at) VALUES(?,?,?,?,?)",
+                         (hashlib.sha256(code.encode()).hexdigest(), session["user_id"], sid, now, now + TOKEN_TTL))
+            conn.commit()
+            return web.json_response({"status":"ok","token":code,"expires_in":TOKEN_TTL})
+        finally:
+            conn.close()
+    except Exception:
+        return web.json_response({"status":"error","error":"Could not issue token."}, status=400)
+
+async def handle_redeem_verification_token(request: web.Request):
+    user = _user_from_request(request)
+    if not user:
+        return _auth_error()
+    if user["role"] == "admin":
+        return web.json_response({"status":"ok","admin":True,"message":"Admin access is unrestricted."})
+    try:
+        data = await request.json()
+        code = str(data.get("token", "")).strip()
+        if not re.fullmatch(r"LvlUp[A-Z2-9]{6}", code):
+            return web.json_response({"status":"error","error":"Invalid token format."}, status=400)
+        now = int(time.time())
+        conn = _db()
+        try:
+            row = conn.execute("SELECT * FROM verification_tokens WHERE token_hash=? AND user_id=? AND expires_at>? AND redeemed_at IS NULL",
+                               (hashlib.sha256(code.encode()).hexdigest(), user["id"], now)).fetchone()
+            if not row:
+                return web.json_response({"status":"error","error":"Token is invalid, expired, already used, or belongs to another account."}, status=403)
+            # Redeem atomically and activate a 24-hour plan with one slot.
+            updated = conn.execute("UPDATE verification_tokens SET redeemed_at=? WHERE token_hash=? AND redeemed_at IS NULL",
+                                   (now, hashlib.sha256(code.encode()).hexdigest())).rowcount
+            if updated != 1:
+                return web.json_response({"status":"error","error":"Token already redeemed."}, status=409)
+            conn.execute("UPDATE users SET slots=1, plan='Verified 24h', expires_at=? WHERE id=?",
+                         (now + ACCESS_TTL, user["id"]))
+            conn.commit()
+        finally:
+            conn.close()
+        return web.json_response({"status":"ok","expires_at":now + ACCESS_TTL,"message":"Verification accepted. Access is valid for 24 hours."})
+    except Exception:
+        return web.json_response({"status":"error","error":"Invalid request."}, status=400)
+
 async def start_web_dashboard(host: str = "0.0.0.0", port: Optional[int] = None):
     if port is None:
         try:
@@ -536,6 +615,9 @@ async def start_web_dashboard(host: str = "0.0.0.0", port: Optional[int] = None)
     app = web.Application()
     app.router.add_get("/", handle_index)
     app.router.add_get("/verify", handle_verify_page)
+    app.router.add_post("/api/verification/session", handle_verification_session)
+    app.router.add_post("/api/verification/issue", handle_issue_verification_token)
+    app.router.add_post("/api/verification/redeem", handle_redeem_verification_token)
     app.router.add_static("/assets/", os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets"), show_index=False)
     app.router.add_post("/api/auth/register", handle_register)
     app.router.add_post("/api/auth/login", handle_login)
