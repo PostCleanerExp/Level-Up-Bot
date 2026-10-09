@@ -55,8 +55,16 @@ def _bootstrap_admin(conn):
         return
     row = conn.execute("SELECT id, role FROM users WHERE username=?", (username,)).fetchone()
     if row:
-        if row["role"] != "admin":
-            conn.execute("UPDATE users SET password_hash=?, role='admin', slots=-1, plan='Lifetime', expires_at=NULL WHERE id=?", (_password_hash(password), row["id"]))
+        # Reconcile credentials from Render on every bootstrap. Previously an
+        # existing admin kept an old password forever, so the correct Render
+        # password could still be rejected after an environment change.
+        full = conn.execute("SELECT * FROM users WHERE id=?", (row["id"],)).fetchone()
+        password_changed = not _password_ok(password, full["password_hash"])
+        if row["role"] != "admin" or password_changed:
+            conn.execute(
+                "UPDATE users SET password_hash=?, role='admin', slots=-1, plan='Lifetime', expires_at=NULL WHERE id=?",
+                (_password_hash(password) if password_changed or row["role"] != "admin" else full["password_hash"], row["id"])
+            )
         else:
             conn.execute("UPDATE users SET slots=-1, plan='Lifetime', expires_at=NULL WHERE id=?", (row["id"],))
     else:
@@ -209,18 +217,20 @@ async def handle_get_stats(request: web.Request) -> web.Response:
     if user["role"] != "admin":
         conn = _db()
         try:
-            owners = {
-                r["account_key"]: r["user_id"]
-                for r in conn.execute(
-                    "SELECT account_key,user_id FROM account_owners WHERE user_id=?",
-                    (user["id"],)
-                ).fetchall()
-            }
+            owner_rows = conn.execute(
+                "SELECT account_key,user_id,uid FROM account_owners WHERE user_id=?",
+                (user["id"],)
+            ).fetchall()
+            # Token-based accounts are initially stored under a hashed token
+            # key. Once login reveals their in-game UID, the owner row's uid
+            # field is the canonical link used by the monitor.
+            owned_uids = {str(r["uid"]) for r in owner_rows if r["uid"]}
+            owned_keys = {r["account_key"] for r in owner_rows}
         finally:
             conn.close()
         accounts_data = [
             a for a in all_accounts
-            if owners.get("uid:" + str(a.get("uid"))) == user["id"]
+            if (str(a.get("uid")) in owned_uids or "uid:" + str(a.get("uid")) in owned_keys)
         ]
     else:
         accounts_data = all_accounts
@@ -353,6 +363,27 @@ async def handle_admin_update_user(request: web.Request):
         return web.json_response({"status":"error", "error":"Invalid user settings."}, status=400)
 
 
+def bind_account_identity(source: str, uid: str) -> None:
+    """Attach a token/password record to its resolved in-game UID without
+    creating a second slot reservation."""
+    source = str(source or "").strip()
+    uid = str(uid or "").strip()
+    if not source or not uid:
+        return
+    if source.startswith("token:"):
+        key = source
+    elif source.startswith("uid:"):
+        key = source
+    else:
+        key = "token:" + hashlib.sha256(source.encode()).hexdigest()
+    conn = _db()
+    try:
+        conn.execute("UPDATE account_owners SET uid=? WHERE account_key=?", (uid, key))
+        conn.commit()
+    finally:
+        conn.close()
+
+
 async def handle_add_account(request: web.Request) -> web.Response:
     try:
         user = _user_from_request(request)
@@ -423,18 +454,34 @@ async def handle_delete_account(request: web.Request) -> web.Response:
         uid = str(data.get("uid")).strip()
         conn = _db()
         try:
-            owner = conn.execute("SELECT user_id FROM account_owners WHERE account_key=?", ("uid:" + uid,)).fetchone()
-            if user["role"] != "admin" and (not owner or owner["user_id"] != user["id"]):
+            owners = conn.execute(
+                "SELECT account_key,user_id FROM account_owners WHERE uid=? OR account_key=?",
+                (uid, "uid:" + uid)
+            ).fetchall()
+            if user["role"] != "admin" and not any(r["user_id"] == user["id"] for r in owners):
                 return web.json_response({"status":"error", "error":"You do not own this account."}, status=403)
-            conn.execute("DELETE FROM account_owners WHERE account_key=?", ("uid:" + uid,)); conn.commit()
+            keys = [r["account_key"] for r in owners]
+            if keys:
+                conn.executemany("DELETE FROM account_owners WHERE account_key=?", [(k,) for k in keys])
+            conn.commit()
         finally: conn.close()
         accounts_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "accounts.json")
         if os.path.exists(accounts_file):
             with open(accounts_file, "r", encoding="utf-8") as f:
                 existing = json.load(f)
-            existing = [acc for acc in existing if str(acc.get("uid")) != uid]
+            owned_keys_set = set(keys)
+            kept = []
+            for acc in existing:
+                acc_uid = str(acc.get("uid", "")).strip()
+                acc_token = str(acc.get("token", "")).strip()
+                token_key = "token:" + hashlib.sha256(acc_token.encode()).hexdigest() if acc_token else ""
+                # Remove the selected UID and any access-token record mapped
+                # to it, otherwise a deleted token account would restart.
+                if acc_uid == uid or (token_key and token_key in owned_keys_set):
+                    continue
+                kept.append(acc)
             with open(accounts_file, "w", encoding="utf-8") as f:
-                json.dump(existing, f, indent=2)
+                json.dump(kept, f, indent=2)
 
         if uid in bot_state.accounts:
             del bot_state.accounts[uid]
@@ -457,9 +504,11 @@ async def handle_refresh_account(request: web.Request) -> web.Response:
         uid = str(data.get("uid")).strip()
         if user["role"] != "admin":
             conn = _db()
-            try: owner = conn.execute("SELECT user_id FROM account_owners WHERE account_key=?", ("uid:" + uid,)).fetchone()
+            try:
+                owner = conn.execute("SELECT user_id FROM account_owners WHERE uid=? OR account_key=?", (uid, "uid:" + uid)).fetchall()
             finally: conn.close()
-            if not owner or owner["user_id"] != user["id"]: return web.json_response({"status":"error", "error":"You do not own this account."}, status=403)
+            if not any(r["user_id"] == user["id"] for r in owner):
+                return web.json_response({"status":"error", "error":"You do not own this account."}, status=403)
         if "on_refresh_account" in bot_state.refresh_callbacks:
             asyncio.create_task(bot_state.refresh_callbacks["on_refresh_account"](uid))
         return web.json_response({"status": "ok"})
