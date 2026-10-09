@@ -65,7 +65,7 @@ button,input,select,textarea{font:inherit;color:inherit}
 .stat-body strong{display:block;font-size:24px;font-weight:800;letter-spacing:-.4px;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .stat-body span{font-size:13px;color:var(--muted)}
 
-.main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(320px,1fr);gap:24px;align-items:start}
+.main{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
 .panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px;min-width:0}
 .panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
 .panel-head h2{font-size:17px;font-weight:700;display:flex;align-items:center;gap:10px}
@@ -143,7 +143,7 @@ body::before{content:"";position:fixed;inset:0;pointer-events:none;background:ra
 @media (max-width:760px){.hero{padding:18px;align-items:flex-start;flex-direction:column}.hero h2{font-size:22px}.hero-badge{width:100%;box-sizing:border-box}.brand-text h1{font-size:16px}}
 
 
-/* Royal Dark • Electric Vine UI */
+/* Royal dark dashboard theme */
 :root{
   --bg:#020308;
   --surface:#080b13;
@@ -196,25 +196,6 @@ body::after{
 .hero::before,.hero::after,.stat::before,.stat::after,.panel::before,.panel::after,.acc::before,.acc::after{
   content:"";position:absolute;pointer-events:none;z-index:0;
 }
-/* Thin branching electric-vine ornaments at the upper/lower edges */
-.hero::before,.panel::before,.stat::before,.acc::before{
-  left:10%;right:10%;top:-1px;height:2px;
-  background:linear-gradient(90deg,transparent 0%,rgba(85,231,255,.1) 12%,rgba(85,231,255,.75) 28%,rgba(157,108,255,.65) 50%,rgba(85,231,255,.5) 72%,rgba(85,231,255,.08) 88%,transparent);
-  filter:blur(.15px);box-shadow:0 0 14px rgba(85,231,255,.25);
-}
-.hero::after,.panel::after,.stat::after,.acc::after{
-  left:7%;right:7%;bottom:-2px;height:30px;opacity:.42;
-  background:
-    radial-gradient(30px 12px at 7% 100%,transparent 55%,rgba(85,231,255,.8) 58%,transparent 63%),
-    radial-gradient(40px 16px at 17% 0%,transparent 55%,rgba(157,108,255,.7) 58%,transparent 63%),
-    radial-gradient(34px 14px at 31% 100%,transparent 55%,rgba(85,231,255,.65) 58%,transparent 63%),
-    radial-gradient(42px 16px at 47% 0%,transparent 55%,rgba(157,108,255,.62) 58%,transparent 63%),
-    radial-gradient(35px 14px at 64% 100%,transparent 55%,rgba(85,231,255,.7) 58%,transparent 63%),
-    radial-gradient(42px 16px at 80% 0%,transparent 55%,rgba(157,108,255,.65) 58%,transparent 63%),
-    radial-gradient(32px 12px at 94% 100%,transparent 55%,rgba(85,231,255,.65) 58%,transparent 63%);
-  filter:drop-shadow(0 0 5px rgba(85,231,255,.22));
-}
-.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:1}
 .hero-badge{background:linear-gradient(145deg,rgba(85,231,255,.07),rgba(157,108,255,.055));border-color:rgba(85,231,255,.17);box-shadow:inset 0 0 28px rgba(85,231,255,.025)}
 .eyebrow{color:var(--cyan);text-shadow:0 0 14px rgba(85,231,255,.3)}
 .hero h2 span{color:var(--cyan);text-shadow:0 0 25px rgba(85,231,255,.18)}
@@ -236,8 +217,6 @@ body::after{
 .modal{background:linear-gradient(145deg,#0a0e19,#05070d);border-color:rgba(85,231,255,.16);box-shadow:0 30px 90px rgba(0,0,0,.7),0 0 45px rgba(85,231,255,.06)}
 .input{background:rgba(255,255,255,.025);border-color:rgba(130,147,210,.13)}
 @keyframes royalGlow{0%,100%{opacity:.45}50%{opacity:.8}}
-.hero::after,.panel::after{animation:royalGlow 4s ease-in-out infinite}
-@media (prefers-reduced-motion:reduce){.hero::after,.panel::after{animation:none}}
 
 /* Responsive */
 @media (max-width:1100px){
@@ -265,27 +244,17 @@ body::after{
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
-/* BLACK + WHITE ROYAL VINE — TRUE OUTER WRAP
-   The vine is a real SVG overlay outside each card, following all 4 sides + rounded corners.
-   No continuous heavy filters/animations: only a short surge when lightning fires. */
-:root{--bg:#000;--surface:#050505;--surface-2:#070707;--line:rgba(255,255,255,.13);--line-strong:rgba(255,255,255,.55);--cyan:#fff;--blue:#fff;--violet:#fff;--green:#fff;--red:#fff;--amber:#fff;--text:#fff;--muted:#a4a4a4}
+/* Black and white electric theme */
+:root{
+  --bg:#000; --surface:#050505; --surface-2:#070707;
+  --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.55);
+  --cyan:#fff; --blue:#fff; --violet:#fff; --green:#fff; --red:#fff; --amber:#fff;
+  --text:#fff; --muted:#a4a4a4;
+}
 html,body{background:#000!important;color:#fff}
 body{background-image:none!important;overflow-x:hidden}
-body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.035),transparent 28%),#000!important}
-.hero,.stat,.panel,.acc{position:relative;overflow:visible!important;border-color:rgba(255,255,255,.15)!important;background:#030303!important;isolation:isolate}
-.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:4}
-.card-vine{position:absolute;inset:-28px;z-index:3;pointer-events:none;overflow:visible;opacity:.78;transition:opacity .18s ease}
-.card-vine svg{display:block;width:100%;height:100%;overflow:visible}
-.card-vine .vine-main{fill:none;stroke:#fff;stroke-width:6.5;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
-.card-vine .vine-twig{fill:none;stroke:#fff;stroke-width:3.4;vector-effect:non-scaling-stroke;stroke-linecap:round;stroke-linejoin:round}
-.card-vine .vine-leaf{fill:#fff;opacity:.96}
-.card-vine .vine-bud{fill:#fff;opacity:.72}
-.card-vine .vine-glint{fill:#fff;opacity:.85}
-body.vine-surge .card-vine{opacity:1}
-body.vine-surge .card-vine svg{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 14px rgba(255,255,255,.55))}
-/* Keep interaction and scrolling cheap: no permanent blur/filter animation. */
-.hero,.stat,.panel,.acc{will-change:auto}
-@media(prefers-reduced-motion:reduce){.card-vine{transition:none}.card-vine svg{filter:none}body.vine-surge .card-vine{opacity:.78}}
+body::before{background:radial-gradient(circle at 50% -10%,rgba(255,255,255,.055),transparent 32%),linear-gradient(#000,#000)!important}
+
 
 /* White-only controls */
 .btn-primary{background:#fff!important;color:#000!important;box-shadow:0 0 22px rgba(255,255,255,.13)!important}
@@ -300,117 +269,35 @@ body.vine-surge .card-vine svg{filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 
 .input{background:#000!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important}
 .input:focus{border-color:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.2),0 0 18px rgba(255,255,255,.08)}
 
-/* Centered modal */
+/* Proper centered modal on phones too — never a bottom sheet / page scroll. */
 .overlay{position:fixed!important;inset:0!important;padding:18px!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:rgba(0,0,0,.82)!important;backdrop-filter:blur(10px)!important;-webkit-backdrop-filter:blur(10px)!important}
 .modal{max-height:min(92vh,760px)!important;overflow-y:auto!important;overscroll-behavior:contain!important}
 body.modal-open{overflow:hidden!important;height:100vh}
-@media(max-width:760px){.overlay{align-items:center!important;padding:14px!important}.modal{width:min(100%,460px)!important;max-height:90vh!important;border-radius:20px!important;padding:20px!important}}
-
-/* Random lightweight lightning flash, triggered by JS every 15–30 seconds. */
-body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;background:rgba(255,255,255,.09);animation:skyFlash .22s ease-out forwards}
-@keyframes skyFlash{0%{opacity:0}18%{opacity:1}38%{opacity:.16}55%{opacity:.6}100%{opacity:0}}
-@media(prefers-reduced-motion:reduce){
-  body.lightning-flash::after{animation:none;opacity:0}
-  .hero::before,.stat::before,.panel::before,.acc::before,.hero::after,.stat::after,.panel::after,.acc::after{animation:none!important}
-}
-
-</style>
-
-<style id="royal-vine-final">
-/* FINAL: Royal black/white leafy perimeter — lightweight for mobile + 512MB Render */
-:root{--black:#000;--white:#fff;--silver:#d9d9d9;--muted:#8d8d8d}
-html,body{background:#000!important;color:#fff!important}
-html{scroll-behavior:auto!important}
-body{background-image:radial-gradient(900px 420px at 50% -20%,rgba(255,255,255,.028),transparent 65%)!important;background-attachment:scroll!important;overflow-x:hidden}
-body::after{background-image:none!important;opacity:0!important}
-body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:9998;opacity:0;background:rgba(255,255,255,.13);mix-blend-mode:screen}
-body.lightning-flash::before{opacity:1;animation:screenFlash .30s ease-out forwards}
-@keyframes screenFlash{0%{opacity:0}12%{opacity:.9}28%{opacity:.12}48%{opacity:.55}100%{opacity:0}}
-.topbar{background:#000!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-bottom:1px solid rgba(255,255,255,.16)!important;box-shadow:0 8px 24px rgba(0,0,0,.72)!important}
-.logo{background:#050505!important;border-color:rgba(255,255,255,.38)!important;box-shadow:0 0 14px rgba(255,255,255,.08)!important}
-.brand-text h1,.brand-text h1 span{color:#fff!important;text-shadow:0 0 14px rgba(255,255,255,.12)!important}
-.container{padding-top:28px!important}
-
-/* Cards stay clean. The vine is OUTSIDE the border and wraps all four sides. */
-.hero,.stat,.panel,.acc{
-  position:relative!important;overflow:visible!important;background:#030303!important;
-  border:1px solid rgba(255,255,255,.16)!important;
-  box-shadow:0 12px 34px rgba(0,0,0,.86),inset 0 1px 0 rgba(255,255,255,.022)!important;
-  isolation:isolate;
-}
-.hero::before,.stat::before,.panel::before,.acc::before{
-  content:""!important;position:absolute!important;inset:-30px!important;pointer-events:none!important;z-index:0!important;
-  background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important;
-  opacity:.82!important;filter:drop-shadow(0 0 3px rgba(255,255,255,.72)) drop-shadow(0 0 9px rgba(255,255,255,.20))!important;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 620' preserveAspectRatio='none'%3E%3Cg fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath stroke-width='18' d='M78 108 C145 45 215 76 282 103 C355 133 420 54 493 88 C565 122 630 62 701 94 C770 125 838 64 922 108 C957 126 963 161 944 196 C917 247 926 302 945 351 C963 399 955 435 916 456 C840 497 775 468 708 496 C635 526 567 466 494 500 C418 535 351 474 278 501 C205 529 141 486 87 462 C49 445 40 408 58 367 C80 317 78 262 56 213 C38 172 45 136 78 108 Z'/%3E%3Cpath stroke-width='8' d='M116 91 Q139 54 166 38 M225 101 Q249 64 279 51 M346 111 Q372 68 402 53 M478 95 Q503 55 534 45 M612 103 Q638 65 669 52 M745 105 Q772 67 803 55 M867 104 Q891 75 920 68 M918 204 Q953 225 970 254 M922 316 Q956 335 973 363 M902 425 Q932 447 950 471 M790 481 Q814 516 842 535 M658 491 Q683 526 711 542 M520 493 Q546 530 574 545 M382 489 Q408 527 436 542 M245 488 Q270 523 299 538 M125 461 Q103 493 105 520 M66 370 Q35 393 26 424 M62 247 Q30 229 20 201 M67 160 Q39 140 28 112'/%3E%3C/g%3E%3Cg fill='%23fff'%3E%3Cpath d='M137 58 C158 31 187 35 202 55 C179 70 157 72 137 58Z'/%3E%3Cpath d='M250 72 C271 45 299 50 312 72 C289 85 268 87 250 72Z'/%3E%3Cpath d='M372 78 C394 49 423 54 437 77 C413 91 391 92 372 78Z'/%3E%3Cpath d='M503 64 C525 36 554 42 568 65 C544 79 522 79 503 64Z'/%3E%3Cpath d='M637 73 C659 45 687 50 702 73 C678 88 656 88 637 73Z'/%3E%3Cpath d='M770 74 C793 46 821 52 835 75 C812 89 790 89 770 74Z'/%3E%3Cpath d='M885 91 C906 65 932 70 943 91 C922 104 903 105 885 91Z'/%3E%3Cpath d='M900 227 C931 210 954 226 955 253 C929 258 910 248 900 227Z'/%3E%3Cpath d='M907 339 C937 322 960 338 961 365 C935 370 917 360 907 339Z'/%3E%3Cpath d='M878 437 C906 419 932 435 934 461 C908 468 890 457 878 437Z'/%3E%3Cpath d='M786 474 C815 458 840 474 842 501 C817 506 798 496 786 474Z'/%3E%3Cpath d='M654 480 C683 464 708 480 710 507 C685 512 666 502 654 480Z'/%3E%3Cpath d='M516 483 C545 466 570 483 572 510 C547 515 528 505 516 483Z'/%3E%3Cpath d='M378 478 C407 462 432 478 434 505 C409 510 390 500 378 478Z'/%3E%3Cpath d='M242 477 C271 460 296 476 298 503 C273 508 254 498 242 477Z'/%3E%3Cpath d='M121 452 C149 435 173 451 175 477 C151 483 133 472 121 452Z'/%3E%3Cpath d='M76 349 C49 330 27 344 29 370 C53 376 70 366 76 349Z'/%3E%3Cpath d='M70 225 C42 208 20 223 21 249 C45 255 62 245 70 225Z'/%3E%3Cpath d='M75 142 C48 124 26 138 27 164 C51 170 68 160 75 142Z'/%3E%3C/g%3E%3C/svg%3E")!important;
-}
-.hero::after,.stat::after,.panel::after,.acc::after{
-  content:""!important;position:absolute!important;inset:-28px!important;pointer-events:none!important;z-index:-1!important;
-  background:transparent!important;border:0!important;box-shadow:none!important;opacity:0!important;
-}
-.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:2}
-
-/* No continuous filter/transform animation: keeps scrolling smooth. Flash only when lightning occurs. */
-body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{
-  animation:vineFlash .42s ease-out both!important;
-}
-@keyframes vineFlash{
-  0%{opacity:.82;filter:drop-shadow(0 0 3px rgba(255,255,255,.72)) drop-shadow(0 0 9px rgba(255,255,255,.20))}
-  16%{opacity:1;filter:brightness(2.1) drop-shadow(0 0 6px #fff) drop-shadow(0 0 20px rgba(255,255,255,.58))}
-  34%{opacity:.62;filter:brightness(.9) drop-shadow(0 0 4px #fff)}
-  52%{opacity:1;filter:brightness(1.8) drop-shadow(0 0 6px #fff) drop-shadow(0 0 16px rgba(255,255,255,.45))}
-  100%{opacity:.82;filter:drop-shadow(0 0 3px rgba(255,255,255,.72)) drop-shadow(0 0 9px rgba(255,255,255,.20))}
-}
-
-/* White-only controls */
-.btn-primary{background:#fff!important;color:#000!important;box-shadow:0 0 18px rgba(255,255,255,.10)!important}
-.btn-ghost,.icon-btn,.chip{background:#030303!important;border-color:rgba(255,255,255,.16)!important;color:#fff!important}
-.btn-ghost:hover,.icon-btn:hover{border-color:#fff!important;box-shadow:0 0 14px rgba(255,255,255,.13)!important}
-.logo{background:#050505!important;border:1px solid rgba(255,255,255,.38)!important;box-shadow:0 0 14px rgba(255,255,255,.08)!important}
-.c-cyan,.c-green,.c-violet,.c-amber,.avatar{background:#080808!important;color:#fff!important;border-color:rgba(255,255,255,.15)!important}
-.bar i{background:#fff!important;box-shadow:0 0 10px rgba(255,255,255,.24)!important}
-.hero-badge{background:#050505!important;border-color:rgba(255,255,255,.17)!important}
-.log-stream{background:#000!important;border-color:rgba(255,255,255,.14)!important}
-
-/* Centered modal */
-.overlay{position:fixed!important;inset:0!important;padding:18px!important;align-items:center!important;justify-content:center!important;overflow:hidden!important;background:rgba(0,0,0,.86)!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
-.modal{background:#030303!important;border-color:rgba(255,255,255,.25)!important;box-shadow:0 28px 70px rgba(0,0,0,.92),0 0 28px rgba(255,255,255,.05)!important;max-height:min(92vh,760px)!important;overflow-y:auto!important;overscroll-behavior:contain!important}
-.input{background:#000!important;border-color:rgba(255,255,255,.18)!important;color:#fff!important}
-.input:focus{border-color:#fff!important;box-shadow:0 0 0 1px rgba(255,255,255,.16)!important}
-body.modal-open{overflow:hidden!important;height:100vh}
 @media(max-width:760px){
-  .hero,.stat,.panel,.acc{overflow:visible!important}
-  .hero::before,.stat::before,.panel::before,.acc::before{inset:-22px!important}
+  .overlay{align-items:center!important;padding:14px!important}
+  .modal{width:min(100%,460px)!important;max-height:90vh!important;border-radius:20px!important;padding:20px!important}
 }
-@media(prefers-reduced-motion:reduce){body.lightning-flash::before{animation:none;opacity:0}.hero::before,.stat::before,.panel::before,.acc::before{animation:none!important}}
-</style>
+
+/* Random lightweight lightning flash, triggered by JS only every 15–30 seconds. */
+body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;background:rgba(255,255,255,.11);mix-blend-mode:screen;animation:skyFlash .22s ease-out forwards}
+@keyframes skyFlash{0%{opacity:0}18%{opacity:1}38%{opacity:.18}55%{opacity:.72}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){body.lightning-flash::after{animation:none;opacity:0}}
 
 
-<style id="royal-natural-vine-final">
-/* Natural wrapped vine: subtle black/white in idle state, electric only during lightning. */
-.hero,.stat,.panel,.acc{position:relative!important;overflow:visible!important;isolation:isolate}
-.card-vine{display:none!important}
-.hero::before,.stat::before,.panel::before,.acc::before{
-  content:""!important;position:absolute!important;inset:-24px!important;z-index:1!important;pointer-events:none!important;
-  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201000%20620%22%3E%0A%3Cg%20fill%3D%22none%22%20stroke%3D%22%23fff%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%0A%3Cpath%20d%3D%22M92%2076%20C165%2042%20238%2061%20312%2072%20C390%2084%20454%2052%20520%2066%20C596%2082%20666%2054%20736%2069%20C813%2085%20879%2054%20928%2091%20C958%20114%20951%20151%20939%20184%20C922%20230%20935%20275%20944%20316%20C954%20365%20947%20408%20918%20442%20C880%20487%20816%20468%20750%20489%20C681%20511%20615%20480%20548%20497%20C476%20515%20410%20482%20340%20498%20C269%20515%20205%20486%20135%20463%20C92%20449%2067%20418%2075%20378%20C84%20331%2070%20285%2060%20241%20C50%20194%2048%20143%2092%2076%20Z%22%20stroke-width%3D%224.5%22%20opacity%3D%22.58%22%2F%3E%0A%3Cpath%20d%3D%22M119%2070%20Q138%2039%20166%2030%20M194%2063%20Q215%2031%20244%2025%20M290%2073%20Q313%2040%20342%2035%20M392%2070%20Q416%2036%20446%2031%20M500%2067%20Q523%2034%20553%2031%20M612%2073%20Q636%2040%20665%2034%20M724%2073%20Q749%2040%20779%2037%20M833%2070%20Q858%2043%20885%2048%20M932%20160%20Q964%20181%20976%20207%20M940%20256%20Q970%20275%20980%20302%20M943%20352%20Q973%20370%20978%20399%20M898%20449%20Q920%20480%20947%20492%20M794%20481%20Q816%20512%20844%20529%20M679%20493%20Q700%20523%20727%20540%20M556%20497%20Q577%20528%20604%20543%20M430%20490%20Q451%20521%20479%20536%20M307%20491%20Q329%20521%20356%20533%20M188%20472%20Q168%20503%20168%20530%20M88%20389%20Q56%20407%2043%20436%20M72%20294%20Q39%20283%2024%20258%20M69%20196%20Q38%20181%2028%20153%22%20stroke-width%3D%222.4%22%20opacity%3D%22.7%22%2F%3E%0A%3C%2Fg%3E%0A%3Cg%20fill%3D%22%23050505%22%20stroke%3D%22%23fff%22%20stroke-width%3D%221.9%22%20stroke-linejoin%3D%22round%22%20opacity%3D%22.72%22%3E%0A%3Cpath%20d%3D%22M143%2049%20C157%2024%20180%2023%20196%2040%20C180%2055%20160%2059%20143%2049Z%22%2F%3E%3Cpath%20d%3D%22M223%2047%20C236%2020%20259%2018%20274%2035%20C259%2051%20239%2054%20223%2047Z%22%2F%3E%3Cpath%20d%3D%22M319%2058%20C333%2031%20356%2029%20372%2046%20C356%2062%20336%2065%20319%2058Z%22%2F%3E%3Cpath%20d%3D%22M417%2053%20C431%2026%20454%2025%20470%2042%20C454%2057%20434%2060%20417%2053Z%22%2F%3E%3Cpath%20d%3D%22M525%2050%20C539%2023%20562%2023%20578%2040%20C562%2055%20542%2057%20525%2050Z%22%2F%3E%3Cpath%20d%3D%22M635%2057%20C649%2030%20672%2028%20688%2045%20C672%2061%20652%2064%20635%2057Z%22%2F%3E%3Cpath%20d%3D%22M746%2058%20C760%2032%20783%2030%20799%2047%20C783%2062%20763%2065%20746%2058Z%22%2F%3E%3Cpath%20d%3D%22M852%2063%20C866%2040%20889%2040%20904%2055%20C889%2070%20870%2072%20852%2063Z%22%2F%3E%0A%3Cpath%20d%3D%22M951%20190%20C979%20203%20988%20225%20975%20242%20C954%20232%20946%20213%20951%20190Z%22%2F%3E%3Cpath%20d%3D%22M952%20286%20C980%20299%20987%20321%20974%20338%20C954%20328%20947%20309%20952%20286Z%22%2F%3E%3Cpath%20d%3D%22M950%20383%20C978%20395%20985%20417%20972%20434%20C951%20425%20944%20405%20950%20383Z%22%2F%3E%3Cpath%20d%3D%22M883%20466%20C907%20481%20912%20504%20896%20517%20C878%20503%20874%20483%20883%20466Z%22%2F%3E%3Cpath%20d%3D%22M784%20493%20C808%20508%20813%20531%20797%20544%20C779%20530%20775%20510%20784%20493Z%22%2F%3E%3Cpath%20d%3D%22M669%20504%20C693%20519%20698%20542%20682%20555%20C664%20541%20660%20521%20669%20504Z%22%2F%3E%3Cpath%20d%3D%22M551%20507%20C575%20522%20580%20545%20564%20558%20C546%20544%20542%20524%20551%20507Z%22%2F%3E%3Cpath%20d%3D%22M429%20501%20C453%20516%20458%20539%20442%20552%20C424%20538%20420%20518%20429%20501Z%22%2F%3E%3Cpath%20d%3D%22M308%20501%20C332%20516%20337%20539%20321%20552%20C303%20538%20299%20518%20308%20501Z%22%2F%3E%3Cpath%20d%3D%22M191%20485%20C215%20500%20220%20523%20204%20536%20C186%20522%20182%20502%20191%20485Z%22%2F%3E%3Cpath%20d%3D%22M92%20397%20C67%20411%2060%20433%2075%20448%20C93%20439%20101%20417%2092%20397Z%22%2F%3E%3Cpath%20d%3D%22M72%20302%20C46%20313%2038%20335%2053%20350%20C72%20341%2080%20321%2072%20302Z%22%2F%3E%3Cpath%20d%3D%22M68%20205%20C43%20215%2036%20236%2051%20251%20C69%20242%2077%20223%2068%20205Z%22%2F%3E%0A%3C%2Fg%3E%3C%2Fsvg%3E") center/100% 100% no-repeat!important;
-  opacity:.22!important;filter:none!important;
-  transform:none!important;
-}
-.hero > *, .stat > *, .panel > *, .acc > *{position:relative;z-index:2}
-body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{
-  opacity:.92!important;
-  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 13px rgba(255,255,255,.72)) brightness(1.25)!important;
-  animation:royalVineFlash .55s ease-out both!important;
-}
-@keyframes royalVineFlash{0%{opacity:.22}12%{opacity:1}30%{opacity:.55}48%{opacity:1}100%{opacity:.22}}
-/* Lightweight background strike: no canvas, no permanent animation. */
-body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:9997;pointer-events:none;opacity:0;background:linear-gradient(117deg,transparent 0 48%,rgba(255,255,255,.88) 48.15%,rgba(255,255,255,.16) 48.4%,transparent 48.8% 100%);clip-path:polygon(43% 0,48% 0,45% 32%,53% 32%,42% 68%,47% 68%,35% 100%,39% 64%,32% 64%,43% 31%,37% 31%);animation:royalStrike .26s ease-out forwards}
-@keyframes royalStrike{0%{opacity:0}18%{opacity:.9}38%{opacity:.08}58%{opacity:.55}100%{opacity:0}}
-@media(max-width:760px){.hero::before,.stat::before,.panel::before,.acc::before{inset:-18px!important}}
-@media(prefers-reduced-motion:reduce){body.lightning-flash .hero::before,body.lightning-flash .stat::before,body.lightning-flash .panel::before,body.lightning-flash .acc::before{animation:none!important;filter:none!important;opacity:.22!important}body.lightning-flash::after{animation:none!important;opacity:0!important}}
+/* Authentication gate and admin panel: lightweight black/white UI. */
+body:not(.authenticated) > .topbar,body:not(.authenticated) > .container,body:not(.authenticated) > #add-modal{display:none!important}
+.auth-gate{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;overflow:auto;padding:22px;background:#000;color:#fff}
+.auth-card{width:min(100%,440px);border:1px solid #292929;border-radius:24px;background:#070707;padding:26px;box-shadow:0 24px 80px #000}
+.auth-brand{text-align:center;margin-bottom:22px}.auth-logo{width:56px;height:56px;border-radius:16px;border:1px solid #555;display:grid;place-items:center;margin:0 auto 14px;font-size:24px;background:#050505;box-shadow:0 0 18px #222}.auth-brand h1{font-size:26px}.auth-brand p,.auth-note{color:#999;margin-top:7px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;background:#111;padding:5px;border-radius:13px;margin:22px 0}.auth-tabs button{border:0;border-radius:10px;padding:12px;background:transparent;color:#999;font-weight:700}.auth-tabs button.active{background:#fff;color:#000}
+.auth-field{margin:14px 0}.auth-field label{display:block;color:#bbb;font-size:12px;font-weight:700;margin-bottom:8px;letter-spacing:.7px}.auth-field input{width:100%;border:1px solid #292929;background:#020202;border-radius:12px;padding:15px;color:#fff;outline:none}.auth-field input:focus{border-color:#fff}.auth-submit{width:100%;border:0;border-radius:12px;padding:15px;background:#fff;color:#000;font-weight:800;margin-top:8px}.auth-error{display:none;border:1px solid #555;border-radius:10px;padding:10px;color:#fff;margin:10px 0;font-size:14px}.auth-note{font-size:12px;line-height:1.5;text-align:center}
+.user-pill{font-size:12px;color:#ddd;border:1px solid #333;border-radius:999px;padding:7px 9px;white-space:nowrap}.admin-btn{display:none}.admin-overlay{position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.88)}.admin-overlay.active{display:flex}.admin-card{width:min(100%,760px);max-height:90vh;overflow:auto;background:#050505;border:1px solid #333;border-radius:20px;padding:20px}.admin-user{border:1px solid #242424;border-radius:14px;padding:14px;margin:10px 0}.admin-user-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.admin-user small{color:#999}.admin-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr auto;gap:8px;margin-top:12px}.admin-controls input{min-width:0;background:#000;border:1px solid #333;border-radius:9px;padding:9px;color:#fff}.admin-controls button{background:#fff;color:#000;border:0;border-radius:9px;padding:9px 12px;font-weight:700}
+@media(max-width:560px){.auth-card{padding:22px}.admin-controls{grid-template-columns:1fr 1fr}.admin-controls button{grid-column:1/-1}.user-pill{max-width:115px;overflow:hidden;text-overflow:ellipsis}}
+
 </style>
 </head>
 <body>
+<section class="auth-gate" id="auth-gate" aria-label="Sign in to Level Up Bot"><div class="auth-card"><div class="auth-brand"><div class="auth-logo"><i class="fa-solid fa-bolt"></i></div><h1>LEVEL UP BOT</h1><p>Level-Up Control Center</p></div><div class="auth-tabs"><button id="tab-login" class="active" type="button" onclick="setAuthMode('login')">Sign In</button><button id="tab-register" type="button" onclick="setAuthMode('register')">Create Account</button></div><div id="auth-error" class="auth-error" role="alert"></div><form id="auth-form" onsubmit="submitAuth(event)"><div class="auth-field"><label for="auth-username">USERNAME</label><input id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="32" placeholder="Enter username" required></div><div class="auth-field"><label for="auth-password">PASSWORD</label><input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" placeholder="Password (8+ characters)" required></div><button class="auth-submit" id="auth-submit" type="submit">Sign In</button></form><p class="auth-note">Standard users start with 1 UID slot. Admin credentials are configured in Render environment variables.</p></div></section>
 <header class="topbar">
 </a>
   <div class="topbar-inner">
@@ -426,6 +313,9 @@ body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:9997;point
       <span class="chip" title="Uptime bot"><i class="fa-regular fa-clock" style="color:var(--amber)"></i><span class="mono" id="stat-uptime">00:00:00</span></span>
     </div>
     <div class="header-actions">
+      <span id="user-pill" class="user-pill" title="Signed-in account"></span>
+      <button class="btn btn-ghost btn-sm admin-btn" id="admin-open" onclick="openAdminPanel()" type="button">Admin Panel</button>
+      <button class="btn btn-ghost btn-sm" id="logout-btn" onclick="logoutUser()" type="button">Sign out</button>
       <button class="btn btn-ghost btn-square" id="refresh-btn" onclick="fetchStats(true)" title="Refresh" aria-label="Refresh"><i class="fa-solid fa-rotate"></i></button>
     </div>
   </div>
@@ -436,9 +326,9 @@ body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:9997;point
     <div class="hero-copy">
       <div class="eyebrow"><span class="pulse"></span> SECURE LEVEL UP CONTROL CENTER</div>
       <h2>Level up smarter. <span>Track everything.</span></h2>
-      <p>Monitor accounts, EXP progress, matches and bot activity from one clean dashboard.</p>
+      <p>Monitor account status, level progress and EXP gains from one clean dashboard.</p>
     </div>
-    <div class="hero-badge"><i class="fa-solid fa-shield-halved"></i><div><strong>Safe Level Up</strong><small>Fast • Stable • Real-time</small></div></div>
+    <div class="hero-badge"><i class="fa-solid fa-shield-halved"></i><div><strong>Safe Level Up</strong><small>Fast • Stable • Optimized</small></div></div>
   </section>
   <section class="stats" aria-label="Dashboard summary">
     <div class="stat"><div class="stat-icon c-cyan"><i class="fa-solid fa-users"></i></div><div class="stat-body"><strong id="stat-total-accounts">0</strong><span>Active accounts</span></div></div>
@@ -461,13 +351,6 @@ body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:9997;point
       </div>
     </section>
 
-    <section class="panel">
-      <div class="panel-head">
-        <h2><i class="fa-solid fa-terminal" style="color:var(--green)"></i>Bot Activity</h2>
-        <small>Real-time</small>
-      </div>
-      <div class="log-stream" id="log-stream"></div>
-    </section>
   </div>
 </main>
 
@@ -500,8 +383,23 @@ body.lightning-flash::after{content:"";position:fixed;inset:0;z-index:9997;point
   </div>
 </div>
 
+<div class="admin-overlay" id="admin-overlay" onclick="if(event.target===this)closeAdminPanel()"><section class="admin-card" role="dialog" aria-modal="true" aria-labelledby="admin-title"><div class="modal-head"><h3 id="admin-title">Admin Panel · Users &amp; Plans</h3><button class="icon-btn" onclick="closeAdminPanel()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div><p class="auth-note" style="text-align:left">Admin access is lifetime with unlimited slots. Set a user's slots, plan and optional expiry date below.</p><div id="admin-users-list">Loading users…</div></section></div>
+
 <script>
 const $ = id => document.getElementById(id);
+let authMode = 'login';
+let currentUser = null;
+function setAuthMode(mode){authMode=mode;$('tab-login').classList.toggle('active',mode==='login');$('tab-register').classList.toggle('active',mode==='register');$('auth-submit').textContent=mode==='login'?'Sign In':'Create Account';$('auth-password').autocomplete=mode==='login'?'current-password':'new-password';$('auth-error').style.display='none';}
+async function submitAuth(e){e.preventDefault();const error=$('auth-error');error.style.display='none';const payload={username:$('auth-username').value.trim(),password:$('auth-password').value};try{const r=await fetch(authMode==='login'?'/api/auth/login':'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok||d.status!=='ok')throw new Error(d.error||'Authentication failed');currentUser=d.user;applyAuthenticatedUI();}catch(err){error.textContent=err.message||'Unable to sign in.';error.style.display='block';}}
+function applyAuthenticatedUI(){document.body.classList.add('authenticated');$('auth-gate').style.display='none';$('user-pill').textContent=currentUser.role==='admin'?`${currentUser.username} · ADMIN`:`${currentUser.username} · ${currentUser.slots} UID slot`;$('admin-open').style.display=currentUser.role==='admin'?'inline-flex':'none';fetchStats();}
+async function checkAuth(){try{const r=await fetch('/api/auth/me');if(r.ok){const d=await r.json();currentUser=d.user;applyAuthenticatedUI();}}catch(e){}}
+async function logoutUser(){try{await fetch('/api/auth/logout',{method:'POST'});}finally{currentUser=null;document.body.classList.remove('authenticated');$('auth-gate').style.display='flex';$('auth-password').value='';setAuthMode('login');}}
+function openAdminPanel(){$('admin-overlay').classList.add('active');loadAdminUsers();}
+function closeAdminPanel(){$('admin-overlay').classList.remove('active');}
+async function loadAdminUsers(){const el=$('admin-users-list');el.textContent='Loading users…';try{const r=await fetch('/api/admin/users');const d=await r.json();if(!r.ok)throw new Error(d.error||'Unable to load users');el.innerHTML=d.users.map(u=>`<div class="admin-user"><div class="admin-user-top"><div><strong>${escapeHtml(u.username)}</strong><br><small>${u.role==='admin'?'Lifetime · Unlimited slots':`${u.account_count} account(s) · ${u.subscription_active?'Active':'Expired'}`}</small></div><small>Created ${new Date(u.created_at*1000).toLocaleDateString()}</small></div>${u.role==='admin'?'':`<div class="admin-controls"><input type="number" min="1" max="10000" id="slots-${u.id}" value="${u.slots}" aria-label="UID slots"><input id="plan-${u.id}" maxlength="40" value="${escapeHtml(u.plan)}" aria-label="Plan name"><input type="date" id="expiry-${u.id}" aria-label="Subscription expiry" value="${u.expires_at?new Date(u.expires_at*1000).toISOString().slice(0,10):''}"><button onclick="saveUserPlan(${u.id})">Save</button></div>`}</div>`).join('')||'<p>No users yet.</p>';}catch(e){el.textContent=e.message;}}
+async function saveUserPlan(id){const slots=Number($(`slots-${id}`).value),plan=$(`plan-${id}`).value.trim()||'Standard',date=$(`expiry-${id}`).value;const expires_at=date?Math.floor(new Date(date+'T23:59:59').getTime()/1000):null;try{const r=await fetch('/api/admin/users/update',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,slots,plan,expires_at})});const d=await r.json();if(!r.ok)throw new Error(d.error||'Save failed');loadAdminUsers();}catch(e){alert(e.message);}}
+checkAuth();
+
 let serverUptime = 0;
 let lastUptimeSync = Date.now();
 
@@ -510,17 +408,13 @@ let lastUptimeSync = Date.now();
   setTimeout(() => {
     if (!document.hidden) {
       document.body.classList.remove('lightning-flash');
+      void document.body.offsetWidth;
       document.body.classList.add('lightning-flash');
-      document.body.classList.add('vine-surge');
       setTimeout(() => document.body.classList.remove('lightning-flash'), 280);
-      setTimeout(() => document.body.classList.remove('vine-surge'), 680);
     }
     scheduleLightning();
   }, delay);
 })();
-
-
-function decorateVines(){ /* perimeter vines are CSS-only for smooth scrolling */ }
 
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
@@ -534,6 +428,7 @@ function toggleFormType(){
 
 async function submitAddAccount(e){
   e.preventDefault();
+  if(currentUser && currentUser.role!=='admin' && !currentUser.subscription_active){alert('Subscription expired. Contact the administrator.');return;}
   const type = $('acc-type').value;
   let payload = {};
   if (type === 'guest'){
@@ -579,7 +474,10 @@ function setConn(ok){
   $('conn-chip').style.color = ok ? 'var(--green)' : 'var(--red)';
 }
 
+let statsFetchInProgress = false;
 async function fetchStats(manual){
+  if(!document.body.classList.contains('authenticated') || statsFetchInProgress) return;
+  statsFetchInProgress = true;
   const btn = $('refresh-btn');
   if (manual) btn.classList.add('spin');
   try {
@@ -636,19 +534,13 @@ async function fetchStats(manual){
           </div>
         </article>`;
       }).join('');
-      decorateVines(box);
     }
 
-    const logBox = $('log-stream');
-    const stick = logBox.scrollTop + logBox.clientHeight >= logBox.scrollHeight - 40;
-    logBox.innerHTML = data.logs.map(l =>
-      `<div class="log-item"><span class="log-time">[${escapeHtml(l.time)}]</span><span class="log-${escapeHtml(l.level)}">${escapeHtml(l.message)}</span></div>`
-    ).join('');
-    if (stick) logBox.scrollTop = logBox.scrollHeight;
   } catch (err){
     console.error('Failed to fetch stats:', err);
     setConn(false);
   } finally {
+    statsFetchInProgress = false;
     btn.classList.remove('spin');
   }
 }
@@ -666,8 +558,15 @@ setInterval(() => {
   $('stat-uptime').innerText = formatUptime(serverUptime + elapsed);
 }, 1000);
 
+// Dashboard data is intentionally refreshed once per minute to reduce bandwidth.
+// Skip background polling while the tab is hidden; manual refresh remains available.
 fetchStats();
-setInterval(fetchStats, 2500);
+setInterval(() => {
+  if (!document.hidden) fetchStats();
+}, 60000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && document.body.classList.contains('authenticated')) fetchStats();
+});
 </script>
 </body>
 </html>
