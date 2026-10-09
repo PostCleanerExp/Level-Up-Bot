@@ -294,28 +294,58 @@ body:not(.authenticated) > .topbar,body:not(.authenticated) > .container,body:no
 .user-pill{font-size:12px;color:#ddd;border:1px solid #333;border-radius:999px;padding:7px 9px;white-space:nowrap}.admin-btn{display:none}.admin-overlay{position:fixed;inset:0;z-index:1200;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(0,0,0,.88)}.admin-overlay.active{display:flex}.admin-card{width:min(100%,760px);max-height:90vh;overflow:auto;background:#050505;border:1px solid #333;border-radius:20px;padding:20px}.admin-user{border:1px solid #242424;border-radius:14px;padding:14px;margin:10px 0}.admin-user-top{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.admin-user small{color:#999}.admin-controls{display:grid;grid-template-columns:1fr 1fr 1.2fr auto;gap:8px;margin-top:12px}.admin-controls input{min-width:0;background:#000;border:1px solid #333;border-radius:9px;padding:9px;color:#fff}.admin-controls button{background:#fff;color:#000;border:0;border-radius:9px;padding:9px 12px;font-weight:700}
 @media(max-width:560px){.auth-card{padding:22px}.admin-controls{grid-template-columns:1fr 1fr}.admin-controls button{grid-column:1/-1}.user-pill{max-width:115px;overflow:hidden;text-overflow:ellipsis}}
 
+
+
+/* Compact phone-style header: controls first, identity/status/timer below. */
+.topbar{background:rgba(0,0,0,.94)!important;border-bottom:1px solid rgba(255,255,255,.13)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.topbar-inner.header-stack{max-width:1360px;padding:9px 14px 10px;display:flex;flex-direction:column;align-items:stretch;gap:8px}
+.header-top-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;width:100%}
+.header-status-row{display:flex;align-items:center;gap:7px;width:100%;min-width:0}
+.header-status-row .user-pill{flex:1 1 auto;min-width:0;max-width:none;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:7px 10px;font-size:12px;background:#050505;border-color:rgba(255,255,255,.18)}
+.header-status-row .chip{height:32px;padding:0 10px;flex:none}
+.header-status-row .uptime-chip{font-variant-numeric:tabular-nums}
+.header-status-row .uptime-chip i{color:#bdbdbd!important}
+#conn-chip.live{color:#4ade80!important;border-color:rgba(74,222,128,.38)!important;background:rgba(20,90,48,.20)!important}
+#conn-dot.dot{background:#4ade80!important;box-shadow:0 0 0 0 rgba(74,222,128,.65),0 0 10px rgba(74,222,128,.55)!important;animation:greenPulse 1.7s infinite!important}
+#conn-dot.dot.off{background:#fb7185!important;box-shadow:none!important;animation:none!important}
+@keyframes greenPulse{0%{box-shadow:0 0 0 0 rgba(74,222,128,.55),0 0 8px rgba(74,222,128,.45)}70%{box-shadow:0 0 0 6px rgba(74,222,128,0),0 0 12px rgba(74,222,128,.55)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0),0 0 8px rgba(74,222,128,.45)}}
+#admin-open{display:inline-flex;min-width:108px}
+#logout-btn{min-width:82px}
+#refresh-btn{flex:none;width:32px;height:32px}
+@media(max-width:560px){
+ .topbar-inner.header-stack{padding:8px 10px 9px;gap:7px}
+ .header-top-actions{justify-content:stretch}
+ .header-top-actions .btn{flex:1;height:34px;font-size:13px}
+ .header-status-row{gap:6px}
+ .header-status-row .user-pill{font-size:11px;padding:7px 8px}
+ .header-status-row .chip{height:32px;padding:0 8px;gap:5px}
+ .header-status-row .uptime-chip .mono{font-size:11px}
+ #conn-text{display:inline!important;font-size:11px}
+ #conn-chip{min-width:32px}
+ #refresh-btn{width:32px;height:32px}
+}
+@media(max-width:370px){
+ .header-status-row{flex-wrap:wrap}
+ .header-status-row .user-pill{flex-basis:100%;order:0}
+ .header-status-row #conn-chip{order:1}
+ .header-status-row .uptime-chip{flex:1;order:2}
+ .header-status-row #refresh-btn{order:3}
+}
+
 </style>
 </head>
 <body>
 <section class="auth-gate" id="auth-gate" aria-label="Sign in to Level Up Bot"><div class="auth-card"><div class="auth-brand"><div class="auth-logo"><i class="fa-solid fa-bolt"></i></div><h1>LEVEL UP BOT</h1><p>Level-Up Control Center</p></div><div class="auth-tabs"><button id="tab-login" class="active" type="button" onclick="setAuthMode('login')">Sign In</button><button id="tab-register" type="button" onclick="setAuthMode('register')">Create Account</button></div><div id="auth-error" class="auth-error" role="alert"></div><form id="auth-form" onsubmit="submitAuth(event)"><div class="auth-field"><label for="auth-username">USERNAME</label><input id="auth-username" name="username" autocomplete="username" minlength="3" maxlength="32" placeholder="Enter username" required></div><div class="auth-field"><label for="auth-password">PASSWORD</label><input id="auth-password" name="password" type="password" autocomplete="current-password" minlength="8" maxlength="128" placeholder="Password (8+ characters)" required></div><button class="auth-submit" id="auth-submit" type="submit">Sign In</button></form><p class="auth-note">Standard users start with 1 UID slot. Admin credentials are configured in Render environment variables.</p></div></section>
 <header class="topbar">
-</a>
-  <div class="topbar-inner">
-    <div class="brand">
-      <div class="logo"><i class="fa-solid fa-bolt"></i></div>
-      <div class="brand-text">
-        <h1>LEVEL UP BOT <span>Safe • Fast • Reliable</span></h1>
-  
-      </div>
-    </div>
-    <div class="header-meta">
-      <span class="chip live" id="conn-chip"><span class="dot" id="conn-dot"></span><span id="conn-text">Online</span></span>
-      <span class="chip" title="Uptime bot"><i class="fa-regular fa-clock" style="color:var(--amber)"></i><span class="mono" id="stat-uptime">00:00:00</span></span>
-    </div>
-    <div class="header-actions">
-      <span id="user-pill" class="user-pill" title="Signed-in account"></span>
+  <div class="topbar-inner header-stack">
+    <div class="header-top-actions">
       <button class="btn btn-ghost btn-sm admin-btn" id="admin-open" onclick="openAdminPanel()" type="button">Admin Panel</button>
       <button class="btn btn-ghost btn-sm" id="logout-btn" onclick="logoutUser()" type="button">Sign out</button>
+    </div>
+    <div class="header-status-row">
+      <span id="user-pill" class="user-pill" title="Signed-in account"></span>
+      <span class="chip live" id="conn-chip" aria-label="Service status"><span class="dot" id="conn-dot"></span><span id="conn-text">Online</span></span>
+      <span class="chip uptime-chip" title="Bot uptime"><i class="fa-regular fa-clock" aria-hidden="true"></i><span class="mono" id="stat-uptime">00:00:00</span></span>
       <button class="btn btn-ghost btn-square" id="refresh-btn" onclick="fetchStats(true)" title="Refresh" aria-label="Refresh"><i class="fa-solid fa-rotate"></i></button>
     </div>
   </div>
@@ -343,7 +373,7 @@ body:not(.authenticated) > .topbar,body:not(.authenticated) > .container,body:no
         <h2><i class="fa-solid fa-user-astronaut" style="color:var(--cyan)"></i>Account &amp; EXP Monitor</h2>
         <div class="panel-tools">
           <small id="last-update">—</small>
-          <button class="btn btn-primary btn-sm" onclick="openAddModal()"><i class="fa-solid fa-plus"></i>Add Account</button>
+          <button class="btn btn-primary btn-sm" onclick="beginAddAccount()"><i class="fa-solid fa-plus"></i>Add Account</button>
         </div>
       </div>
       <div class="accounts" id="accounts-container">
@@ -353,6 +383,14 @@ body:not(.authenticated) > .topbar,body:not(.authenticated) > .container,body:no
 
   </div>
 </main>
+
+<div class="overlay" id="verify-gate" onclick="if(event.target===this)closeVerifyGate()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="verify-gate-title">
+    <div class="modal-head"><h3 id="verify-gate-title">Verify to Unlock</h3><button class="icon-btn" onclick="closeVerifyGate()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
+    <p style="line-height:1.7;margin:8px 0 18px;color:var(--muted,#aaa)">You have to verify through VPLink to use the Level Up Bot free for 24 hours. Verification bypass attempts are prohibited and may result in access being revoked or your website account being suspended.</p>
+    <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeVerifyGate()">Cancel</button><button type="button" class="btn btn-primary" onclick="startVerification()">Get Verified</button></div>
+  </div>
+</div>
 
 <div class="overlay" id="add-modal" onclick="if(event.target===this)closeAddModal()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -391,7 +429,7 @@ let authMode = 'login';
 let currentUser = null;
 function setAuthMode(mode){authMode=mode;$('tab-login').classList.toggle('active',mode==='login');$('tab-register').classList.toggle('active',mode==='register');$('auth-submit').textContent=mode==='login'?'Sign In':'Create Account';$('auth-password').autocomplete=mode==='login'?'current-password':'new-password';$('auth-error').style.display='none';}
 async function submitAuth(e){e.preventDefault();const error=$('auth-error');error.style.display='none';const payload={username:$('auth-username').value.trim(),password:$('auth-password').value};try{const r=await fetch(authMode==='login'?'/api/auth/login':'/api/auth/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();if(!r.ok||d.status!=='ok')throw new Error(d.error||'Authentication failed');currentUser=d.user;applyAuthenticatedUI();}catch(err){error.textContent=err.message||'Unable to sign in.';error.style.display='block';}}
-function applyAuthenticatedUI(){document.body.classList.add('authenticated');$('auth-gate').style.display='none';$('user-pill').textContent=currentUser.role==='admin'?`${currentUser.username} · ADMIN`:`${currentUser.username} · ${currentUser.slots} UID slot`;$('admin-open').style.display=currentUser.role==='admin'?'inline-flex':'none';fetchStats();}
+function applyAuthenticatedUI(){document.body.classList.add('authenticated');$('auth-gate').style.display='none';$('user-pill').textContent=currentUser.role==='admin'?`${currentUser.username} · ADMIN`:`${currentUser.username} · ${currentUser.slots} UID slot${Number(currentUser.slots)===1?'':'s'}`;const panelBtn=$('admin-open');panelBtn.style.display='inline-flex';if(currentUser.role==='admin'){panelBtn.textContent='Admin Panel';panelBtn.onclick=openAdminPanel;}else{panelBtn.textContent='User Panel';panelBtn.onclick=()=>document.querySelector('.container')?.scrollIntoView({behavior:'smooth',block:'start'});}fetchStats();}
 async function checkAuth(){try{const r=await fetch('/api/auth/me');if(r.ok){const d=await r.json();currentUser=d.user;applyAuthenticatedUI();}}catch(e){}}
 async function logoutUser(){try{await fetch('/api/auth/logout',{method:'POST'});}finally{currentUser=null;document.body.classList.remove('authenticated');$('auth-gate').style.display='flex';$('auth-password').value='';setAuthMode('login');}}
 function openAdminPanel(){$('admin-overlay').classList.add('active');loadAdminUsers();}
@@ -417,6 +455,9 @@ let lastUptimeSync = Date.now();
 })();
 
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
+function beginAddAccount(){ if(currentUser && currentUser.role==='admin'){ openAddModal(); return; } $('verify-gate').classList.add('active'); document.body.classList.add('modal-open'); }
+function closeVerifyGate(){ $('verify-gate').classList.remove('active'); document.body.classList.remove('modal-open'); }
+function startVerification(){ window.location.href='/verify'; }
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
 
