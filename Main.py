@@ -34,7 +34,7 @@ import CguTeam_pb2
 import CguFF_pb2
 
 # ==================== WEB DASHBOARD ====================
-from dashboard_server import bot_state, start_web_dashboard
+from dashboard_server import bot_state, start_web_dashboard, bind_account_identity
 
 # ==================== CONFIGURATION ====================
 WEB_HOST = "0.0.0.0"
@@ -2403,6 +2403,7 @@ async def account_loop_guest(uid: str, password: str):
                 await asyncio.sleep(15)
                 continue
 
+            bind_account_identity("uid:" + str(uid), str(account_data.get("account_id") or uid))
             await run_account_worker(account_data, uid)
             print_warning(f"Session finished for {uid}. Reconnecting in 3s...")
             await asyncio.sleep(3)
@@ -2430,6 +2431,9 @@ async def account_loop_token(token: str):
                 continue
 
             acc_id = str(account_data['account_id'])
+            # Link the token-owned slot to the actual in-game UID so the
+            # dashboard can display it without reserving a second slot.
+            bind_account_identity(token, acc_id)
             await run_account_worker(account_data, acc_id)
             print_warning("Token session finished. Reconnecting in 3s...")
             await asyncio.sleep(3)
