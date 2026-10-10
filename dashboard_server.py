@@ -702,7 +702,7 @@ async def handle_redeem_verification_token(request: web.Request):
         # The UI example is documentation only and must never grant access.
         if hmac.compare_digest(code.upper(), "LVLUP9GQMBS"):
             return web.json_response({"status":"error","error":"Example tokens cannot be redeemed. Generate a fresh verification token."}, status=403)
-        if not re.fullmatch(r"LvlUp[A-Z2-9]{6}", code):
+        if not re.fullmatch(r"LvlUp[A-Za-z0-9]{6}", code):
             return web.json_response({"status":"error","error":"Invalid token format."}, status=400)
         now = int(time.time())
         conn = _db()
