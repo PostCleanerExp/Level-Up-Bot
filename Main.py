@@ -230,9 +230,10 @@ def optimize_udp_socket(sock: socket.socket):
 
 # ==================== NETWORK & CRYPTO ====================
 client = httpx.AsyncClient(
+    # Bounded connection pool for lower burst resource usage on Render.
     verify=False,
     timeout=10.0,
-    limits=httpx.Limits(max_connections=100, max_keepalive_connections=50)
+    limits=httpx.Limits(max_connections=20, max_keepalive_connections=10, keepalive_expiry=30.0)
 )
 
 headers = {
