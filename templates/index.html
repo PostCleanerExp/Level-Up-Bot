@@ -388,7 +388,19 @@ body:not(.authenticated) > .topbar,body:not(.authenticated) > .container,body:no
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="verify-gate-title">
     <div class="modal-head"><h3 id="verify-gate-title">Verify to Unlock</h3><button class="icon-btn" onclick="closeVerifyGate()" aria-label="Close"><i class="fa-solid fa-xmark"></i></button></div>
     <p style="line-height:1.7;margin:8px 0 18px;color:var(--muted,#aaa)">You have to verify through VPLink to use the Level Up Bot free for 24 hours. Verification bypass attempts are prohibited and may result in access being revoked or your website account being suspended.</p>
-    <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeVerifyGate()">Cancel</button><button type="button" class="btn btn-primary" onclick="startVerification()">Get Verified</button></div>
+    <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeVerifyGate()">Cancel</button><button type="button" class="btn btn-ghost" onclick="openRedeemModal()">Redeem Token</button><button type="button" class="btn btn-primary" onclick="startVerification()">Get Verified</button></div>
+  </div>
+</div>
+
+<div class="overlay" id="redeem-modal" onclick="if(event.target===this)closeRedeemModal()">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="redeem-title">
+    <div class="modal-head"><h3 id="redeem-title">Redeem Verification Token</h3><button class="icon-btn" onclick="closeRedeemModal()" aria-label="Close">×</button></div>
+    <p style="line-height:1.6;color:var(--muted,#aaa)">Paste your 11-character token (example: LvlUp9GQMBS).</p>
+    <form onsubmit="redeemVerificationToken(event)">
+      <div class="field"><label for="redeem-token">Verification token</label><input class="input" id="redeem-token" name="token" maxlength="11" minlength="11" pattern="LvlUp[A-Z2-9]{6}" autocomplete="off" autocapitalize="characters" placeholder="LvlUp9GQMBS" required></div>
+      <p id="redeem-message" role="status" style="display:none"></p>
+      <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeRedeemModal()">Cancel</button><button type="submit" class="btn btn-primary">Redeem Token</button></div>
+    </form>
   </div>
 </div>
 
@@ -457,7 +469,27 @@ let lastUptimeSync = Date.now();
 function openAddModal(){ $('add-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>document.querySelector('#add-modal .input')?.focus(),40); }
 function beginAddAccount(){ if(currentUser && currentUser.role==='admin'){ openAddModal(); return; } $('verify-gate').classList.add('active'); document.body.classList.add('modal-open'); }
 function closeVerifyGate(){ $('verify-gate').classList.remove('active'); document.body.classList.remove('modal-open'); }
-function startVerification(){ window.location.href='https://postcleanerexp.github.io/LevelUpKey/steps.html'; }
+async function startVerification(){
+  try {
+    const r=await fetch('/api/verification/session',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({})});
+    const d=await r.json();
+    if(!r.ok || d.status!=='ok') throw new Error(d.error||'Could not start verification.');
+    const u=new URL('https://postcleanerexp.github.io/LevelUpKey/steps.html');
+    u.searchParams.set('session_id',d.session_id);
+    window.location.href=u.toString();
+  } catch(e) { alert(e.message||'Could not start verification.'); }
+}
+function openRedeemModal(){ closeVerifyGate(); $('redeem-modal').classList.add('active'); document.body.classList.add('modal-open'); setTimeout(()=>$('redeem-token')?.focus(),40); }
+function closeRedeemModal(){ $('redeem-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
+async function redeemVerificationToken(e){
+  e.preventDefault(); const input=$('redeem-token'), msg=$('redeem-message');
+  const token=input.value.trim(); msg.style.display='block'; msg.textContent='Checking token…';
+  try { const r=await fetch('/api/verification/redeem',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token})}); const d=await r.json();
+    if(!r.ok||d.status!=='ok') throw new Error(d.error||'Token could not be redeemed.');
+    msg.textContent=d.message||'Token redeemed successfully. Access granted for 24 hours.'; msg.style.color='var(--success,#6ee7a8)'; input.value='';
+    setTimeout(()=>{closeRedeemModal();location.reload();},1200);
+  } catch(err){msg.textContent=err.message||'Token redemption failed.';msg.style.color='var(--danger,#ff7777)';}
+}
 function closeAddModal(){ $('add-modal').classList.remove('active'); document.body.classList.remove('modal-open'); }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAddModal(); });
 
