@@ -395,9 +395,9 @@ body:not(.authenticated) > .topbar,body:not(.authenticated) > .container,body:no
 <div class="overlay" id="redeem-modal" onclick="if(event.target===this)closeRedeemModal()">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="redeem-title">
     <div class="modal-head"><h3 id="redeem-title">Redeem Verification Token</h3><button class="icon-btn" onclick="closeRedeemModal()" aria-label="Close">×</button></div>
-    <p style="line-height:1.6;color:var(--muted,#aaa)">Paste your 11-character token (example: LvlUp9GQMBS).</p>
+    <p style="line-height:1.6;color:var(--muted,#aaa)">Paste your 11-character token. Example tokens are not valid; use the token generated for your verification session.</p>
     <form onsubmit="redeemVerificationToken(event)">
-      <div class="field"><label for="redeem-token">Verification token</label><input class="input" id="redeem-token" name="token" maxlength="11" minlength="11" pattern="LvlUp[A-Z2-9]{6}" autocomplete="off" autocapitalize="characters" placeholder="LvlUp9GQMBS" required></div>
+      <div class="field"><label for="redeem-token">Verification token</label><input class="input" id="redeem-token" name="token" maxlength="11" minlength="11" pattern="LvlUp[A-Z2-9]{6}" autocomplete="off" autocapitalize="characters" placeholder="LvlUpABC234" required></div>
       <p id="redeem-message" role="status" style="display:none"></p>
       <div class="modal-actions"><button type="button" class="btn btn-ghost" onclick="closeRedeemModal()">Cancel</button><button type="submit" class="btn btn-primary">Redeem Token</button></div>
     </form>
