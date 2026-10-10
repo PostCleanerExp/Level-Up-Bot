@@ -488,35 +488,72 @@ async def aes_encrypt(payload, key, iv):
     cipher = AES.new(key, AES.MODE_CBC, iv)
     return cipher.encrypt(pad(payload, AES.block_size))
 
+# Low-risk metadata caches: these values change far less often than reconnects.
+# Caching avoids repeatedly scraping Play Store and querying the version endpoint
+# during transient game-server reconnects, without changing gameplay packets/timing.
+_PLAYSTORE_VERSION_CACHE = {"value": None, "expires_at": 0.0}
+_PLAYSTORE_VERSION_TTL = 1800.0
+_VERSION_CONFIG_CACHE = {"value": None, "expires_at": 0.0}
+_VERSION_CONFIG_TTL = 300.0
+_PLAYSTORE_VERSION_LOCK = asyncio.Lock()
+_VERSION_CONFIG_LOCK = asyncio.Lock()
+
 async def get_playstore_version():
-    loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(
-        None,
-        lambda: play_scraper('com.dts.freefireth', lang='hi', country='id')
-    )
-    return result.get("version")
+    now = time.monotonic()
+    if _PLAYSTORE_VERSION_CACHE["value"] and now < _PLAYSTORE_VERSION_CACHE["expires_at"]:
+        return _PLAYSTORE_VERSION_CACHE["value"]
+    async with _PLAYSTORE_VERSION_LOCK:
+        now = time.monotonic()
+        if _PLAYSTORE_VERSION_CACHE["value"] and now < _PLAYSTORE_VERSION_CACHE["expires_at"]:
+            return _PLAYSTORE_VERSION_CACHE["value"]
+        loop = asyncio.get_running_loop()
+        try:
+            result = await loop.run_in_executor(
+                None,
+                lambda: play_scraper('com.dts.freefireth', lang='hi', country='id')
+            )
+            version = result.get("version") if isinstance(result, dict) else None
+            if version:
+                _PLAYSTORE_VERSION_CACHE.update(value=version, expires_at=time.monotonic() + _PLAYSTORE_VERSION_TTL)
+                return version
+        except Exception:
+            pass
+        # If the provider has a temporary failure, don't cache the failure;
+        # the caller can retry on the next normal login attempt.
+        return None
 
 async def version_config():
-    app_version = await get_playstore_version()
-    api_url = (
-        "https://version.ggwhitehawk.com/live/ver.php"
-        f"?version={app_version}"
-        "&lang=hi&device=android&channel=android"
-        "&appstore=googleplay&region=ID"
-        "&whitelist_version=1.3.0&whitelist_sp_version=1.0.0"
-    )
-    try:
-        response = await client.get(api_url)
-        response.raise_for_status()
-        data = response.json()
-        server_url = data.get("server_url")
-        remote_version = data.get("remote_version")
-        latest_release_version = data.get("latest_release_version")
-        if not server_url or not remote_version or not latest_release_version:
+    now = time.monotonic()
+    if _VERSION_CONFIG_CACHE["value"] and now < _VERSION_CONFIG_CACHE["expires_at"]:
+        return _VERSION_CONFIG_CACHE["value"]
+    async with _VERSION_CONFIG_LOCK:
+        now = time.monotonic()
+        if _VERSION_CONFIG_CACHE["value"] and now < _VERSION_CONFIG_CACHE["expires_at"]:
+            return _VERSION_CONFIG_CACHE["value"]
+        app_version = await get_playstore_version()
+        if not app_version:
             return None
-        return latest_release_version, remote_version, server_url
-    except Exception:
-        return None
+        api_url = (
+            "https://version.ggwhitehawk.com/live/ver.php"
+            f"?version={app_version}"
+            "&lang=hi&device=android&channel=android"
+            "&appstore=googleplay&region=ID"
+            "&whitelist_version=1.3.0&whitelist_sp_version=1.0.0"
+        )
+        try:
+            response = await client.get(api_url)
+            response.raise_for_status()
+            data = response.json()
+            server_url = data.get("server_url")
+            remote_version = data.get("remote_version")
+            latest_release_version = data.get("latest_release_version")
+            if not server_url or not remote_version or not latest_release_version:
+                return None
+            result = (latest_release_version, remote_version, server_url)
+            _VERSION_CONFIG_CACHE.update(value=result, expires_at=time.monotonic() + _VERSION_CONFIG_TTL)
+            return result
+        except Exception:
+            return None
 
 async def get_access_token(uid, password):
     url = "https://100067.connect.garena.com/oauth/guest/token/grant"
