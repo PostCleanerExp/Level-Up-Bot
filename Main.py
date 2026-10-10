@@ -59,6 +59,13 @@ PRIORITY_REGIONS = ["BD", "IND", "SG", "TH", "PH", "VN", "MY", "ID", "HK", "TW"]
 MAX_CONSECUTIVE_PARSE_FAILURES = 5.0
 NON_MATCH_RECONNECT_DELAY = 1.0
 
+
+def _connection_retry_delay(attempt: int, base: float = 1.0, cap: float = 20.0) -> float:
+    """Capped exponential backoff with jitter for failed connections only."""
+    exponent = min(max(int(attempt) - 1, 0), 5)
+    return min(cap, base * (2 ** exponent)) * random.uniform(0.85, 1.15)
+
+
 FALLBACK_UID = ""
 FALLBACK_PASSWORD = ""
 
@@ -1659,13 +1666,9 @@ async def functional_lone_wolf(addrs, starter_packet, account_region, client_ver
                     break
 
                 reconnects += 1
-                if reconnects > max_reconnects:
-                    print_error("[FUNCTIONAL] Max reconnects reached, retrying...")
-                    reconnects = 0
-                    await asyncio.sleep(3)
-                    continue
-
-                await asyncio.sleep(min(reconnects, 2))
+                if reconnects == max_reconnects + 1:
+                    print_error("[FUNCTIONAL] Repeated connection failures; enabling capped backoff...")
+                await asyncio.sleep(_connection_retry_delay(reconnects, base=1.0, cap=20.0))
 
     except asyncio.CancelledError:
         print_warning(f"[FUNCTIONAL] Outer cancelled. {len(play_matches)} UDP matches still running.")
@@ -1981,13 +1984,9 @@ async def functional_battle_royale(addrs, starter_packet, account_region, client
                     break
 
                 reconnects += 1
-                if reconnects > max_reconnects:
-                    print_error("[FUNCTIONAL] Max reconnects reached, retrying...")
-                    reconnects = 0
-                    await asyncio.sleep(3)
-                    continue
-
-                await asyncio.sleep(min(reconnects, 2))
+                if reconnects == max_reconnects + 1:
+                    print_error("[FUNCTIONAL] Repeated connection failures; enabling capped backoff...")
+                await asyncio.sleep(_connection_retry_delay(reconnects, base=1.0, cap=20.0))
 
     except asyncio.CancelledError:
         print_warning(f"[FUNCTIONAL] Outer cancelled. {len(play_matches)} UDP matches still running.")
@@ -2062,11 +2061,7 @@ async def informational(addrs, starter_packet, key, iv, region="ID", max_reconne
                 except Exception:
                     pass
             reconnects += 1
-            if reconnects > max_reconnects:
-                await asyncio.sleep(3)
-                reconnects = 0
-            else:
-                await asyncio.sleep(1)
+            await asyncio.sleep(_connection_retry_delay(reconnects, base=1.0, cap=20.0))
 
 
 # ==================== ACCOUNT PROCESSORS ====================
@@ -2387,6 +2382,7 @@ async def run_account_worker(account_data: Dict, label: str):
 
 
 async def account_loop_guest(uid: str, password: str):
+    login_failures = 0
     while True:
         try:
             print_info(f"[LOGIN] Starting login for Guest UID: {uid}...")
@@ -2396,14 +2392,17 @@ async def account_loop_guest(uid: str, password: str):
                 pass
             account_data = await process_account_uid_pass(uid, password)
             if not account_data:
-                print_error(f"Login failed for UID: {uid}. Retrying in 15 seconds...")
+                login_failures += 1
+                retry_delay = _connection_retry_delay(login_failures, base=15.0, cap=180.0)
+                print_error(f"Login failed for UID: {uid}. Retrying in about {int(retry_delay)} seconds...")
                 try:
                     bot_state.update_status(str(uid), "ERROR")
                 except Exception:
                     pass
-                await asyncio.sleep(15)
+                await asyncio.sleep(retry_delay)
                 continue
 
+            login_failures = 0
             bind_account_identity("uid:" + str(uid), str(account_data.get("account_id") or uid))
             await run_account_worker(account_data, uid)
             print_warning(f"Session finished for {uid}. Reconnecting in 3s...")
@@ -2422,15 +2421,19 @@ async def account_loop_guest(uid: str, password: str):
 
 async def account_loop_token(token: str):
     token_label = token[:10]
+    login_failures = 0
     while True:
         try:
             print_info("[LOGIN] Starting login with Access Token...")
             account_data = await process_account_token(token)
             if not account_data:
-                print_error("Login failed for Token. Retrying in 15 seconds...")
-                await asyncio.sleep(15)
+                login_failures += 1
+                retry_delay = _connection_retry_delay(login_failures, base=15.0, cap=180.0)
+                print_error(f"Login failed for Token. Retrying in about {int(retry_delay)} seconds...")
+                await asyncio.sleep(retry_delay)
                 continue
 
+            login_failures = 0
             acc_id = str(account_data['account_id'])
             # Link the token-owned slot to the actual in-game UID so the
             # dashboard can display it without reserving a second slot.
