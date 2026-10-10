@@ -12,6 +12,7 @@ import sqlite3
 import hashlib
 import secrets
 import hmac
+import re
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from aiohttp import web
@@ -32,10 +33,17 @@ def _db():
       CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT UNIQUE COLLATE NOCASE NOT NULL, password_hash TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'user', slots INTEGER NOT NULL DEFAULT 1, plan TEXT NOT NULL DEFAULT 'Standard', expires_at INTEGER, created_at INTEGER NOT NULL);
       CREATE TABLE IF NOT EXISTS sessions (token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL, expires_at INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE);
       CREATE TABLE IF NOT EXISTS account_owners (account_key TEXT PRIMARY KEY, user_id INTEGER NOT NULL, uid TEXT, created_at INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
-      CREATE TABLE IF NOT EXISTS verification_sessions (session_id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, FOREIGN KEY(user_id) REFERENCES users(id));
+      CREATE TABLE IF NOT EXISTS verification_sessions (session_id TEXT PRIMARY KEY, user_id INTEGER NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, device_hash TEXT, verified_at INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));
+      CREATE TABLE IF NOT EXISTS device_token_daily (device_hash TEXT NOT NULL, day_key TEXT NOT NULL, token_hash TEXT NOT NULL, created_at INTEGER NOT NULL, PRIMARY KEY(device_hash, day_key));
       CREATE TABLE IF NOT EXISTS verification_tokens (token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL, session_id TEXT NOT NULL, created_at INTEGER NOT NULL, expires_at INTEGER NOT NULL, redeemed_at INTEGER, FOREIGN KEY(user_id) REFERENCES users(id));
       CREATE INDEX IF NOT EXISTS idx_verification_tokens_user ON verification_tokens(user_id, expires_at);
     """)
+    # Safe schema upgrades for databases created by earlier versions.
+    cols = {r[1] for r in conn.execute("PRAGMA table_info(verification_sessions)").fetchall()}
+    if "device_hash" not in cols:
+        conn.execute("ALTER TABLE verification_sessions ADD COLUMN device_hash TEXT")
+    if "verified_at" not in cols:
+        conn.execute("ALTER TABLE verification_sessions ADD COLUMN verified_at INTEGER")
     conn.commit()
     return conn
 
@@ -213,8 +221,25 @@ async def handle_index(request: web.Request) -> web.Response:
 
 
 async def handle_verify_page(request: web.Request) -> web.Response:
-    """Send users to the public GitHub Pages first verification step."""
-    return web.HTTPFound("https://postcleanerexp.github.io/LevelUpKey/steps.html")
+    """Serve the verification steps from this same Render deployment."""
+    return await handle_steps_page(request)
+
+
+async def handle_steps_page(request: web.Request) -> web.Response:
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", "steps.html")
+    if not os.path.isfile(path):
+        return web.Response(text="Verification steps page is unavailable.", status=503, content_type="text/plain")
+    with open(path, "r", encoding="utf-8") as f:
+        return web.Response(text=f.read(), content_type="text/html", charset="utf-8")
+
+
+async def handle_verification_destination(request: web.Request) -> web.Response:
+    """Serve the final landing page on the same domain; this page alone is not proof of VPLink completion."""
+    path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "templates", "verification_destination.html")
+    if not os.path.isfile(path):
+        return web.Response(text="Verification destination page is unavailable.", status=503, content_type="text/plain")
+    with open(path, "r", encoding="utf-8") as f:
+        return web.Response(text=f.read(), content_type="text/html", charset="utf-8")
 
 
 async def handle_get_stats(request: web.Request) -> web.Response:
@@ -525,8 +550,63 @@ async def handle_refresh_account(request: web.Request) -> web.Response:
 
 
 
-TOKEN_TTL = 15 * 60
+TOKEN_TTL = 24 * 60 * 60
 ACCESS_TTL = 24 * 60 * 60
+DEVICE_COOKIE = "levelup_device"
+
+def _device_hash(request):
+    device_id = request.cookies.get(DEVICE_COOKIE, "").strip()
+    if not re.fullmatch(r"[A-Za-z0-9_-]{32,100}", device_id):
+        device_id = secrets.token_urlsafe(32)
+    return hashlib.sha256(device_id.encode()).hexdigest(), device_id
+
+async def _expire_normal_users(app=None):
+    """Expire 24h accounts and remove their persisted/runtime worker entries."""
+    now = int(time.time())
+    conn = _db()
+    try:
+        rows = conn.execute("SELECT id FROM users WHERE role!='admin' AND expires_at IS NOT NULL AND expires_at<=?", (now,)).fetchall()
+        ids = [int(r["id"]) for r in rows]
+        if not ids:
+            return
+        marks = ",".join("?" for _ in ids)
+        owner_rows = conn.execute(f"SELECT account_key,uid FROM account_owners WHERE user_id IN ({marks})", ids).fetchall()
+        keys = {r["account_key"] for r in owner_rows}
+        uids = {str(r["uid"]) for r in owner_rows if r["uid"]}
+        conn.execute(f"DELETE FROM account_owners WHERE user_id IN ({marks})", ids)
+        conn.execute(f"DELETE FROM verification_sessions WHERE user_id IN ({marks})", ids)
+        conn.execute(f"DELETE FROM verification_tokens WHERE user_id IN ({marks})", ids)
+        conn.execute(f"DELETE FROM device_token_daily WHERE token_hash IN (SELECT token_hash FROM verification_tokens WHERE user_id IN ({marks}))", ids)
+        conn.execute(f"UPDATE users SET expires_at=NULL, slots=1, plan='Standard' WHERE id IN ({marks})", ids)
+        conn.commit()
+    finally:
+        conn.close()
+    accounts_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), "accounts.json")
+    try:
+        with open(accounts_file, "r", encoding="utf-8") as f: accounts = json.load(f)
+        kept=[]
+        for acc in accounts:
+            uid=str(acc.get("uid", "")).strip(); tok=str(acc.get("token", "")).strip()
+            token_key="token:" + hashlib.sha256(tok.encode()).hexdigest() if tok else ""
+            if uid in uids or (token_key and token_key in keys): continue
+            kept.append(acc)
+        tmp=accounts_file+'.tmp'
+        with open(tmp,'w',encoding='utf-8') as f: json.dump(kept,f,indent=2)
+        os.replace(tmp,accounts_file)
+    except Exception as exc:
+        print(f"[EXPIRY CLEANUP] accounts file cleanup failed: {exc}")
+    for uid in uids:
+        task=bot_state.account_workers.pop(uid,None)
+        if task: task.cancel()
+        bot_state.accounts.pop(uid,None)
+    if uids:
+        bot_state.total_gained_exp=sum(int(a.get("gained_exp",0) or 0) for a in bot_state.accounts.values())
+
+async def _expiry_loop(app):
+    while True:
+        try: await _expire_normal_users(app)
+        except Exception as exc: print(f"[EXPIRY CLEANUP] {exc}")
+        await asyncio.sleep(60)
 TOKEN_ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"
 
 def _new_verify_code():
@@ -535,20 +615,45 @@ def _new_verify_code():
 
 async def handle_verification_session(request: web.Request):
     user = _user_from_request(request)
-    if not user:
-        return _auth_error()
-    if user["role"] == "admin":
-        return web.json_response({"status":"ok", "admin":True})
-    sid = secrets.token_urlsafe(24)
+    if not user: return _auth_error()
+    if user["role"] == "admin": return web.json_response({"status":"ok", "admin":True})
+    device_digest, device_id = _device_hash(request)
     now = int(time.time())
+    day_key = time.strftime("%Y-%m-%d", time.gmtime(now))
     conn = _db()
     try:
-        conn.execute("INSERT INTO verification_sessions(session_id,user_id,created_at,expires_at) VALUES(?,?,?,?)",
-                     (sid, user["id"], now, now + TOKEN_TTL))
-        conn.commit()
-    finally:
-        conn.close()
-    return web.json_response({"status":"ok", "session_id":sid, "expires_in":TOKEN_TTL})
+        # One verification token per browser device per UTC day. Reuse the active
+        # session for refreshes instead of creating fresh sessions repeatedly.
+        existing = conn.execute("SELECT session_id FROM verification_sessions WHERE user_id=? AND device_hash=? AND expires_at>? ORDER BY created_at DESC LIMIT 1", (user["id"], device_digest, now)).fetchone()
+        if existing:
+            sid = existing["session_id"]
+        else:
+            sid = secrets.token_urlsafe(24)
+            conn.execute("INSERT INTO verification_sessions(session_id,user_id,created_at,expires_at,device_hash,verified_at) VALUES(?,?,?,?,?,NULL)", (sid,user["id"],now,now+ACCESS_TTL,device_digest))
+            conn.commit()
+    finally: conn.close()
+    response=web.json_response({"status":"ok","session_id":sid,"expires_in":ACCESS_TTL,"message":"Complete VPLink verification; a token is issued only after a trusted verification callback."})
+    response.set_cookie(DEVICE_COOKIE,device_id,max_age=60*60*24*365,httponly=True,secure=(request.secure or request.headers.get("X-Forwarded-Proto","").lower()=="https"),samesite="Lax",path="/")
+    return response
+
+async def handle_vplink_callback(request: web.Request):
+    """Fail-closed server callback endpoint. Configure only if VPLink supports a signed callback/postback."""
+    secret=os.environ.get("VPLINK_CALLBACK_SECRET", "")
+    supplied=request.headers.get("X-VPLink-Callback-Secret", "")
+    if not secret or not hmac.compare_digest(supplied,secret):
+        return web.json_response({"status":"error","error":"Verification callback not configured or unauthorized."},status=403)
+    try:
+        data=await request.json(); sid=str(data.get("session_id","")).strip()
+        if not sid: return web.json_response({"status":"error","error":"Missing session_id."},status=400)
+        now=int(time.time()); conn=_db()
+        try:
+            row=conn.execute("SELECT session_id FROM verification_sessions WHERE session_id=? AND expires_at>?",(sid,now)).fetchone()
+            if not row: return web.json_response({"status":"error","error":"Unknown or expired session."},status=404)
+            conn.execute("UPDATE verification_sessions SET verified_at=? WHERE session_id=?",(now,sid)); conn.commit()
+        finally: conn.close()
+        return web.json_response({"status":"ok"})
+    except Exception:
+        return web.json_response({"status":"error","error":"Invalid callback payload."},status=400)
 
 async def handle_issue_verification_token(request: web.Request):
     # Destination page calls this endpoint with the session ID created by Get Verified.
@@ -564,11 +669,22 @@ async def handle_issue_verification_token(request: web.Request):
                                    (sid, now)).fetchone()
             if not session:
                 return web.json_response({"status":"error","error":"Verification session expired. Start again from Get Verified."}, status=403)
+            if not session["verified_at"]:
+                return web.json_response({"status":"error","error":"VPLink completion has not been verified by the server. No token was issued."}, status=403)
+            device_hash=session["device_hash"] or ""
+            day_key=time.strftime("%Y-%m-%d", time.gmtime(now))
+            prior=conn.execute("SELECT token_hash FROM device_token_daily WHERE device_hash=? AND day_key=?",(device_hash,day_key)).fetchone()
+            if prior:
+                token_row=conn.execute("SELECT token_hash,expires_at,redeemed_at FROM verification_tokens WHERE token_hash=? AND session_id=?",(prior["token_hash"],sid)).fetchone()
+                if token_row and token_row["expires_at"]>now and token_row["redeemed_at"] is None:
+                    return web.json_response({"status":"error","error":"A token was already generated for this device today. Use the original token; refresh cannot generate another."},status=409)
+                return web.json_response({"status":"error","error":"This device has already used its daily token. Try again after the daily reset."},status=409)
             code = _new_verify_code()
-            conn.execute("INSERT INTO verification_tokens(token_hash,user_id,session_id,created_at,expires_at) VALUES(?,?,?,?,?)",
-                         (hashlib.sha256(code.encode()).hexdigest(), session["user_id"], sid, now, now + TOKEN_TTL))
+            digest=hashlib.sha256(code.encode()).hexdigest()
+            conn.execute("INSERT INTO verification_tokens(token_hash,user_id,session_id,created_at,expires_at) VALUES(?,?,?,?,?)",(digest,session["user_id"],sid,now,now+ACCESS_TTL))
+            conn.execute("INSERT INTO device_token_daily(device_hash,day_key,token_hash,created_at) VALUES(?,?,?,?)",(device_hash,day_key,digest,now))
             conn.commit()
-            return web.json_response({"status":"ok","token":code,"expires_in":TOKEN_TTL})
+            return web.json_response({"status":"ok","token":code,"expires_in":ACCESS_TTL})
         finally:
             conn.close()
     except Exception:
@@ -583,13 +699,19 @@ async def handle_redeem_verification_token(request: web.Request):
     try:
         data = await request.json()
         code = str(data.get("token", "")).strip()
+        # The UI example is documentation only and must never grant access.
+        if hmac.compare_digest(code.upper(), "LVLUP9GQMBS"):
+            return web.json_response({"status":"error","error":"Example tokens cannot be redeemed. Generate a fresh verification token."}, status=403)
         if not re.fullmatch(r"LvlUp[A-Z2-9]{6}", code):
             return web.json_response({"status":"error","error":"Invalid token format."}, status=400)
         now = int(time.time())
         conn = _db()
         try:
-            row = conn.execute("SELECT * FROM verification_tokens WHERE token_hash=? AND user_id=? AND expires_at>? AND redeemed_at IS NULL",
+            row = conn.execute("SELECT vt.*,vs.device_hash AS bound_device FROM verification_tokens vt JOIN verification_sessions vs ON vs.session_id=vt.session_id WHERE vt.token_hash=? AND vt.user_id=? AND vt.expires_at>? AND vt.redeemed_at IS NULL",
                                (hashlib.sha256(code.encode()).hexdigest(), user["id"], now)).fetchone()
+            current_device,_device_id=_device_hash(request)
+            if row and (not row["bound_device"] or not hmac.compare_digest(row["bound_device"],current_device)):
+                row=None
             if not row:
                 return web.json_response({"status":"error","error":"Token is invalid, expired, already used, or belongs to another account."}, status=403)
             # Redeem atomically and activate a 24-hour plan with one slot.
@@ -615,8 +737,11 @@ async def start_web_dashboard(host: str = "0.0.0.0", port: Optional[int] = None)
     app = web.Application()
     app.router.add_get("/", handle_index)
     app.router.add_get("/verify", handle_verify_page)
+    app.router.add_get("/steps.html", handle_steps_page)
+    app.router.add_get("/verification-destination", handle_verification_destination)
     app.router.add_post("/api/verification/session", handle_verification_session)
     app.router.add_post("/api/verification/issue", handle_issue_verification_token)
+    app.router.add_post("/api/verification/vplink-callback", handle_vplink_callback)
     app.router.add_post("/api/verification/redeem", handle_redeem_verification_token)
     app.router.add_static("/assets/", os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets"), show_index=False)
     app.router.add_post("/api/auth/register", handle_register)
@@ -632,6 +757,8 @@ async def start_web_dashboard(host: str = "0.0.0.0", port: Optional[int] = None)
 
     runner = web.AppRunner(app)
     await runner.setup()
+    expiry_task = asyncio.create_task(_expiry_loop(app))
     site = web.TCPSite(runner, host, port)
     await site.start()
+    app["expiry_task"] = expiry_task
     print(f"\033[92m[+] Web Dashboard running on {host}:{port}\033[0m")
